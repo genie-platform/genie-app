@@ -1,11 +1,11 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 
-import Login from "./Login/Login";
+import Login from './components/Login/Login';
 
 const useStyles = makeStyles((theme) => ({
   app: {
-    minHeight: "100vh",
+    minHeight: '100vh',
     background: theme.customGradients.primary,
   },
 }));

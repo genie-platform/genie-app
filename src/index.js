@@ -1,17 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
+
 import './index.css';
 import App from './App';
 import { theme } from './theme';
 import * as serviceWorker from './serviceWorker';
+import authReducer from './store/reducers/auth';
+
+const rootReducer = combineReducers({
+  auth: authReducer,
+});
+
+const store = createStore(rootReducer);
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <App />
-    </ThemeProvider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <React.StrictMode>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </React.StrictMode>
+  </Provider>,
   document.getElementById('root')
 );
 
