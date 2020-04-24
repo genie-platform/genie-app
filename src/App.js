@@ -1,5 +1,7 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 
 import Login from './components/Login/Login';
 
@@ -10,14 +12,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function App() {
+const App = (props) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.app}>
-      <Login />
-    </div>
+    <BrowserRouter>
+      <div className={classes.app}>
+        <Login />
+      </div>
+    </BrowserRouter>
   );
-}
+};
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    token: state.auth.token,
+    userId: state.auth.userID,
+    name: state.auth.name,
+    imageUrl: state.auth.imageUrl,
+    loading: state.auth.loading,
+    error: state.auth.error,
+    isAuthenticated: state.auth.token !== null,
+  };
+};
+
+export default connect(mapStateToProps, null)(App);
