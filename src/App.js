@@ -8,8 +8,7 @@ import Home from './components/Home/Home'
 
 const useStyles = makeStyles((theme) => ({
   app: {
-    minHeight: '100vh',
-    background: theme.customGradients.primary
+    minHeight: '100vh'
   }
 }))
 

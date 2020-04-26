@@ -1,22 +1,45 @@
 import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Avatar from '@material-ui/core/Avatar'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import Toolbar from '@material-ui/core/Toolbar'
+import AppBar from '@material-ui/core/AppBar'
 import { connect } from 'react-redux'
+import { gapi } from 'gapi-script'
 
 import * as actionTypes from '../../store/actions/actionTypes'
 
 const useStyles = makeStyles((theme) => ({
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between'
+  root: {
+    flexGrow: 1
+  },
+  appBar: {
+    backgroundColor: theme.customColors.dark
+  },
+  logo: {
+    flexGrow: 1,
+    fontFamily: theme.fonts.primary
   },
   googleLogin: {
 
+  },
+  userDetails: {
+    cursor: 'pointer'
   }
 }))
 
 const Header = (props) => {
   const classes = useStyles()
+  const [anchorElement, setAnchorElement] = React.useState(null)
+
+  const handleClickAvatar = (event) => {
+    setAnchorElement(event.currentTarget)
+  }
+
+  const handleCloseAvatarMenu = () => {
+    setAnchorElement(null)
+  }
 
   // event handler for google signin
   const onSignIn = (googleUser) => {
@@ -44,7 +67,6 @@ const Header = (props) => {
             imageUrl: profile.getImageUrl()
           }
 
-          console.log(userDetails)
           props.onSignInSuccess(userDetails) // dispatch to update state
         })
     }
@@ -62,31 +84,62 @@ const Header = (props) => {
 
       // update state
       props.onSignOut()
-
-      console.log('is auth:', props.isAuthenticated)
-      console.log('token:', props.token)
     })
   }
 
-  useEffect(() => {
+  const renderGoogleSignInButton = () => {
     // customized dynamic render of the google signin button
-    window.gapi.signin2.render('my-signin2', {
+    gapi.signin2.render('signinButton', {
       theme: 'light',
       onsuccess: onSignIn,
       onfailure: onFailure
     })
-  }, [])
+  }
 
-  console.log('is auth:', props.isAuthenticated)
+  useEffect(() => {
+    if (!props.isAuthenticated) {
+      renderGoogleSignInButton()
+    }
+  }, [props.isAuthenticated])
 
-  const googleSigninButton = <div id='my-signin2' className={classes.googleLogin} />
+  const googleSigninButton = <div id='signinButton' className={classes.googleLogin} />
 
-  const userAvatar = <Avatar alt={props.name} src={props.imageUrl} onClick={signOut} />
+  const userAvatar =
+    <div onClick={handleClickAvatar} className={classes.userDetails}>
+      <Avatar alt={props.name} src={props.imageUrl} />
+    </div>
 
   return (
-    <div className={classes.header}>
-      <div>Genie</div>
-      {props.isAuthenticated ? userAvatar : googleSigninButton}
+    <div className={classes.root}>
+      <AppBar className={classes.appBar} position='static' color='secondary'>
+        <Toolbar>
+          <div className={classes.logo}>Genie</div>
+          {/* {props.isAuthenticated ? userAvatar : googleSigninButton} */}
+          {props.isAuthenticated ? null : googleSigninButton}
+          {props.isAuthenticated ? userAvatar : null}
+          <Menu
+            id='simple-menu'
+            anchorEl={anchorElement}
+            keepMounted
+            open={Boolean(anchorElement)}
+            onClose={handleCloseAvatarMenu}
+            elevation={0}
+            getContentAnchorEl={null}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center'
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center'
+            }}
+          >
+            <MenuItem onClick={handleCloseAvatarMenu}>Profile</MenuItem>
+            <MenuItem onClick={handleCloseAvatarMenu}>My account</MenuItem>
+            <MenuItem onClick={() => { handleCloseAvatarMenu(); signOut() }}>Logout</MenuItem>
+          </Menu>
+        </Toolbar>
+      </AppBar>
     </div>
   )
 }
