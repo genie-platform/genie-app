@@ -5,6 +5,8 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Toolbar from '@material-ui/core/Toolbar'
 import AppBar from '@material-ui/core/AppBar'
+import Button from '@material-ui/core/Button'
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet'
 import { connect } from 'react-redux'
 import { gapi } from 'gapi-script'
 
@@ -18,11 +20,15 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.customColors.dark
   },
   logo: {
-    flexGrow: 1,
-    fontFamily: theme.fonts.primary
+    flexGrow: 1
   },
-  googleLogin: {
-
+  authArea: {
+    display: 'flex'
+  },
+  walletButton: {
+    borderRadius: '25px',
+    marginRight: '1em',
+    backgroundImage: theme.customGradients.primary
   },
   userDetails: {
     cursor: 'pointer'
@@ -109,14 +115,22 @@ const Header = (props) => {
       <Avatar alt={props.name} src={props.imageUrl} />
     </div>
 
+  const authArea =
+    <div className={classes.authArea}>
+      <Button className={classes.walletButton} variant='contained' size='small'>
+        Connect to wallet
+        <AccountBalanceWalletIcon />
+      </Button>
+      {props.isAuthenticated ? null : googleSigninButton}
+      {props.isAuthenticated ? userAvatar : null}
+    </div>
+
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position='static' color='secondary'>
         <Toolbar>
           <div className={classes.logo}>Genie</div>
-          {/* {props.isAuthenticated ? userAvatar : googleSigninButton} */}
-          {props.isAuthenticated ? null : googleSigninButton}
-          {props.isAuthenticated ? userAvatar : null}
+          {authArea}
           <Menu
             id='simple-menu'
             anchorEl={anchorElement}

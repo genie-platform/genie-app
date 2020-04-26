@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
   text: {
-    fontFamily: theme.fonts.primary,
     textAlign: 'center',
     backgroundImage: theme.customGradients.primaryDark,
     WebkitBackgroundClip: 'text',
@@ -25,7 +24,6 @@ const Home = (props) => {
 
   return (
     <div>
-      <div className={classes.text}>{props.name ? `hello ${props.name}` : null}</div>
       <div className={classes.text}>{welcomeMessage}</div>
       <Button className={classes.createFundButton} variant='contained'>Create a new fund</Button>
     </div>
