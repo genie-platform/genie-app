@@ -1,11 +1,8 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import Card from '@material-ui/core/Card'
-import CardMedia from '@material-ui/core/CardMedia'
-import CardContent from '@material-ui/core/CardContent'
-import Typography from '@material-ui/core/Typography'
 
 import Stepper from './Stepper/Stepper'
+import FundDetailsForm from './FundDetailsForm/FundDetailsForm'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,9 +17,9 @@ const FundCreator = props => {
 
   return (
     <div className={classes.root}>
-      <CardContent>
-        <Stepper />
-      </CardContent>
+      {/* <FundDetailsForm /> */}
+      <Stepper fundDetails={FundDetailsForm} />
+      {/* <Stepper /> */}
     </div>)
 }
 

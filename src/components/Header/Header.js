@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { withRouter } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles'
 import Avatar from '@material-ui/core/Avatar'
 import Menu from '@material-ui/core/Menu'
@@ -6,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Toolbar from '@material-ui/core/Toolbar'
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet'
 import { connect } from 'react-redux'
 import { gapi } from 'gapi-script'
@@ -20,7 +22,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.customColors.dark
   },
   logo: {
-    flexGrow: 1
+    flexGrow: 1,
+    color: theme.palette.secondary.main,
+    cursor: 'pointer'
   },
   authArea: {
     display: 'flex'
@@ -32,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   walletButton: {
     borderRadius: 25,
     marginRight: '1em',
-    backgroundImage: theme.customGradients.primary
+    backgroundImage: theme.customGradients.secondary
   },
   userDetails: {
     cursor: 'pointer'
@@ -133,7 +137,9 @@ const Header = (props) => {
     <div className={classes.root}>
       <AppBar className={classes.appBar} position='static' color='secondary'>
         <Toolbar>
-          <div className={classes.logo}>Genie</div>
+          <Typography variant='h6' className={classes.logo} onClick={() => props.history.push('/')}>
+            Genie
+          </Typography>
           {authArea}
           <Menu
             id='simple-menu'
@@ -188,4 +194,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Header))

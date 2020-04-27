@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import Stepper from '@material-ui/core/Stepper'
@@ -18,12 +17,12 @@ const ColorlibConnector = withStyles(theme => ({
   },
   active: {
     '& $line': {
-      backgroundImage: theme.customGradients.primary
+      backgroundImage: theme.customGradients.secondary
     }
   },
   completed: {
     '& $line': {
-      backgroundImage: theme.customGradients.primary
+      backgroundImage: theme.customGradients.secondary
     }
   },
   line: {
@@ -47,11 +46,11 @@ const useColorlibStepIconStyles = makeStyles(theme => ({
     alignItems: 'center'
   },
   active: {
-    backgroundImage: theme.customGradients.primary,
+    backgroundImage: theme.customGradients.secondary,
     boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)'
   },
   completed: {
-    backgroundImage: theme.customGradients.primary
+    backgroundImage: theme.customGradients.secondary
   }
 }))
 
@@ -77,21 +76,6 @@ const ColorlibStepIcon = (props) => {
   )
 }
 
-ColorlibStepIcon.propTypes = {
-  /**
-   * Whether this step is active.
-   */
-  active: PropTypes.bool,
-  /**
-   * Mark the step as completed. Is passed to child components.
-   */
-  completed: PropTypes.bool,
-  /**
-   * The label displayed in the step icon.
-   */
-  icon: PropTypes.node
-}
-
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%'
@@ -101,12 +85,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 25
   },
   buttonNext: {
-    backgroundImage: theme.customGradients.primaryDark,
+    backgroundImage: theme.customGradients.primary,
     color: 'white'
-  },
-  instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1)
   }
 }))
 
@@ -144,11 +124,11 @@ const CustomStepper = (props) => {
     setActiveStep(0)
   }
 
+  const FormContent = getStepContent(activeStep, props)
+
   const stepperBody =
     <div>
-      <Typography className={classes.instructions}>
-        {getStepContent(activeStep, props)}
-      </Typography>
+      <FormContent />
       <div>
         <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
           Back

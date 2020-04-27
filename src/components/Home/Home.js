@@ -19,14 +19,14 @@ const useStyles = makeStyles((theme) => ({
   },
   text: {
     textAlign: 'center',
-    backgroundImage: theme.customGradients.primaryDark,
+    backgroundImage: theme.customGradients.primary,
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent'
   },
   createFundButton: {
     borderRadius: 25,
     color: 'white',
-    backgroundImage: theme.customGradients.primaryDark
+    backgroundImage: theme.customGradients.primary
   },
   exploreFunds: {
     borderRadius: 14
