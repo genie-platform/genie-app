@@ -6,13 +6,15 @@ import { connect } from 'react-redux'
 
 import * as actionTypes from '../../../store/actions/actionTypes'
 
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-
-//   }
-// }))
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: '2em'
+  }
+}))
 
 const FundDetailsForm = props => {
+  const classes = useStyles()
+
   const [fundName, setFundName] = useState('')
   const [fundDescription, setFundDescription] = useState('')
   const [lockValue, setLockValue] = useState(null)
@@ -22,7 +24,7 @@ const FundDetailsForm = props => {
   }
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={3} className={classes.root}>
       <Grid item xs={12}>
         <TextField
           required

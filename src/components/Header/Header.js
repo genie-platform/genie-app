@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import Avatar from '@material-ui/core/Avatar'
 import Menu from '@material-ui/core/Menu'
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     flexGrow: 1,
-    color: theme.palette.secondary.main,
+    color: theme.palette.secondary.light,
     cursor: 'pointer'
   },
   authArea: {

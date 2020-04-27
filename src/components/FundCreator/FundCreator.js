@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 
-import Stepper from './Stepper/Stepper'
+import Stepper from './CustomStepper/CustomStepper'
 import FundDetailsForm from './FundDetailsForm/FundDetailsForm'
 
 const useStyles = makeStyles((theme) => ({
@@ -17,9 +17,7 @@ const FundCreator = props => {
 
   return (
     <div className={classes.root}>
-      {/* <FundDetailsForm /> */}
       <Stepper fundDetails={FundDetailsForm} />
-      {/* <Stepper /> */}
     </div>)
 }
 
