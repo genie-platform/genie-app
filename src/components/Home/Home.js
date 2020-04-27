@@ -4,7 +4,9 @@ import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
 import Typography from '@material-ui/core/Typography'
+import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 import { connect } from 'react-redux'
 
 import FundDisplayCard from '../FundDisplayCard/FundDisplayCard'
@@ -31,11 +33,19 @@ const useStyles = makeStyles((theme) => ({
   },
   fundsGrid: {
     paddingTop: '1em'
+  },
+  allFunds: {
+    justifyContent: 'flex-end'
   }
 }))
 
 const Home = (props) => {
   const classes = useStyles()
+
+  const onCreateFundClick = () => {
+    // change to the createfund page
+    props.history.push('/create-fund')
+  }
 
   const welcomeMessage = 'Genie is an interest based reward platform'
 
@@ -61,7 +71,7 @@ const Home = (props) => {
       <Grid item xs={12}>
         <div id='create-fund'>
           <div className={classes.text}>{welcomeMessage}</div>
-          <Button className={classes.createFundButton} variant='contained'>Create a new fund</Button>
+          <Button className={classes.createFundButton} variant='contained' onClick={onCreateFundClick}>Create a new fund</Button>
         </div>
       </Grid>
       <Grid item xs={12}>
@@ -71,6 +81,12 @@ const Home = (props) => {
               Explore funds
             </Typography>
             {fundsGrid}
+            <CardActions className={classes.allFunds}>
+              <Button>
+                All funds
+                <KeyboardArrowRightIcon />
+              </Button>
+            </CardActions>
           </CardContent>
         </Card>
       </Grid>

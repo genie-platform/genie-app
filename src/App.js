@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 
+import FundCreator from './components/FundCreator/FundCreator'
 import Header from './components/Header/Header'
 import Home from './components/Home/Home'
 
@@ -22,6 +23,7 @@ const App = (props) => {
         <Header />
         <Switch>
           <Route path='/' exact component={Home} />
+          <Route path='/create-fund' exact component={FundCreator} />
         </Switch>
       </div>
     </BrowserRouter>
