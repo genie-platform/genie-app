@@ -10,6 +10,7 @@ export const theme = createMuiTheme({
   },
   customColors: {
     dark: '#485563',
+    background: '#f5f5f5',
     backgroundDark: '#333'
   },
   typography: {

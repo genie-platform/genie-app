@@ -25,8 +25,12 @@ const useStyles = makeStyles((theme) => ({
   authArea: {
     display: 'flex'
   },
+  googleLogin: {
+    borderRadius: 25,
+    overflow: 'hidden'
+  },
   walletButton: {
-    borderRadius: '25px',
+    borderRadius: 25,
     marginRight: '1em',
     backgroundImage: theme.customGradients.primary
   },
@@ -118,7 +122,7 @@ const Header = (props) => {
   const authArea =
     <div className={classes.authArea}>
       <Button className={classes.walletButton} variant='contained' size='small'>
-        Connect to wallet
+        Connect wallet
         <AccountBalanceWalletIcon />
       </Button>
       {props.isAuthenticated ? null : googleSigninButton}

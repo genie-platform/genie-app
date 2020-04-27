@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 
@@ -8,7 +8,8 @@ import Home from './components/Home/Home'
 
 const useStyles = makeStyles((theme) => ({
   app: {
-    minHeight: '100vh'
+    minHeight: '100vh',
+    background: theme.customColors.background
   }
 }))
 
@@ -19,7 +20,9 @@ const App = (props) => {
     <BrowserRouter>
       <div className={classes.app}>
         <Header />
-        <Home />
+        <Switch>
+          <Route path='/' exact component={Home} />
+        </Switch>
       </div>
     </BrowserRouter>
   )
