@@ -75,7 +75,7 @@ const Home = (props) => {
         </div>
       </Grid>
       <Grid item xs={12}>
-        <Card elevation={2} id='explore-funds' className={classes.exploreFunds}>
+        <Card elevation={3} id='explore-funds' className={classes.exploreFunds}>
           <CardContent>
             <Typography variant='h5'>
               Explore funds

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
@@ -15,14 +15,6 @@ const useStyles = makeStyles((theme) => ({
 const FundDetailsForm = props => {
   const classes = useStyles()
 
-  const [fundName, setFundName] = useState('')
-  const [fundDescription, setFundDescription] = useState('')
-  const [lockValue, setLockValue] = useState(null)
-
-  const setReduxState = () => {
-    props.setFund({ name: fundName, description: fundDescription, lockValue: lockValue })
-  }
-
   return (
     <Grid container spacing={3} className={classes.root}>
       <Grid item xs={12}>
@@ -32,7 +24,7 @@ const FundDetailsForm = props => {
           label='Fund name'
           variant='outlined'
           fullWidth
-          onChange={event => { setFundName(event.target.value); setReduxState() }}
+          onChange={event => props.setFund({ name: event.target.value })}
         />
       </Grid>
 
@@ -44,7 +36,7 @@ const FundDetailsForm = props => {
           label='Fund description'
           variant='outlined'
           fullWidth
-          onChange={event => { setFundDescription(event.target.value); setReduxState() }}
+          onChange={event => { props.setFund({ description: event.target.value }) }}
         />
       </Grid>
 
@@ -57,7 +49,7 @@ const FundDetailsForm = props => {
           fullWidth
           type='number'
           helperText='The amount the user will lock'
-          onChange={event => { setLockValue(event.target.value); setReduxState() }}
+          onChange={event => { props.setFund({ lockValue: event.target.value }) }}
         />
       </Grid>
     </Grid>
@@ -68,7 +60,9 @@ const mapStateToProps = (state) => {
   return {
     name: state.createdFund.name,
     description: state.createdFund.description,
-    lockValue: state.createdFund.lockValue
+    lockValue: state.createdFund.lockValue,
+    icon: state.createdFund.icon,
+    coverImage: state.createdFund.coverImage
   }
 }
 
@@ -77,9 +71,11 @@ const mapDispatchToProps = (dispatch) => {
     setFund: (fundDetails) =>
       dispatch({
         type: actionTypes.SET_FUND,
-        name: fundDetails.name,
-        description: fundDetails.description,
-        lockValue: fundDetails.lockValue
+        payload: {
+          name: fundDetails.name,
+          description: fundDetails.description,
+          lockValue: fundDetails.lockValue
+        }
       })
   }
 }

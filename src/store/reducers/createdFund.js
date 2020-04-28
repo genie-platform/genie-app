@@ -3,22 +3,26 @@ import * as actionTypes from '../actions/actionTypes'
 const initialState = {
   name: '',
   description: '',
-  lockValue: null
+  lockValue: null,
+  icon: '',
+  coverImage: ''
 }
 
-const setFund = (state, action) => {
-  return {
-    ...state,
-    name: action.name,
-    description: action.description,
-    lockValue: action.lockValue
-  }
+const setFund = (state, actionPayload) => {
+  // remove keys with undefined value
+  Object.keys(actionPayload).forEach(key => {
+    if (actionPayload[key] === undefined) {
+      delete actionPayload[key]
+    }
+  })
+
+  return { ...state, ...actionPayload }
 }
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_FUND:
-      return setFund(state, action)
+      return setFund(state, action.payload)
     default:
       return state
   }

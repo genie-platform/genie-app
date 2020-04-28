@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import clsx from 'clsx'
 import Stepper from '@material-ui/core/Stepper'
@@ -80,6 +81,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%'
   },
+  buttons: {
+    display: 'flex',
+    justifyContent: 'center'
+  },
   button: {
     marginRight: theme.spacing(1),
     borderRadius: 25
@@ -117,6 +122,9 @@ const CustomStepper = (props) => {
   }
 
   const handleBack = () => {
+    if (activeStep === 0) {
+      props.history.push('/') // go back to homepage
+    }
     setActiveStep((prevActiveStep) => prevActiveStep - 1)
   }
 
@@ -129,8 +137,8 @@ const CustomStepper = (props) => {
   const stepperBody =
     <div>
       <FormContent />
-      <div>
-        <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
+      <div className={classes.buttons}>
+        <Button onClick={handleBack} className={classes.button}>
           Back
         </Button>
         <Button
@@ -169,4 +177,4 @@ const CustomStepper = (props) => {
   )
 }
 
-export default CustomStepper
+export default withRouter(CustomStepper)
