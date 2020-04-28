@@ -1,20 +1,18 @@
-import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
-import { connect } from 'react-redux'
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Grid from "@material-ui/core/Grid";
+import { connect } from "react-redux";
 
-import * as actionTypes from '../../../store/actions/actionTypes'
+import * as actionTypes from "../../../store/actions/actionTypes";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: '2em'
-  }
-}))
+    padding: "2em",
+  },
+}));
 
-const FundExtraForm = props => {
-
-}
+const FundExtraForm = (props) => {};
 
 const mapStateToProps = (state) => {
   return {
@@ -22,9 +20,9 @@ const mapStateToProps = (state) => {
     description: state.createdFund.description,
     lockValue: state.createdFund.lockValue,
     icon: state.createdFund.icon,
-    coverImage: state.createdFund.coverImage
-  }
-}
+    coverImage: state.createdFund.coverImage,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -35,9 +33,9 @@ const mapDispatchToProps = (dispatch) => {
         description: fundDetails.description,
         lockValue: fundDetails.lockValue,
         icon: fundDetails.icon,
-        coverImage: fundDetails.coverImage
-      })
-  }
-}
+        coverImage: fundDetails.coverImage,
+      }),
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(FundExtraForm)
+export default connect(mapStateToProps, mapDispatchToProps)(FundExtraForm);

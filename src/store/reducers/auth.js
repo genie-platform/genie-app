@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/actionTypes'
+import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   token: null,
@@ -7,8 +7,8 @@ const initialState = {
   imageUrl: null,
   error: null,
   loading: false,
-  authRedirectPath: '/'
-}
+  authRedirectPath: "/",
+};
 
 const signInSuccess = (state, action) => {
   return {
@@ -17,23 +17,23 @@ const signInSuccess = (state, action) => {
     name: action.name,
     imageUrl: action.imageUrl,
     error: null,
-    loading: false
-  }
-}
+    loading: false,
+  };
+};
 
 const signOut = (state, action) => {
-  return initialState
-}
+  return initialState;
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.AUTH_SUCCESS:
-      return signInSuccess(state, action)
+      return signInSuccess(state, action);
     case actionTypes.AUTH_SIGNOUT:
-      return signOut(state, action)
+      return signOut(state, action);
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default reducer
+export default reducer;

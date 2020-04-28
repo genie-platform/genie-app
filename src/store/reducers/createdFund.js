@@ -1,31 +1,31 @@
-import * as actionTypes from '../actions/actionTypes'
+import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
-  name: '',
-  description: '',
+  name: "",
+  description: "",
   lockValue: null,
-  icon: '',
-  coverImage: ''
-}
+  icon: "",
+  coverImage: "",
+};
 
 const setFund = (state, actionPayload) => {
   // remove keys with undefined value
-  Object.keys(actionPayload).forEach(key => {
+  Object.keys(actionPayload).forEach((key) => {
     if (actionPayload[key] === undefined) {
-      delete actionPayload[key]
+      delete actionPayload[key];
     }
-  })
+  });
 
-  return { ...state, ...actionPayload }
-}
+  return { ...state, ...actionPayload };
+};
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_FUND:
-      return setFund(state, action.payload)
+      return setFund(state, action.payload);
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default reducer
+export default reducer;
