@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -51,6 +51,13 @@ const sliderMarks = [
 const FundExtraForm = (props) => {
   const classes = useStyles();
 
+  let sliderDefaultValue = 7;
+  let defaultWinner = '';
+
+  if (props.winnerDescription !== '') {
+    defaultWinner = props.winnerDescription;
+  }
+
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
@@ -62,28 +69,33 @@ const FundExtraForm = (props) => {
             required
             variant="outlined"
             fullWidth
+            defaultValue={defaultWinner}
             placeholder="The player who wins the 2 week tournament!"
             helperText="Who will get the prize?"
+            onChange={(event) =>
+              props.setFund({ winnerDescription: event.target.value })
+            }
           ></TextField>
         </Grid>
 
         <Grid item xs={12}>
-          <Typography className={classes.title}>
-            How long will the fund last?
-          </Typography>
-          <Typography variant="caption">
+          <Typography>How long will the fund last?</Typography>
+          <Typography variant="caption" className={classes.title}>
             Once the fund ends, each user will get his DAI back
           </Typography>
           <div className={classes.slider}>
             <Slider
               min={1}
               max={62}
-              defaultValue={7}
+              value={props.fundDuration}
               getAriaValueText={sliderValueText}
               aria-labelledby="discrete-slider-custom"
               step={1}
               valueLabelDisplay="auto"
               marks={sliderMarks}
+              onChange={(event, newValue) =>
+                props.setFund({ fundDuration: newValue })
+              }
             />
           </div>
         </Grid>
@@ -99,6 +111,8 @@ const mapStateToProps = (state) => {
     lockValue: state.createdFund.lockValue,
     icon: state.createdFund.icon,
     coverImage: state.createdFund.coverImage,
+    winnerDescription: state.createdFund.winnerDescription,
+    fundDuration: state.createdFund.fundDuration,
   };
 };
 
@@ -107,11 +121,15 @@ const mapDispatchToProps = (dispatch) => {
     setFund: (fundDetails) =>
       dispatch({
         type: actionTypes.SET_FUND,
-        name: fundDetails.name,
-        description: fundDetails.description,
-        lockValue: fundDetails.lockValue,
-        icon: fundDetails.icon,
-        coverImage: fundDetails.coverImage,
+        payload: {
+          name: fundDetails.name,
+          description: fundDetails.description,
+          lockValue: fundDetails.lockValue,
+          icon: fundDetails.icon,
+          coverImage: fundDetails.coverImage,
+          winnerDescription: fundDetails.winnerDescription,
+          fundDuration: fundDetails.fundDuration,
+        },
       }),
   };
 };

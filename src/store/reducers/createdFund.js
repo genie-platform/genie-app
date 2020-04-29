@@ -6,6 +6,8 @@ const initialState = {
   lockValue: 5,
   icon: '🧞',
   coverImage: '',
+  winnerDescription: '',
+  fundDuration: 7,
 };
 
 const setFund = (state, actionPayload) => {
