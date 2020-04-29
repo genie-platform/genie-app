@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -114,8 +115,22 @@ const getStepContent = (step, props) => {
 
 const CustomStepper = (props) => {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = useState(0);
+  const [canContinue, setCanContinue] = useState(false);
   const steps = getSteps();
+
+  useEffect(() => {
+    const MIN_FUND_NAME_LEN = 4;
+    const MIN_FUND_DESCRIPTION_LEN = 0;
+    const MIN_LOCK_VALUE = 0;
+
+    let canContinue =
+      props.name.length > MIN_FUND_NAME_LEN &&
+      props.description.length > MIN_FUND_DESCRIPTION_LEN &&
+      props.lockValue > MIN_LOCK_VALUE;
+
+    setCanContinue(canContinue);
+  }, [props.name, props.description, props.lockValue]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -148,7 +163,8 @@ const CustomStepper = (props) => {
         <Button
           variant="contained"
           onClick={handleNext}
-          className={clsx(classes.button, classes.buttonNext)}
+          disabled={!canContinue}
+          className={clsx(classes.button, canContinue && classes.buttonNext)}
         >
           {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
         </Button>
@@ -185,4 +201,14 @@ const CustomStepper = (props) => {
   );
 };
 
-export default withRouter(CustomStepper);
+const mapStateToProps = (state) => {
+  return {
+    name: state.createdFund.name,
+    description: state.createdFund.description,
+    lockValue: state.createdFund.lockValue,
+    icon: state.createdFund.icon,
+    coverImage: state.createdFund.coverImage,
+  };
+};
+
+export default connect(mapStateToProps, null)(withRouter(CustomStepper));

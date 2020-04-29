@@ -3,7 +3,7 @@ import * as actionTypes from '../actions/actionTypes';
 const initialState = {
   name: '',
   description: '',
-  lockValue: null,
+  lockValue: 5,
   icon: '🧞',
   coverImage: '',
 };

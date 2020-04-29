@@ -23,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
     height: 150,
     textAlign: 'center',
     cursor: 'pointer',
+    borderRadius: 10,
     '&:hover': {
       background: '#ccc',
     },
@@ -43,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const FundDetailsForm = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+
   let fundIcon = props.icon;
   let fundImage = props.coverImage;
 
@@ -82,6 +84,7 @@ const FundDetailsForm = (props) => {
             label="Fund name"
             variant="outlined"
             fullWidth
+            defaultValue={props.name}
             onChange={(event) => props.setFund({ name: event.target.value })}
           />
         </Grid>
@@ -94,6 +97,7 @@ const FundDetailsForm = (props) => {
             label="Fund description"
             variant="outlined"
             fullWidth
+            defaultValue={props.description}
             onChange={(event) => {
               props.setFund({ description: event.target.value });
             }}
@@ -106,6 +110,7 @@ const FundDetailsForm = (props) => {
             id="lock-value"
             label="Lock value"
             variant="outlined"
+            defaultValue={props.lockValue}
             fullWidth
             type="number"
             helperText="The amount the user will lock"
@@ -128,7 +133,7 @@ const FundDetailsForm = (props) => {
               >
                 {fundIcon}
               </Typography>
-              <Typography>Choose Icon</Typography>
+              <Typography>Icon</Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -143,7 +148,7 @@ const FundDetailsForm = (props) => {
               image={fundImage}
               component="img"
             ></CardMedia>
-            <Typography>Choose cover image</Typography>
+            <Typography>Cover Image</Typography>
           </Card>
         </Grid>
       </Grid>
