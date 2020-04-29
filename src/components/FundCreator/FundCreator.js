@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Stepper from './CustomStepper/CustomStepper';
 import FundDetailsForm from './FundDetailsForm/FundDetailsForm';
 import FundExtraForm from './FundExtraForm/FundExtraForm';
+import FundVerifyForm from './FundVerifyForm/FundVerifyForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,7 +22,11 @@ const FundCreator = (props) => {
 
   return (
     <div className={classes.root}>
-      <Stepper fundDetails={FundDetailsForm} fundExtra={FundExtraForm} />
+      <Stepper
+        fundDetails={FundDetailsForm}
+        fundExtra={FundExtraForm}
+        fundVerify={FundVerifyForm}
+      />
     </div>
   );
 };

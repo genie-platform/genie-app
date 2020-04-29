@@ -53,16 +53,32 @@ const Home = (props) => {
   const fundsGrid = (
     <Grid className={classes.fundsGrid} container spacing={1}>
       <Grid item xs={3}>
-        <FundDisplayCard name="test fund1" image="images/cover1.jpg" />
+        <FundDisplayCard
+          clickable
+          name="test fund1"
+          image="images/cover1.jpg"
+        />
       </Grid>
       <Grid item xs={3}>
-        <FundDisplayCard name="test fund2" image="images/cover2.jpg" />
+        <FundDisplayCard
+          clickable
+          name="test fund2"
+          image="images/cover2.jpg"
+        />
       </Grid>
       <Grid item xs={3}>
-        <FundDisplayCard name="test fund3" image="images/cover3.jpg" />
+        <FundDisplayCard
+          clickable
+          name="test fund3"
+          image="images/cover3.jpg"
+        />
       </Grid>
       <Grid item xs={3}>
-        <FundDisplayCard name="test fund4" image="images/cover4.jpg" />
+        <FundDisplayCard
+          clickable
+          name="test fund4"
+          image="images/cover4.jpg"
+        />
       </Grid>
     </Grid>
   );

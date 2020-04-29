@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -9,10 +10,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     borderRadius: 10,
     maxWidth: 250,
-    cursor: 'pointer',
-    '&:hover': {
-      boxShadow: '0px 4px 5px 0px rgba(0,0,0,0.2)',
-    },
   },
   media: {
     height: 100,
@@ -20,13 +17,22 @@ const useStyles = makeStyles((theme) => ({
   content: {
     height: '10%',
   },
+  clickable: {
+    cursor: 'pointer',
+    '&:hover': {
+      boxShadow: '0px 4px 5px 0px rgba(0,0,0,0.2)',
+    },
+  },
 }));
 
 const FundDisplayCard = (props) => {
   const classes = useStyles();
 
   return (
-    <Card className={classes.root} elevation={4}>
+    <Card
+      className={clsx(classes.root, props.clickable && classes.clickable)}
+      elevation={4}
+    >
       <CardMedia
         className={classes.media}
         component="img"
