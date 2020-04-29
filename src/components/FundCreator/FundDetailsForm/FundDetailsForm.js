@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import clsx from 'clsx';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -14,21 +13,25 @@ import { Picker } from 'emoji-mart';
 
 import * as actionTypes from '../../../store/actions/actionTypes';
 import { theme } from '../../../theme';
+import { getRandomCoverImage } from '../../../utils/utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: '2em',
   },
   imageCards: {
+    height: 150,
+    textAlign: 'center',
     cursor: 'pointer',
     '&:hover': {
       background: '#ccc',
     },
   },
-  fundIconCard: {
-    textAlign: 'center',
+  fundImage: {
+    height: '75%',
   },
   fundIcon: {
+    height: '75%',
     paddingBottom: '0.2em',
   },
   emojiPicker: {
@@ -41,6 +44,7 @@ const FundDetailsForm = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   let fundIcon = props.icon;
+  let fundImage = props.coverImage;
 
   const onChangeIconClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,6 +58,16 @@ const FundDetailsForm = (props) => {
     props.setFund({ icon: emoji.native });
     closePicker();
   };
+
+  const chooseCoverImage = () => {
+    props.setFund({ coverImage: getRandomCoverImage() });
+  };
+
+  useEffect(() => {
+    if (fundImage === '') {
+      chooseCoverImage();
+    }
+  }, []);
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
@@ -104,7 +118,7 @@ const FundDetailsForm = (props) => {
           <Card
             elevation={3}
             onClick={onChangeIconClick}
-            className={clsx(classes.fundIconCard, classes.imageCards)}
+            className={classes.imageCards}
           >
             <CardContent>
               <Typography
@@ -119,11 +133,17 @@ const FundDetailsForm = (props) => {
           </Card>
         </Grid>
         <Grid item xs={8}>
-          <Card elevation={3} className={classes.imageCards}>
-            <CardMedia></CardMedia>
-            <CardContent>
-              <Typography>Choose Image</Typography>
-            </CardContent>
+          <Card
+            elevation={3}
+            className={classes.imageCards}
+            onClick={chooseCoverImage}
+          >
+            <CardMedia
+              className={classes.fundImage}
+              image={fundImage}
+              component="img"
+            ></CardMedia>
+            <Typography>Choose cover image</Typography>
           </Card>
         </Grid>
       </Grid>
