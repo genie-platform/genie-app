@@ -1,11 +1,11 @@
-import * as actionTypes from "../actions/actionTypes";
+import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-  name: "",
-  description: "",
+  name: '',
+  description: '',
   lockValue: null,
-  icon: "",
-  coverImage: "",
+  icon: '🧞',
+  coverImage: '',
 };
 
 const setFund = (state, actionPayload) => {

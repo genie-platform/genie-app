@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -12,10 +13,23 @@ import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 
 import * as actionTypes from '../../../store/actions/actionTypes';
+import { theme } from '../../../theme';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: '2em',
+  },
+  imageCards: {
+    cursor: 'pointer',
+    '&:hover': {
+      background: '#ccc',
+    },
+  },
+  fundIconCard: {
+    textAlign: 'center',
+  },
+  fundIcon: {
+    paddingBottom: '0.2em',
   },
   emojiPicker: {
     position: 'absolute',
@@ -26,13 +40,19 @@ const useStyles = makeStyles((theme) => ({
 const FundDetailsForm = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  let fundIcon = props.icon;
 
   const onChangeIconClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const closePicker = () => {
     setAnchorEl(null);
+  };
+
+  const onChooseIcon = (emoji) => {
+    props.setFund({ icon: emoji.native });
+    closePicker();
   };
 
   const open = Boolean(anchorEl);
@@ -81,14 +101,25 @@ const FundDetailsForm = (props) => {
           />
         </Grid>
         <Grid item xs={4}>
-          <Card onClick={onChangeIconClick}>
+          <Card
+            elevation={3}
+            onClick={onChangeIconClick}
+            className={clsx(classes.fundIconCard, classes.imageCards)}
+          >
             <CardContent>
+              <Typography
+                variant="h2"
+                id="fund-icon"
+                className={classes.fundIcon}
+              >
+                {fundIcon}
+              </Typography>
               <Typography>Choose Icon</Typography>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={8}>
-          <Card>
+          <Card elevation={3} className={classes.imageCards}>
             <CardMedia></CardMedia>
             <CardContent>
               <Typography>Choose Image</Typography>
@@ -100,7 +131,7 @@ const FundDetailsForm = (props) => {
         id={id}
         open={open}
         anchorEl={anchorEl}
-        onClose={handleClose}
+        onClose={closePicker}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',
@@ -111,12 +142,13 @@ const FundDetailsForm = (props) => {
         }}
       >
         <Picker
-          emoji="genie"
           native
           title=""
+          theme="dark"
+          color={theme.palette.secondary.main}
           showPreview={false}
           showSkinTones={false}
-          onSelect={(emoji) => alert('Hey:' + emoji.native)}
+          onSelect={onChooseIcon}
         />
       </Popover>
     </div>
