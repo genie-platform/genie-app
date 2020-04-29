@@ -82,6 +82,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   },
+  content: {
+    height: '800px',
+  },
   buttons: {
     display: 'flex',
     justifyContent: 'center',
@@ -151,7 +154,7 @@ const CustomStepper = (props) => {
 
   const stepperBody = (
     <div>
-      <FormContent />
+      <FormContent className={classes.content} />
       <div className={classes.buttons}>
         <Button
           onClick={handleBack}

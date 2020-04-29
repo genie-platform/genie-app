@@ -14,6 +14,8 @@ const useStyles = makeStyles((theme) => ({
 const FundVerifyForm = (props) => {
   const classes = useStyles();
 
+  // Call to backend endpoint to create fund
+
   return (
     <div className={classes.root}>
       <Typography>Verify fund details:</Typography>

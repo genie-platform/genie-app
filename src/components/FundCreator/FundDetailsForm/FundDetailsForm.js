@@ -113,7 +113,7 @@ const FundDetailsForm = (props) => {
             defaultValue={props.lockValue}
             fullWidth
             type="number"
-            helperText="The amount the user will lock"
+            helperText="The amount of DAI each user will lock"
             onChange={(event) => {
               props.setFund({ lockValue: event.target.value });
             }}

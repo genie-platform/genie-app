@@ -1,6 +1,9 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Slider from '@material-ui/core/Slider';
 import { connect } from 'react-redux';
 
 import * as actionTypes from '../../../store/actions/actionTypes';
@@ -9,27 +12,82 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: '2em',
   },
+  title: {
+    paddingBottom: '1em',
+  },
+  sliderArea: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  slider: {
+    width: '90%',
+    margin: 'auto',
+  },
 }));
+
+const sliderValueText = (value) => {
+  return `${value} days`;
+};
+
+const sliderMarks = [
+  {
+    value: 1,
+    label: '1 day',
+  },
+  {
+    value: 7,
+    label: '1 week',
+  },
+  {
+    value: 31,
+    label: '1 month',
+  },
+  {
+    value: 62,
+    label: '2 months',
+  },
+];
 
 const FundExtraForm = (props) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <Card>
-        Currently nothing's here. We will leave this one blank for now. Well
-        maybe we can add a little something. Here are some fun alpaca facts:
-        There are only two different breeds of alpacas. Alpacas are related to
-        more than llamas. They belong to the Camelidae family, which also
-        includes Camels. Most alpacas are 48-54 inches tall and can weigh
-        anywhere from 106 to 185 pounds.Since they are a completely domesticated
-        animal, alpacas can live for a pretty long time. If they are taken care
-        of really well, they can live for up to 20 years or so. Another way you
-        can tell an alpaca from a llama (other than their size, of course) is
-        their ears. If you look closely, you will notice that alpacas have
-        shorter, straighter ears than a llama. Just don’t get too close! Both of
-        these animals are known to spit if they get annoyed. Yuck!
-      </Card>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Typography className={classes.title}>
+            Tell your fund members who will be qualified to get the fund prize
+          </Typography>
+          <TextField
+            required
+            variant="outlined"
+            fullWidth
+            placeholder="The player who wins the 2 week tournament!"
+            helperText="Who will get the prize?"
+          ></TextField>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Typography className={classes.title}>
+            How long will the fund last?
+          </Typography>
+          <Typography variant="caption">
+            Once the fund ends, each user will get his DAI back
+          </Typography>
+          <div className={classes.slider}>
+            <Slider
+              min={1}
+              max={62}
+              defaultValue={7}
+              getAriaValueText={sliderValueText}
+              aria-labelledby="discrete-slider-custom"
+              step={1}
+              valueLabelDisplay="auto"
+              marks={sliderMarks}
+            />
+          </div>
+        </Grid>
+      </Grid>
     </div>
   );
 };
