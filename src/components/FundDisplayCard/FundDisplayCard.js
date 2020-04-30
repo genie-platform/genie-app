@@ -66,7 +66,7 @@ const FundDisplayCard = (props) => {
 
         <Typography variant="caption">
           {props.rewardDuration
-            ? `Fund will close in ${props.rewardDuration} days`
+            ? `Reward will be handed every ${props.rewardDuration} days`
             : ''}
         </Typography>
         <Typography variant="caption">
