@@ -41,7 +41,7 @@ const FundDisplayCard = (props) => {
   const classes = useStyles(props);
 
   const showDivider = Boolean(
-    props.lockValue || props.winner || props.fundDuration
+    props.lockValue || props.winner || props.rewardDuration
   );
 
   return (
@@ -65,8 +65,8 @@ const FundDisplayCard = (props) => {
         {showDivider ? <Divider className={classes.divider} /> : null}
 
         <Typography variant="caption">
-          {props.fundDuration
-            ? `Fund will close in ${props.fundDuration} days`
+          {props.rewardDuration
+            ? `Fund will close in ${props.rewardDuration} days`
             : ''}
         </Typography>
         <Typography variant="caption">

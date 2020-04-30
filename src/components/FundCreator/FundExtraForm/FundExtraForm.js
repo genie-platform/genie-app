@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Slider from '@material-ui/core/Slider';
+import Checkbox from '@material-ui/core/Checkbox';
 import { connect } from 'react-redux';
 
 import * as actionTypes from '../../../store/actions/actionTypes';
@@ -50,8 +51,8 @@ const sliderMarks = [
 
 const FundExtraForm = (props) => {
   const classes = useStyles();
+  const [isPrizeRecurring, setIsPrizeRecurring] = useState(false)
 
-  let sliderDefaultValue = 7;
   let defaultWinner = '';
 
   if (props.winnerDescription !== '') {
@@ -63,7 +64,7 @@ const FundExtraForm = (props) => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Typography className={classes.title}>
-            Tell your fund members who will be qualified to get the fund prize
+            Tell your fund members who will be qualified to get the fund reward
           </Typography>
           <TextField
             required
@@ -71,7 +72,7 @@ const FundExtraForm = (props) => {
             fullWidth
             defaultValue={defaultWinner}
             placeholder="The player who wins the 2 week tournament!"
-            helperText="Who will get the prize?"
+            helperText="Who will get the reward?"
             onChange={(event) =>
               props.setFund({ winnerDescription: event.target.value })
             }
@@ -79,22 +80,26 @@ const FundExtraForm = (props) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Typography>How long will the fund last?</Typography>
+          <Typography>Is the reward recurring?</Typography>
+          <Checkbox
+            onChange={(event) => {setIsPrizeRecurring(event.target.checked)}}
+          />
           <Typography variant="caption" className={classes.title}>
-            Once the fund ends, each user will get his DAI back
+            Recurring reward should be handed out at specific intervals
           </Typography>
           <div className={classes.slider}>
             <Slider
+              disabled={!isPrizeRecurring}
               min={1}
               max={62}
-              value={props.fundDuration}
+              value={props.rewardDuration}
               getAriaValueText={sliderValueText}
               aria-labelledby="discrete-slider-custom"
               step={1}
               valueLabelDisplay="auto"
               marks={sliderMarks}
               onChange={(event, newValue) =>
-                props.setFund({ fundDuration: newValue })
+                props.setFund({ rewardDuration: newValue })
               }
             />
           </div>
@@ -112,7 +117,7 @@ const mapStateToProps = (state) => {
     icon: state.createdFund.icon,
     coverImage: state.createdFund.coverImage,
     winnerDescription: state.createdFund.winnerDescription,
-    fundDuration: state.createdFund.fundDuration,
+    rewardDuration: state.createdFund.rewardDuration,
   };
 };
 
@@ -128,7 +133,7 @@ const mapDispatchToProps = (dispatch) => {
           icon: fundDetails.icon,
           coverImage: fundDetails.coverImage,
           winnerDescription: fundDetails.winnerDescription,
-          fundDuration: fundDetails.fundDuration,
+          rewardDuration: fundDetails.rewardDuration,
         },
       }),
   };

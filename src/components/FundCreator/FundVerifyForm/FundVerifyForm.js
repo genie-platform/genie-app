@@ -41,7 +41,7 @@ const FundVerifyForm = (props) => {
           icon={props.icon}
           lockValue={props.lockValue}
           winner={props.winnerDescription}
-          fundDuration={props.fundDuration}
+          rewardDuration={props.rewardDuration}
         />
       </div>
     </div>
@@ -56,7 +56,7 @@ const mapStateToProps = (state) => {
     icon: state.createdFund.icon,
     coverImage: state.createdFund.coverImage,
     winnerDescription: state.createdFund.winnerDescription,
-    fundDuration: state.createdFund.fundDuration,
+    rewardDuration: state.createdFund.rewardDuration,
   };
 };
 

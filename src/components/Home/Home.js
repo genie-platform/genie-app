@@ -58,7 +58,7 @@ const Home = (props) => {
           name="test fund1"
           image="images/cover1.jpg"
           description="diablo 3 ladder"
-          fundDuration={14}
+          rewardDuration={14}
           lockValue={5}
           winner={'first player to reach level 100'}
           icon="🧞"

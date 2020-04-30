@@ -7,7 +7,7 @@ const initialState = {
   icon: '🧞',
   coverImage: '',
   winnerDescription: '',
-  fundDuration: 7,
+  rewardDuration: null,
 };
 
 const setFund = (state, actionPayload) => {
