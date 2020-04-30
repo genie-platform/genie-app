@@ -57,6 +57,11 @@ const Home = (props) => {
           clickable
           name="test fund1"
           image="images/cover1.jpg"
+          description="diablo 3 ladder"
+          fundDuration={14}
+          lockValue={5}
+          winner={'first player to reach level 100'}
+          icon="🧞"
         />
       </Grid>
       <Grid item xs={3}>

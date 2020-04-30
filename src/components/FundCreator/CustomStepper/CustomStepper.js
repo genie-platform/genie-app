@@ -88,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
   buttons: {
     display: 'flex',
     justifyContent: 'center',
+    paddingBottom: '2em',
   },
   button: {
     marginRight: theme.spacing(1),

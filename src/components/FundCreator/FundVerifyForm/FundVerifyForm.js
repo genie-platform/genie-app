@@ -9,23 +9,41 @@ const useStyles = makeStyles((theme) => ({
   root: {
     padding: '2em',
   },
+  title: {
+    textAlign: 'center',
+  },
+  fundCard: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  margin: {
+    height: theme.spacing(3),
+  },
 }));
 
 const FundVerifyForm = (props) => {
   const classes = useStyles();
 
-  // Call to backend endpoint to create fund
+  // Call to backend endpoint to create fund on click
 
   return (
     <div className={classes.root}>
-      <Typography>Verify fund details:</Typography>
-      <Typography>Fund name: {props.name}</Typography>
-      <Typography>Fund description: {props.description}</Typography>
-      <Typography>Lock value: {props.lockValue}</Typography>
-      <FundDisplayCard
-        image={props.coverImage}
-        name={props.name}
-      ></FundDisplayCard>
+      <Typography variant="h5" className={classes.title}>
+        Confirm fund:
+      </Typography>
+      <div className={classes.margin} />
+      <div className={classes.fundCard}>
+        <FundDisplayCard
+          wide
+          image={props.coverImage}
+          name={props.name}
+          description={props.description}
+          icon={props.icon}
+          lockValue={props.lockValue}
+          winner={props.winnerDescription}
+          fundDuration={props.fundDuration}
+        />
+      </div>
     </div>
   );
 };
@@ -37,6 +55,8 @@ const mapStateToProps = (state) => {
     lockValue: state.createdFund.lockValue,
     icon: state.createdFund.icon,
     coverImage: state.createdFund.coverImage,
+    winnerDescription: state.createdFund.winnerDescription,
+    fundDuration: state.createdFund.fundDuration,
   };
 };
 
