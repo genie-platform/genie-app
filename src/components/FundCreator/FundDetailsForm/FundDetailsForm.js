@@ -44,9 +44,12 @@ const useStyles = makeStyles((theme) => ({
 const FundDetailsForm = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [touched, setTouched] = useState({ name: false, description: false });
 
   let fundIcon = props.icon;
   let fundImage = props.coverImage;
+  let helperTextName = '';
+  let helperTextDescription = '';
 
   const onChangeIconClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -63,6 +66,32 @@ const FundDetailsForm = (props) => {
 
   const chooseCoverImage = () => {
     props.setFund({ coverImage: getRandomCoverImage() });
+  };
+
+  const validateName = () => {
+    const MIN_FUND_NAME_LEN = 4;
+    if (touched.name) {
+      if (props.name.length > MIN_FUND_NAME_LEN) {
+        helperTextName = '';
+        return false;
+      } else {
+        helperTextName = 'Fund name too short';
+        return true;
+      }
+    }
+  };
+
+  const validateDescription = () => {
+    const MIN_FUND_DESCRIPTION_LEN = 0;
+    if (touched.description) {
+      if (props.description.length > MIN_FUND_DESCRIPTION_LEN) {
+        helperTextDescription = '';
+        return false;
+      } else {
+        helperTextDescription = 'Fund description too short';
+        return true;
+      }
+    }
   };
 
   useEffect(() => {
@@ -85,7 +114,12 @@ const FundDetailsForm = (props) => {
             variant="outlined"
             fullWidth
             defaultValue={props.name}
-            onChange={(event) => props.setFund({ name: event.target.value })}
+            error={validateName()}
+            helperText={helperTextName}
+            onChange={(event) => {
+              props.setFund({ name: event.target.value });
+              setTouched({ name: true, description: touched.description });
+            }}
           />
         </Grid>
 
@@ -97,9 +131,12 @@ const FundDetailsForm = (props) => {
             label="Fund description"
             variant="outlined"
             fullWidth
+            error={validateDescription()}
             defaultValue={props.description}
+            helperText={helperTextDescription}
             onChange={(event) => {
               props.setFund({ description: event.target.value });
+              setTouched({ name: touched.name, description: true });
             }}
           />
         </Grid>

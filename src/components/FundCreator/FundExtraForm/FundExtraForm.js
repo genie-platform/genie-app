@@ -60,7 +60,7 @@ const FundExtraForm = (props) => {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
+      <Grid container spacing={6}>
         <Grid item xs={12}>
           <Typography className={classes.title}>
             Tell your fund members who will be qualified to get the fund prize

@@ -169,7 +169,7 @@ const CustomStepper = (props) => {
           disabled={!canContinue}
           className={clsx(classes.button, canContinue && classes.buttonNext)}
         >
-          {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+          {activeStep === steps.length - 1 ? 'Create Fund' : 'Next'}
         </Button>
       </div>
     </div>
