@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 
-import FundDisplayCard from '../../FundDisplayCard/FundDisplayCard';
+import PoolDisplayCard from '../../PoolDisplayCard/PoolDisplayCard';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     textAlign: 'center',
   },
-  fundCard: {
+  poolCard: {
     display: 'flex',
     justifyContent: 'center',
   },
@@ -21,19 +21,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FundVerifyForm = (props) => {
+const PoolVerifyForm = (props) => {
   const classes = useStyles();
 
-  // Call to backend endpoint to create fund on click
+  // Call to backend endpoint to create pool on click
 
   return (
     <div className={classes.root}>
       <Typography variant="h5" className={classes.title}>
-        Confirm fund:
+        Verify Pool Details:
       </Typography>
       <div className={classes.margin} />
-      <div className={classes.fundCard}>
-        <FundDisplayCard
+      <div className={classes.poolCard}>
+        <PoolDisplayCard
           wide
           image={props.coverImage}
           name={props.name}
@@ -50,14 +50,14 @@ const FundVerifyForm = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    name: state.createdFund.name,
-    description: state.createdFund.description,
-    lockValue: state.createdFund.lockValue,
-    icon: state.createdFund.icon,
-    coverImage: state.createdFund.coverImage,
-    winnerDescription: state.createdFund.winnerDescription,
-    rewardDuration: state.createdFund.rewardDuration,
+    name: state.createdPool.name,
+    description: state.createdPool.description,
+    lockValue: state.createdPool.lockValue,
+    icon: state.createdPool.icon,
+    coverImage: state.createdPool.coverImage,
+    winnerDescription: state.createdPool.winnerDescription,
+    rewardDuration: state.createdPool.rewardDuration,
   };
 };
 
-export default connect(mapStateToProps, null)(FundVerifyForm);
+export default connect(mapStateToProps, null)(PoolVerifyForm);

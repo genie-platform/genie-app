@@ -1,15 +1,15 @@
-import React from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import { connect } from "react-redux";
+import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import { connect } from 'react-redux';
 
-import FundCreator from "./components/FundCreator/FundCreator";
-import Header from "./components/Header/Header";
-import Home from "./components/Home/Home";
+import PoolCreator from './components/PoolCreator/PoolCreator';
+import Header from './components/Header/Header';
+import Home from './components/Home/Home';
 
 const useStyles = makeStyles((theme) => ({
   app: {
-    minHeight: "100vh",
+    minHeight: '100vh',
     background: theme.customColors.background,
   },
 }));
@@ -23,7 +23,7 @@ const App = (props) => {
         <Header />
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/create-fund" exact component={FundCreator} />
+          <Route path="/create-pool" exact component={PoolCreator} />
         </Switch>
       </div>
     </BrowserRouter>

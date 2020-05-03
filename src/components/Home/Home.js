@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import { connect } from 'react-redux';
 
-import FundDisplayCard from '../FundDisplayCard/FundDisplayCard';
+import PoolDisplayCard from '../PoolDisplayCard/PoolDisplayCard';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,18 +23,18 @@ const useStyles = makeStyles((theme) => ({
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
   },
-  createFundButton: {
+  createPoolButton: {
     borderRadius: 25,
     color: 'white',
     backgroundImage: theme.customGradients.primary,
   },
-  exploreFunds: {
+  explorePools: {
     borderRadius: 14,
   },
-  fundsGrid: {
+  poolsGrid: {
     paddingTop: '1em',
   },
-  allFunds: {
+  allPools: {
     justifyContent: 'flex-end',
   },
 }));
@@ -42,20 +42,20 @@ const useStyles = makeStyles((theme) => ({
 const Home = (props) => {
   const classes = useStyles();
 
-  const onCreateFundClick = () => {
-    // change to the createfund page
-    props.history.push('/create-fund');
+  const onCreatePoolClick = () => {
+    // change to the createpool page
+    props.history.push('/create-pool');
   };
 
   const welcomeMessage = 'Genie is an interest based reward platform';
 
-  // load funds from backend
-  const fundsGrid = (
-    <Grid className={classes.fundsGrid} container spacing={1}>
+  // load pools from backend
+  const poolsGrid = (
+    <Grid className={classes.poolsGrid} container spacing={1}>
       <Grid item xs={3}>
-        <FundDisplayCard
+        <PoolDisplayCard
           clickable
-          name="test fund1"
+          name="test pool1"
           image="images/cover1.jpg"
           description="diablo 3 ladder"
           rewardDuration={14}
@@ -65,23 +65,23 @@ const Home = (props) => {
         />
       </Grid>
       <Grid item xs={3}>
-        <FundDisplayCard
+        <PoolDisplayCard
           clickable
-          name="test fund2"
+          name="test pool2"
           image="images/cover2.jpg"
         />
       </Grid>
       <Grid item xs={3}>
-        <FundDisplayCard
+        <PoolDisplayCard
           clickable
-          name="test fund3"
+          name="test pool3"
           image="images/cover3.jpg"
         />
       </Grid>
       <Grid item xs={3}>
-        <FundDisplayCard
+        <PoolDisplayCard
           clickable
-          name="test fund4"
+          name="test pool4"
           image="images/cover4.jpg"
         />
       </Grid>
@@ -91,25 +91,25 @@ const Home = (props) => {
   return (
     <Grid container className={classes.root} spacing={6}>
       <Grid item xs={12}>
-        <div id="create-fund">
+        <div id="create-pool">
           <div className={classes.text}>{welcomeMessage}</div>
           <Button
-            className={classes.createFundButton}
+            className={classes.createPoolButton}
             variant="contained"
-            onClick={onCreateFundClick}
+            onClick={onCreatePoolClick}
           >
-            Create a new fund
+            Create a new pool
           </Button>
         </div>
       </Grid>
       <Grid item xs={12}>
-        <Card elevation={3} id="explore-funds" className={classes.exploreFunds}>
+        <Card elevation={3} id="explore-pools" className={classes.explorePools}>
           <CardContent>
-            <Typography variant="h5">Explore funds</Typography>
-            {fundsGrid}
-            <CardActions className={classes.allFunds}>
+            <Typography variant="h5">Explore pools</Typography>
+            {poolsGrid}
+            <CardActions className={classes.allPools}>
               <Button>
-                All funds
+                All pools
                 <KeyboardArrowRightIcon />
               </Button>
             </CardActions>

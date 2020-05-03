@@ -2,9 +2,9 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Stepper from './CustomStepper/CustomStepper';
-import FundDetailsForm from './FundDetailsForm/FundDetailsForm';
-import FundExtraForm from './FundExtraForm/FundExtraForm';
-import FundVerifyForm from './FundVerifyForm/FundVerifyForm';
+import PoolDetailsForm from './PoolDetailsForm/PoolDetailsForm';
+import PoolExtraForm from './PoolExtraForm/PoolExtraForm';
+import PoolVerifyForm from './PoolVerifyForm/PoolVerifyForm';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,18 +17,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FundCreator = (props) => {
+const PoolCreator = (props) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <Stepper
-        fundDetails={FundDetailsForm}
-        fundExtra={FundExtraForm}
-        fundVerify={FundVerifyForm}
+        poolDetails={PoolDetailsForm}
+        poolExtra={PoolExtraForm}
+        poolVerify={PoolVerifyForm}
       />
     </div>
   );
 };
 
-export default FundCreator;
+export default PoolCreator;

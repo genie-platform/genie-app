@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FundDisplayCard = (props) => {
+const PoolDisplayCard = (props) => {
   const classes = useStyles(props);
 
   const showDivider = Boolean(
@@ -70,7 +70,7 @@ const FundDisplayCard = (props) => {
             : ''}
         </Typography>
         <Typography variant="caption">
-          {props.lockValue ? `${props.lockValue} DAI to join fund` : ''}
+          {props.lockValue ? `${props.lockValue} DAI to join pool` : ''}
         </Typography>
         <Typography variant="caption">
           {props.winner ? `winner: ${props.winner}` : ''}
@@ -80,4 +80,4 @@ const FundDisplayCard = (props) => {
   );
 };
 
-export default FundDisplayCard;
+export default PoolDisplayCard;

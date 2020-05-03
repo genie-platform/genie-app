@@ -28,10 +28,10 @@ const useStyles = makeStyles((theme) => ({
       background: '#ccc',
     },
   },
-  fundImage: {
+  poolImage: {
     height: '75%',
   },
-  fundIcon: {
+  poolIcon: {
     height: '75%',
     paddingBottom: '0.2em',
   },
@@ -41,13 +41,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FundDetailsForm = (props) => {
+const PoolDetailsForm = (props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [touched, setTouched] = useState({ name: false, description: false });
 
-  let fundIcon = props.icon;
-  let fundImage = props.coverImage;
+  let poolIcon = props.icon;
+  let poolImage = props.coverImage;
   let helperTextName = '';
   let helperTextDescription = '';
 
@@ -60,42 +60,42 @@ const FundDetailsForm = (props) => {
   };
 
   const onChooseIcon = (emoji) => {
-    props.setFund({ icon: emoji.native });
+    props.setPool({ icon: emoji.native });
     closePicker();
   };
 
   const chooseCoverImage = () => {
-    props.setFund({ coverImage: getRandomCoverImage() });
+    props.setPool({ coverImage: getRandomCoverImage() });
   };
 
   const validateName = () => {
-    const MIN_FUND_NAME_LEN = 4;
+    const MIN_POOL_NAME_LEN = 4;
     if (touched.name) {
-      if (props.name.length > MIN_FUND_NAME_LEN) {
+      if (props.name.length > MIN_POOL_NAME_LEN) {
         helperTextName = '';
         return false;
       } else {
-        helperTextName = 'Fund name too short';
+        helperTextName = 'Pool name too short';
         return true;
       }
     }
   };
 
   const validateDescription = () => {
-    const MIN_FUND_DESCRIPTION_LEN = 0;
+    const MIN_POOL_DESCRIPTION_LEN = 0;
     if (touched.description) {
-      if (props.description.length > MIN_FUND_DESCRIPTION_LEN) {
+      if (props.description.length > MIN_POOL_DESCRIPTION_LEN) {
         helperTextDescription = '';
         return false;
       } else {
-        helperTextDescription = 'Fund description too short';
+        helperTextDescription = 'Pool description too short';
         return true;
       }
     }
   };
 
   useEffect(() => {
-    if (fundImage === '') {
+    if (poolImage === '') {
       chooseCoverImage();
     }
   }, []);
@@ -109,15 +109,15 @@ const FundDetailsForm = (props) => {
         <Grid item xs={12}>
           <TextField
             required
-            id="fund-name"
-            label="Fund name"
+            id="pool-name"
+            label="Pool name"
             variant="outlined"
             fullWidth
             defaultValue={props.name}
             error={validateName()}
             helperText={helperTextName}
             onChange={(event) => {
-              props.setFund({ name: event.target.value });
+              props.setPool({ name: event.target.value });
               setTouched({ name: true, description: touched.description });
             }}
           />
@@ -127,15 +127,15 @@ const FundDetailsForm = (props) => {
           <TextField
             required
             multiline
-            id="fund-description"
-            label="Fund description"
+            id="pool-description"
+            label="Pool description"
             variant="outlined"
             fullWidth
             error={validateDescription()}
             defaultValue={props.description}
             helperText={helperTextDescription}
             onChange={(event) => {
-              props.setFund({ description: event.target.value });
+              props.setPool({ description: event.target.value });
               setTouched({ name: touched.name, description: true });
             }}
           />
@@ -152,7 +152,7 @@ const FundDetailsForm = (props) => {
             type="number"
             helperText="The amount of DAI each user will lock"
             onChange={(event) => {
-              props.setFund({ lockValue: event.target.value });
+              props.setPool({ lockValue: event.target.value });
             }}
           />
         </Grid>
@@ -165,10 +165,10 @@ const FundDetailsForm = (props) => {
             <CardContent>
               <Typography
                 variant="h2"
-                id="fund-icon"
-                className={classes.fundIcon}
+                id="pool-icon"
+                className={classes.poolIcon}
               >
-                {fundIcon}
+                {poolIcon}
               </Typography>
               <Typography>Icon</Typography>
             </CardContent>
@@ -181,8 +181,8 @@ const FundDetailsForm = (props) => {
             onClick={chooseCoverImage}
           >
             <CardMedia
-              className={classes.fundImage}
-              image={fundImage}
+              className={classes.poolImage}
+              image={poolImage}
               component="img"
             ></CardMedia>
             <Typography>Cover Image</Typography>
@@ -219,28 +219,28 @@ const FundDetailsForm = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    name: state.createdFund.name,
-    description: state.createdFund.description,
-    lockValue: state.createdFund.lockValue,
-    icon: state.createdFund.icon,
-    coverImage: state.createdFund.coverImage,
+    name: state.createdPool.name,
+    description: state.createdPool.description,
+    lockValue: state.createdPool.lockValue,
+    icon: state.createdPool.icon,
+    coverImage: state.createdPool.coverImage,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setFund: (fundDetails) =>
+    setPool: (poolDetails) =>
       dispatch({
-        type: actionTypes.SET_FUND,
+        type: actionTypes.SET_POOL,
         payload: {
-          name: fundDetails.name,
-          description: fundDetails.description,
-          lockValue: fundDetails.lockValue,
-          icon: fundDetails.icon,
-          coverImage: fundDetails.coverImage,
+          name: poolDetails.name,
+          description: poolDetails.description,
+          lockValue: poolDetails.lockValue,
+          icon: poolDetails.icon,
+          coverImage: poolDetails.coverImage,
         },
       }),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FundDetailsForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PoolDetailsForm);

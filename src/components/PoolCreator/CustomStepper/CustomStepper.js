@@ -101,17 +101,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const getSteps = () => {
-  return ['Fund details', 'Extra', 'Verify'];
+  return ['Pool details', 'Extra', 'Verify'];
 };
 
 const getStepContent = (step, props) => {
   switch (step) {
     case 0:
-      return props.fundDetails;
+      return props.poolDetails;
     case 1:
-      return props.fundExtra;
+      return props.poolExtra;
     case 2:
-      return props.fundVerify;
+      return props.poolVerify;
     default:
       return 'Unknown step';
   }
@@ -124,13 +124,13 @@ const CustomStepper = (props) => {
   const steps = getSteps();
 
   useEffect(() => {
-    const MIN_FUND_NAME_LEN = 4;
-    const MIN_FUND_DESCRIPTION_LEN = 0;
+    const MIN_POOL_NAME_LEN = 4;
+    const MIN_POOL_DESCRIPTION_LEN = 0;
     const MIN_LOCK_VALUE = 0;
 
     let canContinue =
-      props.name.length > MIN_FUND_NAME_LEN &&
-      props.description.length > MIN_FUND_DESCRIPTION_LEN &&
+      props.name.length > MIN_POOL_NAME_LEN &&
+      props.description.length > MIN_POOL_DESCRIPTION_LEN &&
       props.lockValue > MIN_LOCK_VALUE;
 
     setCanContinue(canContinue);
@@ -170,7 +170,7 @@ const CustomStepper = (props) => {
           disabled={!canContinue}
           className={clsx(classes.button, canContinue && classes.buttonNext)}
         >
-          {activeStep === steps.length - 1 ? 'Create Fund' : 'Next'}
+          {activeStep === steps.length - 1 ? 'Create Pool' : 'Next'}
         </Button>
       </div>
     </div>
@@ -207,11 +207,11 @@ const CustomStepper = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    name: state.createdFund.name,
-    description: state.createdFund.description,
-    lockValue: state.createdFund.lockValue,
-    icon: state.createdFund.icon,
-    coverImage: state.createdFund.coverImage,
+    name: state.createdPool.name,
+    description: state.createdPool.description,
+    lockValue: state.createdPool.lockValue,
+    icon: state.createdPool.icon,
+    coverImage: state.createdPool.coverImage,
   };
 };
 

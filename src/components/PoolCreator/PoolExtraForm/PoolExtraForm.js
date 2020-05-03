@@ -49,9 +49,9 @@ const sliderMarks = [
   },
 ];
 
-const FundExtraForm = (props) => {
+const PoolExtraForm = (props) => {
   const classes = useStyles();
-  const [isPrizeRecurring, setIsPrizeRecurring] = useState(false)
+  const [isPrizeRecurring, setIsPrizeRecurring] = useState(false);
 
   let defaultWinner = '';
 
@@ -64,7 +64,7 @@ const FundExtraForm = (props) => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Typography className={classes.title}>
-            Tell your fund members who will be qualified to get the fund reward
+            Tell your pool members who will be qualified to get the pool reward
           </Typography>
           <TextField
             required
@@ -74,7 +74,7 @@ const FundExtraForm = (props) => {
             placeholder="The player who wins the 2 week tournament!"
             helperText="Who will get the reward?"
             onChange={(event) =>
-              props.setFund({ winnerDescription: event.target.value })
+              props.setPool({ winnerDescription: event.target.value })
             }
           ></TextField>
         </Grid>
@@ -82,7 +82,9 @@ const FundExtraForm = (props) => {
         <Grid item xs={12}>
           <Typography>Is the reward recurring?</Typography>
           <Checkbox
-            onChange={(event) => {setIsPrizeRecurring(event.target.checked)}}
+            onChange={(event) => {
+              setIsPrizeRecurring(event.target.checked);
+            }}
           />
           <Typography variant="caption" className={classes.title}>
             Recurring reward should be handed out at specific intervals
@@ -99,7 +101,7 @@ const FundExtraForm = (props) => {
               valueLabelDisplay="auto"
               marks={sliderMarks}
               onChange={(event, newValue) =>
-                props.setFund({ rewardDuration: newValue })
+                props.setPool({ rewardDuration: newValue })
               }
             />
           </div>
@@ -111,32 +113,32 @@ const FundExtraForm = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    name: state.createdFund.name,
-    description: state.createdFund.description,
-    lockValue: state.createdFund.lockValue,
-    icon: state.createdFund.icon,
-    coverImage: state.createdFund.coverImage,
-    winnerDescription: state.createdFund.winnerDescription,
-    rewardDuration: state.createdFund.rewardDuration,
+    name: state.createdPool.name,
+    description: state.createdPool.description,
+    lockValue: state.createdPool.lockValue,
+    icon: state.createdPool.icon,
+    coverImage: state.createdPool.coverImage,
+    winnerDescription: state.createdPool.winnerDescription,
+    rewardDuration: state.createdPool.rewardDuration,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setFund: (fundDetails) =>
+    setPool: (poolDetails) =>
       dispatch({
-        type: actionTypes.SET_FUND,
+        type: actionTypes.SET_POOL,
         payload: {
-          name: fundDetails.name,
-          description: fundDetails.description,
-          lockValue: fundDetails.lockValue,
-          icon: fundDetails.icon,
-          coverImage: fundDetails.coverImage,
-          winnerDescription: fundDetails.winnerDescription,
-          rewardDuration: fundDetails.rewardDuration,
+          name: poolDetails.name,
+          description: poolDetails.description,
+          lockValue: poolDetails.lockValue,
+          icon: poolDetails.icon,
+          coverImage: poolDetails.coverImage,
+          winnerDescription: poolDetails.winnerDescription,
+          rewardDuration: poolDetails.rewardDuration,
         },
       }),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FundExtraForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PoolExtraForm);

@@ -10,7 +10,7 @@ const initialState = {
   rewardDuration: null,
 };
 
-const setFund = (state, actionPayload) => {
+const setPool = (state, actionPayload) => {
   // remove keys with undefined value
   Object.keys(actionPayload).forEach((key) => {
     if (actionPayload[key] === undefined) {
@@ -23,8 +23,8 @@ const setFund = (state, actionPayload) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.SET_FUND:
-      return setFund(state, action.payload);
+    case actionTypes.SET_POOL:
+      return setPool(state, action.payload);
     default:
       return state;
   }
