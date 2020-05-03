@@ -12,7 +12,20 @@ import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import { connect } from 'react-redux';
 import { gapi } from 'gapi-script';
 
+import Portis from "@portis/web3";
+import Web3 from "web3";
+import Web3Modal from "web3modal";
+
 import * as actionTypes from '../../store/actions/actionTypes';
+
+const providerOptions = {
+  portis: {
+    package: Portis, 
+    options: {
+      id: "1dfd0507-d018-4312-9bc1-011aa7c76450" 
+    }
+  }
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,6 +59,18 @@ const useStyles = makeStyles((theme) => ({
 const Header = (props) => {
   const classes = useStyles();
   const [anchorElement, setAnchorElement] = React.useState(null);
+
+  const web3Modal = new Web3Modal({
+    network: "kovan",
+    cacheProvider: true,
+    providerOptions
+  });
+
+  const onConnect = async () => {
+    const provider = await web3Modal.connect();
+  
+    const web3 = new Web3(provider);
+  }
 
   const handleClickAvatar = (event) => {
     setAnchorElement(event.currentTarget);
