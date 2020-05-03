@@ -12,19 +12,20 @@ import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import { connect } from 'react-redux';
 import { gapi } from 'gapi-script';
 
-import Portis from "@portis/web3";
-import Web3 from "web3";
-import Web3Modal from "web3modal";
+import Portis from '@portis/web3';
+import Web3 from 'web3';
+import Web3Modal from 'web3modal';
 
 import * as actionTypes from '../../store/actions/actionTypes';
+import { shortenAddress } from '../../utils/utils';
 
 const providerOptions = {
   portis: {
-    package: Portis, 
+    package: Portis,
     options: {
-      id: "1dfd0507-d018-4312-9bc1-011aa7c76450" 
-    }
-  }
+      id: '1dfd0507-d018-4312-9bc1-011aa7c76450',
+    },
+  },
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -59,18 +60,29 @@ const useStyles = makeStyles((theme) => ({
 const Header = (props) => {
   const classes = useStyles();
   const [anchorElement, setAnchorElement] = React.useState(null);
+  const [address, setAddress] = React.useState(null);
 
   const web3Modal = new Web3Modal({
-    network: "kovan",
+    network: 'kovan',
     cacheProvider: true,
-    providerOptions
+    providerOptions,
   });
 
   const onConnect = async () => {
     const provider = await web3Modal.connect();
-  
+
     const web3 = new Web3(provider);
-  }
+    const accounts = await web3.eth.getAccounts();
+    setAddress(accounts[0]);
+  };
+
+  const onWalletClick = async () => {
+    if (!address) {
+      onConnect();
+    } else {
+      // open menu
+    }
+  };
 
   const handleClickAvatar = (event) => {
     setAnchorElement(event.currentTarget);
@@ -140,6 +152,9 @@ const Header = (props) => {
     if (!props.isAuthenticated) {
       renderGoogleSignInButton();
     }
+    if (web3Modal.cachedProvider) {
+      onConnect();
+    }
   }, [props.isAuthenticated]);
 
   const googleSigninButton = (
@@ -154,8 +169,13 @@ const Header = (props) => {
 
   const authArea = (
     <div className={classes.authArea}>
-      <Button className={classes.walletButton} variant="contained" size="small">
-        Connect wallet
+      <Button
+        className={classes.walletButton}
+        onClick={onWalletClick}
+        variant="contained"
+        size="small"
+      >
+        {address ? shortenAddress(address) : 'Connect Wallet'}
         <AccountBalanceWalletIcon />
       </Button>
       {props.isAuthenticated ? null : googleSigninButton}
