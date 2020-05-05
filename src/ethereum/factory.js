@@ -5,10 +5,8 @@ const contract = require("@truffle/contract");
 
 const FundFactory = contract({
   abi: artifacts,
-  address: "0x34C5ec946D8837aea0647da7f83f61F737a88024",
+  address: "0xfd99ba75A8515FD8E277b76F36719bA949Cb765F",
 });
 FundFactory.setProvider(web3.currentProvider);
 
-const instance = FundFactory.deployed();
-
-export default instance;
+export default FundFactory;
