@@ -11,7 +11,6 @@
     "@testing-library/user-event": "^7.1.2",
     "@truffle/contract": "^4.2.3",
     "babel-runtime": "^6.26.0",
-    "config": "^3.3.1",
     "emoji-mart": "^3.0.0",
     "gapi-script": "^1.0.2",
     "genie-contracts-abi": "^0.2.0",
@@ -29,7 +28,8 @@
     "start": "set PORT=3001 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "aws s3 sync build/ s3://the-genie-app --acl public-read"
   },
   "eslintConfig": {
     "extends": "react-app"

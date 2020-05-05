@@ -28,6 +28,8 @@ const providerOptions = {
   },
 };
 
+import { config } from '../../config/config';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -99,7 +101,7 @@ const Header = (props) => {
     if (tokenId) {
       // send the token id to backend and update state
       window
-        .fetch('http://localhost:3000/api/v1/login/google', {
+        .fetch(`${config.backend.url}/login/google`, {
           method: 'POST',
           body: JSON.stringify({ tokenId }),
           headers: {
@@ -130,7 +132,7 @@ const Header = (props) => {
   };
 
   const signOut = () => {
-    var auth2 = window.gapi.auth2.getAuthInstance();
+    const auth2 = window.gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
       console.log('User signed out.');
 
@@ -140,6 +142,10 @@ const Header = (props) => {
   };
 
   const renderGoogleSignInButton = () => {
+    gapi.load('auth2', function () {
+      let auth2 = gapi.auth2.init({ client_id: config.googleAuth.clientId });
+    });
+
     // customized dynamic render of the google signin button
     gapi.signin2.render('signinButton', {
       theme: 'light',

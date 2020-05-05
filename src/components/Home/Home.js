@@ -55,7 +55,7 @@ const Home = (props) => {
       <Grid item xs={3}>
         <PoolDisplayCard
           clickable
-          name="test pool1"
+          name="Diablo3 ladder"
           image="images/cover1.jpg"
           description="diablo 3 ladder"
           rewardDuration={14}
