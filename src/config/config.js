@@ -4,7 +4,7 @@ const prod = {
   },
   googleAuth: {
     clientId:
-      '409833050808-2v7o6msvqct84bae2s6n7501tfudj08f.apps.googleusercontent.com',
+      '1045886499834-7b69d9hv999m72mq111omrt06sqkadg5.apps.googleusercontent.com',
   },
 };
 
@@ -14,7 +14,7 @@ const dev = {
   },
   googleAuth: {
     clientId:
-      '409833050808-omel02bdcf5h2pvbmc7k1mg8l8okh9u0.apps.googleusercontent.com',
+      '1045886499834-ib4des9sbo7l687rtqoifq2b5l40ec8b.apps.googleusercontent.com',
   },
 };
 
