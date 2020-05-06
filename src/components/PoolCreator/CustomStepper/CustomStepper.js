@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import web3 from '../../../ethereum/web3';
 import { FundingFactory as FundingFactoryAbi } from 'genie-contracts-abi';
 
-import config from '../../../config/config';
+import { config } from '../../../config/config';
 
 const FIRST_STEP = 0;
 const SECOND_STEP = 1;
