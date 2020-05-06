@@ -4,7 +4,7 @@ const prod = {
   },
   googleAuth: {
     clientId:
-      '1045886499834-7b69d9hv999m72mq111omrt06sqkadg5.apps.googleusercontent.com',
+      '1045886499834-t0vrjhlq8ep534njprdp8k80jl4iqdra.apps.googleusercontent.com',
   },
 };
 

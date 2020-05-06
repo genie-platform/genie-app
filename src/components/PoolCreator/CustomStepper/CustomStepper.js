@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import EditIcon from "@material-ui/icons/Edit";
-import LocalFloristIcon from "@material-ui/icons/LocalFlorist";
-import CheckIcon from "@material-ui/icons/Check";
-import StepConnector from "@material-ui/core/StepConnector";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import poolFactory from "../../../ethereum/factory";
-import web3 from "../../../ethereum/web3";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import EditIcon from '@material-ui/icons/Edit';
+import LocalFloristIcon from '@material-ui/icons/LocalFlorist';
+import CheckIcon from '@material-ui/icons/Check';
+import StepConnector from '@material-ui/core/StepConnector';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import poolFactory from '../../../ethereum/factory';
+import web3 from '../../../ethereum/web3';
 
 const FIRST_STEP = 0;
 const SECOND_STEP = 1;
@@ -25,38 +25,38 @@ const ColorlibConnector = withStyles((theme) => ({
     top: 22,
   },
   active: {
-    "& $line": {
+    '& $line': {
       backgroundImage: theme.customGradients.secondary,
     },
   },
   completed: {
-    "& $line": {
+    '& $line': {
       backgroundImage: theme.customGradients.secondary,
     },
   },
   line: {
     height: 3,
     border: 0,
-    backgroundColor: "#eaeaf0",
+    backgroundColor: '#eaeaf0',
     borderRadius: 1,
   },
 }))(StepConnector);
 
 const useColorlibStepIconStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "#ccc",
+    backgroundColor: '#ccc',
     zIndex: 1,
-    color: "#fff",
+    color: '#fff',
     width: 50,
     height: 50,
-    display: "flex",
-    borderRadius: "50%",
-    justifyContent: "center",
-    alignItems: "center",
+    display: 'flex',
+    borderRadius: '50%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   active: {
     backgroundImage: theme.customGradients.secondary,
-    boxShadow: "0 4px 10px 0 rgba(0,0,0,.25)",
+    boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
   },
   completed: {
     backgroundImage: theme.customGradients.secondary,
@@ -87,15 +87,15 @@ const ColorlibStepIcon = (props) => {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "100%",
+    width: '100%',
   },
   content: {
-    height: "800px",
+    height: '800px',
   },
   buttons: {
-    display: "flex",
-    justifyContent: "center",
-    paddingBottom: "2em",
+    display: 'flex',
+    justifyContent: 'center',
+    paddingBottom: '2em',
   },
   button: {
     marginRight: theme.spacing(1),
@@ -103,13 +103,9 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonNext: {
     backgroundImage: theme.customGradients.primary,
-    color: "white",
+    color: 'white',
   },
 }));
-
-const getSteps = () => {
-  return ["Pool details", "Extra", "Verify"];
-};
 
 const getStepContent = (step, props) => {
   switch (step) {
@@ -120,7 +116,7 @@ const getStepContent = (step, props) => {
     case THIRD_STEP:
       return props.poolVerify;
     default:
-      return "Unknown step";
+      return 'Unknown step';
   }
 };
 
@@ -128,7 +124,7 @@ const CustomStepper = (props) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(FIRST_STEP);
   const [canContinue, setCanContinue] = useState(false);
-  const steps = getSteps();
+  const stepNames = ['Pool details', 'Extra', 'Verify'];
 
   useEffect(() => {
     const MIN_POOL_NAME_LEN = 4;
@@ -146,16 +142,13 @@ const CustomStepper = (props) => {
   const handleNext = async () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
-    // if at last step
-    console.log(activeStep);
-    // TODO think about this
     if (activeStep === THIRD_STEP) {
       // do stuff to create new pool
       poolFactory = await poolFactory.deployed();
       const accounts = await web3.eth.getAccounts();
       console.log(accounts);
       const txReceipt = await poolFactory.createFunding(
-        "0xb6b09fbffba6a5c4631e5f7b2e3ee183ac259c0d",
+        '0xb6b09fbffba6a5c4631e5f7b2e3ee183ac259c0d',
         accounts[0]
       );
 
@@ -170,7 +163,7 @@ const CustomStepper = (props) => {
 
   const handleBack = () => {
     if (activeStep === 0) {
-      props.history.push("/"); // go back to homepage
+      props.history.push('/'); // go back to homepage
     }
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
@@ -198,7 +191,7 @@ const CustomStepper = (props) => {
           disabled={!canContinue}
           className={clsx(classes.button, canContinue && classes.buttonNext)}
         >
-          {activeStep === steps.length - 1 ? "Create Pool" : "Next"}
+          {activeStep === stepNames.length - 1 ? 'Create Pool' : 'Next'}
         </Button>
       </div>
     </div>
@@ -222,13 +215,13 @@ const CustomStepper = (props) => {
         activeStep={activeStep}
         connector={<ColorlibConnector />}
       >
-        {steps.map((label) => (
+        {stepNames.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-      <div>{activeStep === steps.length ? finished : stepperBody}</div>
+      <div>{activeStep === stepNames.length ? finished : stepperBody}</div>
     </div>
   );
 };

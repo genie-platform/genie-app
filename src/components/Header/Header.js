@@ -102,6 +102,7 @@ const Header = (props) => {
       window
         .fetch(`${config.backend.url}/login/google`, {
           method: "POST",
+          mode: 'cors',
           body: JSON.stringify({ tokenId }),
           headers: {
             Accept: "application/json",
