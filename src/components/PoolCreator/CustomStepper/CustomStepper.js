@@ -98,6 +98,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: theme.customGradients.primary,
     color: 'white',
   },
+  finished: {
+    paddingTop: '5em',
+    textAlign: 'center',
+  },
 }));
 
 const getSteps = () => {
@@ -148,7 +152,8 @@ const CustomStepper = (props) => {
   };
 
   const handleReset = () => {
-    setActiveStep(0);
+    // setActiveStep(0);
+    props.history.push('/');
   };
 
   const FormContent = getStepContent(activeStep, props);
@@ -177,12 +182,15 @@ const CustomStepper = (props) => {
   );
 
   const finished = (
-    <div>
+    <div className={classes.finished}>
       <Typography className={classes.instructions}>
-        All steps completed - you&apos;re finished
+        Congatulations, pool created! Pool dashboard coming soon ™
       </Typography>
-      <Button onClick={handleReset} className={classes.button}>
-        Reset
+      <Button
+        onClick={handleReset}
+        className={clsx(classes.button, classes.buttonNext)}
+      >
+        Go back to the home page
       </Button>
     </div>
   );
