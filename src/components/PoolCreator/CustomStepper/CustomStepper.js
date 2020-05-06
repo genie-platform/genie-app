@@ -14,6 +14,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import poolFactory from "../../../ethereum/factory";
 import web3 from "../../../ethereum/web3";
+import { FundingFactory as FundingFactoryAbi} from "genie-contracts-abi";
 
 const FIRST_STEP = 0;
 const SECOND_STEP = 1;
@@ -151,13 +152,15 @@ const CustomStepper = (props) => {
     // TODO think about this
     if (activeStep === THIRD_STEP) {
       // do stuff to create new pool
-      poolFactory = await poolFactory.deployed();
+      // const poolFactoryC = await poolFactory.deployed();
       const accounts = await web3.eth.getAccounts();
       console.log(accounts);
-      const txReceipt = await poolFactory.createFunding(
+      debugger
+      const contract = new web3.eth.Contract(FundingFactoryAbi, '0xfd99ba75A8515FD8E277b76F36719bA949Cb765F')
+      const txReceipt = await contract.methods.createFunding(
         "0xb6b09fbffba6a5c4631e5f7b2e3ee183ac259c0d",
         accounts[0]
-      );
+      ).send({ from: accounts[0] });
 
       console.log(txReceipt);
 
