@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import clsx from "clsx";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import EditIcon from "@material-ui/icons/Edit";
-import LocalFloristIcon from "@material-ui/icons/LocalFlorist";
-import CheckIcon from "@material-ui/icons/Check";
-import StepConnector from "@material-ui/core/StepConnector";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import poolFactory from "../../../ethereum/factory";
-import web3 from "../../../ethereum/web3";
-import { FundingFactory as FundingFactoryAbi} from "genie-contracts-abi";
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import EditIcon from '@material-ui/icons/Edit';
+import LocalFloristIcon from '@material-ui/icons/LocalFlorist';
+import CheckIcon from '@material-ui/icons/Check';
+import StepConnector from '@material-ui/core/StepConnector';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import web3 from '../../../ethereum/web3';
+import { FundingFactory as FundingFactoryAbi } from 'genie-contracts-abi';
+
+import config from '../../../config/config';
 
 const FIRST_STEP = 0;
 const SECOND_STEP = 1;
@@ -140,27 +141,35 @@ const CustomStepper = (props) => {
     setCanContinue(canContinue);
   }, [props.name, props.description, props.lockValue]);
 
+  const createPool = async () => {
+    const accounts = await web3.eth.getAccounts();
+    console.log(accounts);
+
+    debugger;
+    const fundingFactoryContract = new web3.eth.Contract(
+      FundingFactoryAbi,
+      config.network.addresses.fundingFactory
+    );
+
+    const txReceipt = await fundingFactoryContract.methods
+      .createFunding(config.network.addresses.cDai, accounts[0])
+      .send({ from: accounts[0] });
+
+    console.log(txReceipt);
+
+    // TODO save pool data in DB (call backend endpoint)
+
+    // TODO we also need to listen to creation event? when the tx is confirmed
+    // and get the the new contract address
+    // and then update the pool in the db with contract address
+  };
+
   const handleNext = async () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
+    // create pool if on last step
     if (activeStep === THIRD_STEP) {
-      // do stuff to create new pool
-      // const poolFactoryC = await poolFactory.deployed();
-      const accounts = await web3.eth.getAccounts();
-      console.log(accounts);
-      debugger
-      const contract = new web3.eth.Contract(FundingFactoryAbi, '0xfd99ba75A8515FD8E277b76F36719bA949Cb765F')
-      const txReceipt = await contract.methods.createFunding(
-        "0xb6b09fbffba6a5c4631e5f7b2e3ee183ac259c0d",
-        accounts[0]
-      ).send({ from: accounts[0] });
-
-      console.log(txReceipt);
-
-      // and then get the receipt back
-      // txHash
-      // we also need to listen to creation event? when the tx is confirmed
-      // and get the the new contract address
+      await createPool();
     }
   };
 
