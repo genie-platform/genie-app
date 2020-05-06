@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
   },
+  kovanText: {
+    textAlign: 'center',
+    color: 'red',
+  },
   createPoolButton: {
     borderRadius: 25,
     color: 'white',
@@ -48,6 +52,7 @@ const Home = (props) => {
   };
 
   const welcomeMessage = 'Genie is an interest based reward platform';
+  const kovanMessage = '*Alpha version - Available only on Kovan network';
 
   // load pools from backend
   const poolsGrid = (
@@ -92,7 +97,12 @@ const Home = (props) => {
     <Grid container className={classes.root} spacing={6}>
       <Grid item xs={12}>
         <div id="create-pool">
-          <div className={classes.text}>{welcomeMessage}</div>
+          <Typography className={classes.text} variant="h4">
+            {welcomeMessage}
+          </Typography>
+          <Typography className={classes.kovanText} variant="h6">
+            {kovanMessage}
+          </Typography>
           <Button
             className={classes.createPoolButton}
             variant="contained"
