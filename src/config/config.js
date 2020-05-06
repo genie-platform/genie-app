@@ -9,7 +9,7 @@ const prod = {
   contracts: {
     addresses: {
       fundingFactory: '0xfd99ba75A8515FD8E277b76F36719bA949Cb765F',
-      cDai: '0xb6b09fbffba6a5c4631e5f7b2e3ee183ac259c0d',
+      cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
   },
 };
@@ -25,7 +25,7 @@ const dev = {
   network: {
     addresses: {
       fundingFactory: '0xfd99ba75A8515FD8E277b76F36719bA949Cb765F',
-      cDai: '0xb6b09fbffba6a5c4631e5f7b2e3ee183ac259c0d',
+      cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
   },
 };
