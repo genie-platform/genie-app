@@ -6,7 +6,7 @@ const prod = {
     clientId:
       '1045886499834-t0vrjhlq8ep534njprdp8k80jl4iqdra.apps.googleusercontent.com',
   },
-  contracts: {
+  network: {
     addresses: {
       fundingFactory: '0xfd99ba75A8515FD8E277b76F36719bA949Cb765F',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
