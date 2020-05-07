@@ -52,7 +52,7 @@ const Home = (props) => {
   };
 
   const welcomeMessage = 'Genie is an interest based reward platform';
-  const kovanMessage = '*Alpha version - Available only on Kovan network';
+  const kovanMessage = '*Alpha version - Available only on Kovan network!';
 
   // load pools from backend
   const poolsGrid = (
