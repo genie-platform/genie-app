@@ -21,7 +21,11 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   appBar: {
-    backgroundColor: theme.customColors.dark,
+    backgroundColor: 'white',
+    height: 93,
+    elevation: 0,
+    boxShadow: '0 0',
+    borderBottom: 'solid 1px rgba(160,160,160,0.2)',
   },
   logo: {
     flexGrow: 1,

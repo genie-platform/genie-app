@@ -28,9 +28,8 @@ const useStyles = makeStyles((theme) => ({
     color: 'red',
   },
   createPoolButton: {
-    borderRadius: 25,
     color: 'white',
-    backgroundImage: theme.customGradients.primary,
+    background: theme.palette.primary.main,
   },
   explorePools: {
     borderRadius: 14,
@@ -51,7 +50,7 @@ const Home = (props) => {
     props.history.push('/create-pool');
   };
 
-  const welcomeMessage = 'Genie is an interest based reward platform';
+  const welcomeMessage = 'The interest based \nreward platform';
   const kovanMessage = '*Alpha version - Available only on Kovan network!';
 
   // load pools from backend
@@ -96,20 +95,16 @@ const Home = (props) => {
   return (
     <Grid container className={classes.root} spacing={6}>
       <Grid item xs={12}>
-        <div id="create-pool">
+        <div>
+          <Typography className={classes.text} variant="h3">
+            Genie
+          </Typography>
           <Typography className={classes.text} variant="h4">
             {welcomeMessage}
           </Typography>
           <Typography className={classes.kovanText} variant="h6">
             {kovanMessage}
           </Typography>
-          <Button
-            className={classes.createPoolButton}
-            variant="contained"
-            onClick={onCreatePoolClick}
-          >
-            Create a new pool
-          </Button>
         </div>
       </Grid>
       <Grid item xs={12}>
@@ -125,6 +120,15 @@ const Home = (props) => {
             </CardActions>
           </CardContent>
         </Card>
+      </Grid>
+      <Grid item xs={12}>
+        <Button
+          className={classes.createPoolButton}
+          variant="contained"
+          onClick={onCreatePoolClick}
+        >
+          Create a new pool
+        </Button>
       </Grid>
     </Grid>
   );

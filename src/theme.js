@@ -3,7 +3,8 @@ import { createMuiTheme } from '@material-ui/core/styles';
 export const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#485563',
+      // main: '#485563',
+      main: '#384aff',
     },
     secondary: {
       main: '#43e97b',
@@ -16,10 +17,14 @@ export const theme = createMuiTheme({
   },
   customColors: {
     dark: '#485563',
-    background: '#f5f5f5',
+    background: '#f7f8fc',
     backgroundDark: '#333',
+    footerBackground: '#363841',
   },
   typography: {
     fontFamily: ['Montserrat', 'sans-serif'].join(','),
+    button: {
+      borderRadius: 8,
+    },
   },
 });
