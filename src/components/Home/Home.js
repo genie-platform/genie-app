@@ -2,11 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import Divider from '@material-ui/core/Divider'; 
 import { connect } from 'react-redux';
 
 import PoolDisplayCard from '../PoolDisplayCard/PoolDisplayCard';
@@ -16,13 +13,13 @@ const useStyles = makeStyles((theme) => ({
     width: '70%',
     margin: 'auto',
     padding: 50,
-    textAlign: 'center',
+    textAlign: '-webkit-center',
   },
   text: {
-    textAlign: 'center',
-    backgroundImage: theme.customGradients.primary,
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
+    color: 'black'
+  },
+  subTitle: {
+    color: '#797979'
   },
   kovanText: {
     textAlign: 'center',
@@ -36,15 +33,16 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     background: theme.palette.primary.main,
   },
-  explorePools: {
-    borderRadius: 14,
-  },
   poolsGrid: {
     paddingTop: '1em',
   },
   allPools: {
     justifyContent: 'flex-end',
   },
+  divider:{
+    width: 80,
+    height: 4
+  }
 }));
 
 const Home = (props) => {
@@ -55,9 +53,7 @@ const Home = (props) => {
     props.history.push('/create-pool');
   };
 
-  const welcomeMessage = 'The interest based \nreward platform';
-  const kovanMessage = '*Alpha version - Available only on Kovan network!';
-
+  
   // load pools from backend
   const poolsGrid = (
     <Grid className={classes.poolsGrid} container spacing={1}>
@@ -71,35 +67,38 @@ const Home = (props) => {
           lockValue={5}
           winner={'first player to reach level 100'}
           icon="🧞"
-        />
+          />
       </Grid>
       <Grid item xs={3}>
         <PoolDisplayCard
           clickable
           name="test pool2"
           image="images/cover2.jpg"
-        />
+          />
       </Grid>
       <Grid item xs={3}>
         <PoolDisplayCard
           clickable
           name="test pool3"
           image="images/cover3.jpg"
-        />
+          />
       </Grid>
       <Grid item xs={3}>
         <PoolDisplayCard
           clickable
           name="test pool4"
           image="images/cover4.jpg"
-        />
+          />
       </Grid>
     </Grid>
   );
 
+  const welcomeMessage = 'The interest based reward platform';
+  const kovanMessage = '*Alpha version - Available only on Kovan network!';
+  
   return (
     <Grid container className={classes.root} spacing={6}>
-      <Grid item xs={12}>
+      <Grid id='hero' item xs={12}>
         <div>
           <Typography className={classes.text} variant="h3">
             Genie
@@ -112,14 +111,29 @@ const Home = (props) => {
           </Typography>
         </div>
       </Grid>
+      <Grid id='how-it-work' item xs={12}>
+        <Typography className={classes.subTitle} variant="h5">
+          How it works?
+        </Typography>
+        <Button className={classes.linkButton}>
+          Learn More
+        </Button>
+      </Grid>
       <Grid item xs={12}>
-        <Typography variant="h5">Popular pools</Typography>
+        <Divider className={classes.divider}/>
+      </Grid>
+      <Grid id='popular-pool' item xs={12}>
+        <Typography className={classes.subTitle} variant="h5">Popular pools</Typography>
         {poolsGrid}
       </Grid>
       <Grid item xs={12} justify="center">
         <Button className={classes.linkButton}>Explore more pools</Button>
       </Grid>
       <Grid item xs={12}>
+        <Divider className={classes.divider}/>
+      </Grid>
+      <Grid item xs={12}>
+      <Typography className={classes.subTitle} variant="h5">Create a pool</Typography>
         <Button
           className={classes.createPoolButton}
           variant="contained"
