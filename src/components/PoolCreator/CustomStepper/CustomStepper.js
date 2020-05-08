@@ -12,6 +12,15 @@ import CheckIcon from '@material-ui/icons/Check';
 import StepConnector from '@material-ui/core/StepConnector';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import web3 from '../../../ethereum/web3';
+import { FundingFactory as FundingFactoryAbi } from 'genie-contracts-abi';
+
+import { config } from '../../../config/config';
+
+const FIRST_STEP = 0;
+const SECOND_STEP = 1;
+const THIRD_STEP = 2;
+const FINISH_STEP = 3;
 
 const ColorlibConnector = withStyles((theme) => ({
   alternativeLabel: {
@@ -104,17 +113,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const getSteps = () => {
-  return ['Pool details', 'Extra', 'Verify'];
-};
-
 const getStepContent = (step, props) => {
   switch (step) {
-    case 0:
+    case FIRST_STEP:
       return props.poolDetails;
-    case 1:
+    case SECOND_STEP:
       return props.poolExtra;
-    case 2:
+    case THIRD_STEP:
       return props.poolVerify;
     default:
       return 'Unknown step';
@@ -123,9 +128,9 @@ const getStepContent = (step, props) => {
 
 const CustomStepper = (props) => {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(FIRST_STEP);
   const [canContinue, setCanContinue] = useState(false);
-  const steps = getSteps();
+  const stepNames = ['Pool details', 'Extra', 'Verify'];
 
   useEffect(() => {
     const MIN_POOL_NAME_LEN = 4;
@@ -140,8 +145,36 @@ const CustomStepper = (props) => {
     setCanContinue(canContinue);
   }, [props.name, props.description, props.lockValue]);
 
-  const handleNext = () => {
+  const createPool = async () => {
+    const accounts = await web3.eth.getAccounts();
+    console.log(accounts);
+
+    debugger;
+    const fundingFactoryContract = new web3.eth.Contract(
+      FundingFactoryAbi,
+      config.network.addresses.fundingFactory
+    );
+
+    const txReceipt = await fundingFactoryContract.methods
+      .createFunding(config.network.addresses.cDai, accounts[0])
+      .send({ from: accounts[0] });
+
+    console.log(txReceipt);
+
+    // TODO save pool data in DB (call backend endpoint)
+
+    // TODO we also need to listen to creation event? when the tx is confirmed
+    // and get the the new contract address
+    // and then update the pool in the db with contract address
+  };
+
+  const handleNext = async () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+
+    // create pool if on last step
+    if (activeStep === THIRD_STEP) {
+      await createPool();
+    }
   };
 
   const handleBack = () => {
@@ -175,7 +208,7 @@ const CustomStepper = (props) => {
           disabled={!canContinue}
           className={clsx(classes.button, canContinue && classes.buttonNext)}
         >
-          {activeStep === steps.length - 1 ? 'Create Pool' : 'Next'}
+          {activeStep === stepNames.length - 1 ? 'Create Pool' : 'Next'}
         </Button>
       </div>
     </div>
@@ -202,13 +235,13 @@ const CustomStepper = (props) => {
         activeStep={activeStep}
         connector={<ColorlibConnector />}
       >
-        {steps.map((label) => (
+        {stepNames.map((label) => (
           <Step key={label}>
             <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
-      <div>{activeStep === steps.length ? finished : stepperBody}</div>
+      <div>{activeStep === stepNames.length ? finished : stepperBody}</div>
     </div>
   );
 };

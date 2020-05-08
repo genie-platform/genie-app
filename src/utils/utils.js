@@ -4,3 +4,11 @@ export const getRandomCoverImage = () => {
 
   return `images/cover${imageNumber}.jpg`;
 };
+
+export const shortenAddress = (address) => {
+  return (
+    address.slice(0, 5) +
+    '...' +
+    address.slice(address.length - 5, address.length)
+  );
+};

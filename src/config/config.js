@@ -4,7 +4,13 @@ const prod = {
   },
   googleAuth: {
     clientId:
-      '1045886499834-7b69d9hv999m72mq111omrt06sqkadg5.apps.googleusercontent.com',
+      '1045886499834-t0vrjhlq8ep534njprdp8k80jl4iqdra.apps.googleusercontent.com',
+  },
+  network: {
+    addresses: {
+      fundingFactory: '0xfd99ba75A8515FD8E277b76F36719bA949Cb765F',
+      cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
+    },
   },
 };
 
@@ -15,6 +21,12 @@ const dev = {
   googleAuth: {
     clientId:
       '1045886499834-ib4des9sbo7l687rtqoifq2b5l40ec8b.apps.googleusercontent.com',
+  },
+  network: {
+    addresses: {
+      fundingFactory: '0xfd99ba75A8515FD8E277b76F36719bA949Cb765F',
+      cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
+    },
   },
 };
 

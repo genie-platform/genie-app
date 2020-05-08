@@ -5,19 +5,25 @@
   "dependencies": {
     "@material-ui/core": "^4.9.11",
     "@material-ui/icons": "^4.9.1",
+    "@portis/web3": "^2.0.0-beta.55",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "@truffle/contract": "^4.2.3",
+    "@truffle/debug-utils": "^4.1.1",
     "babel-runtime": "^6.26.0",
     "emoji-mart": "^3.0.0",
     "gapi-script": "^1.0.2",
+    "genie-contracts-abi": "^0.2.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
-    "standard": "^14.3.3"
+    "standard": "^14.3.3",
+    "web3": "^1.2.7",
+    "web3modal": "^1.5.0"
   },
   "scripts": {
     "start": "set PORT=3001 && react-scripts start",
