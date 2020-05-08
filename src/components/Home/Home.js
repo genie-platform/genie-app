@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     width: '70%',
     margin: 'auto',
     padding: 50,
+    textAlign: 'center',
   },
   text: {
     textAlign: 'center',
@@ -26,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
   kovanText: {
     textAlign: 'center',
     color: 'red',
+  },
+  linkButton: {
+    color: theme.palette.primary.main,
+    fontWeight: '600',
   },
   createPoolButton: {
     color: 'white',
@@ -108,18 +113,11 @@ const Home = (props) => {
         </div>
       </Grid>
       <Grid item xs={12}>
-        <Card elevation={3} id="explore-pools" className={classes.explorePools}>
-          <CardContent>
-            <Typography variant="h5">Explore pools</Typography>
-            {poolsGrid}
-            <CardActions className={classes.allPools}>
-              <Button>
-                All pools
-                <KeyboardArrowRightIcon />
-              </Button>
-            </CardActions>
-          </CardContent>
-        </Card>
+        <Typography variant="h5">Popular pools</Typography>
+        {poolsGrid}
+      </Grid>
+      <Grid item xs={12} justify="center">
+        <Button className={classes.linkButton}>Explore more pools</Button>
       </Grid>
       <Grid item xs={12}>
         <Button
