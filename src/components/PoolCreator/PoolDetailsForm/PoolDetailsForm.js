@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -6,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import Popover from '@material-ui/core/Popover';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
 import { connect } from 'react-redux';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
@@ -28,12 +28,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     cursor: 'pointer',
     borderRadius: 6,
+  },
+  poolIcon: {
     border: '1px solid rgba(0,0,0,0.2)',
     '&:hover': {
       background: theme.palette.primary.main,
     },
   },
-  poolIcon: {},
   poolImage: {},
   emojiPicker: {
     position: 'absolute',
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 
 const PoolDetailsForm = (props) => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [emojiMallAnchorElement, setEmojiMallAnchorElement] = useState(null);
   const [touched, setTouched] = useState({ name: false, description: false });
 
   let poolIcon = props.icon;
@@ -57,11 +58,11 @@ const PoolDetailsForm = (props) => {
   }
 
   const onChangeIconClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setEmojiMallAnchorElement(event.currentTarget);
   };
 
   const closePicker = () => {
-    setAnchorEl(null);
+    setEmojiMallAnchorElement(null);
   };
 
   const onChooseIcon = (emoji) => {
@@ -105,8 +106,8 @@ const PoolDetailsForm = (props) => {
     }
   }, []);
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const isEmojyPickerOpen = Boolean(emojiMallAnchorElement);
+  const emojiPickerPopoverId = isEmojyPickerOpen ? 'simple-popover' : undefined;
 
   return (
     <div>
@@ -155,8 +156,7 @@ const PoolDetailsForm = (props) => {
             variant="outlined"
             fullWidth
             defaultValue={defaultWinner}
-            placeholder="The player who wins the 2 week tournament!"
-            helperText="Who will get the reward?"
+            placeholder="Who will get the reward?"
             onChange={(event) =>
               props.setPool({ winnerDescription: event.target.value })
             }
@@ -165,12 +165,11 @@ const PoolDetailsForm = (props) => {
 
         <Grid item xs={4}>
           <Typography className={classes.label}>Icon</Typography>
-          <div onClick={onChangeIconClick} className={classes.imageCards}>
-            <Typography
-              variant="h2"
-              id="pool-icon"
-              className={classes.poolIcon}
-            >
+          <div
+            onClick={onChangeIconClick}
+            className={clsx(classes.imageCards, classes.poolIcon)}
+          >
+            <Typography variant="h2" id="pool-icon">
               {poolIcon}
             </Typography>
           </div>
@@ -186,10 +185,12 @@ const PoolDetailsForm = (props) => {
           </Card>
         </Grid>
       </Grid>
+
+      {/* This is the emoji pick popover */}
       <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
+        id={emojiPickerPopoverId}
+        open={isEmojyPickerOpen}
+        anchorEl={emojiMallAnchorElement}
         onClose={closePicker}
         anchorOrigin={{
           vertical: 'bottom',

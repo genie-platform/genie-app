@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 
-import PoolDisplayCard from '../../PoolDisplayCard/PoolDisplayCardOld';
+import PoolDisplayCard from '../../PoolDisplayCard/PoolDisplayCard';
 
 const useStyles = makeStyles((theme) => ({
   root: {
