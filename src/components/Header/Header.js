@@ -1,30 +1,30 @@
-import React, { useEffect } from "react";
-import { withRouter } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import Avatar from "@material-ui/core/Avatar";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Toolbar from "@material-ui/core/Toolbar";
-import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
-import { connect } from "react-redux";
-import { gapi } from "gapi-script";
+import React, { useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Toolbar from '@material-ui/core/Toolbar';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
+import { connect } from 'react-redux';
+import { gapi } from 'gapi-script';
 
-import Portis from "@portis/web3";
-import Web3 from "web3";
-import Web3Modal from "web3modal";
+import Portis from '@portis/web3';
+import Web3 from 'web3';
+import Web3Modal from 'web3modal';
 
-import * as actionTypes from "../../store/actions/actionTypes";
-import { shortenAddress } from "../../utils/utils";
-import { config } from "../../config/config";
+import * as actionTypes from '../../store/actions/actionTypes';
+import { shortenAddress } from '../../utils/utils';
+import { config } from '../../config/config';
 
 const providerOptions = {
   portis: {
     package: Portis,
     options: {
-      id: "1dfd0507-d018-4312-9bc1-011aa7c76450",
+      id: '1dfd0507-d018-4312-9bc1-011aa7c76450',
     },
   },
 };
@@ -32,6 +32,8 @@ const providerOptions = {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    width: theme.customValues.contentWidth,
+    margin: 'auto',
   },
   appBar: {
     backgroundColor: 'white',
@@ -43,22 +45,22 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     flexGrow: 1,
     color: theme.palette.secondary.light,
-    cursor: "pointer",
+    cursor: 'pointer',
   },
   authArea: {
-    display: "flex",
+    display: 'flex',
   },
   googleLogin: {
     borderRadius: 25,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   walletButton: {
     borderRadius: 25,
-    marginRight: "1em",
+    marginRight: '1em',
     backgroundImage: theme.customGradients.secondary,
   },
   userDetails: {
-    cursor: "pointer",
+    cursor: 'pointer',
   },
 }));
 
@@ -68,7 +70,7 @@ const Header = (props) => {
   const [address, setAddress] = React.useState(null);
 
   const web3Modal = new Web3Modal({
-    network: "kovan",
+    network: 'kovan',
     cacheProvider: true,
     providerOptions,
   });
@@ -105,12 +107,12 @@ const Header = (props) => {
       // send the token id to backend and update state
       window
         .fetch(`${config.backend.url}/login/google`, {
-          method: "POST",
+          method: 'POST',
           mode: 'cors',
           body: JSON.stringify({ tokenId }),
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
           },
         })
         .then((response) => response.json())
@@ -132,13 +134,13 @@ const Header = (props) => {
 
   // event handler for google signin failure
   const onFailure = (error) => {
-    console.log("FAILED TO SIGN IN", error);
+    console.log('FAILED TO SIGN IN', error);
   };
 
   const signOut = () => {
     const auth2 = window.gapi.auth2.getAuthInstance();
     auth2.signOut().then(function () {
-      console.log("User signed out.");
+      console.log('User signed out.');
 
       // update state
       props.onSignOut();
@@ -146,13 +148,13 @@ const Header = (props) => {
   };
 
   const renderGoogleSignInButton = () => {
-    gapi.load("auth2", function () {
+    gapi.load('auth2', function () {
       let auth2 = gapi.auth2.init({ client_id: config.googleAuth.clientId });
     });
 
     // customized dynamic render of the google signin button
-    gapi.signin2.render("signinButton", {
-      theme: "light",
+    gapi.signin2.render('signinButton', {
+      theme: 'light',
       onsuccess: onSignIn,
       onfailure: onFailure,
     });
@@ -185,7 +187,7 @@ const Header = (props) => {
         variant="contained"
         size="small"
       >
-        {address ? shortenAddress(address) : "Connect Wallet"}
+        {address ? shortenAddress(address) : 'Connect Wallet'}
         <AccountBalanceWalletIcon />
       </Button>
       {props.isAuthenticated ? null : googleSigninButton}
@@ -200,7 +202,7 @@ const Header = (props) => {
           <Typography
             variant="h6"
             className={classes.logo}
-            onClick={() => props.history.push("/")}
+            onClick={() => props.history.push('/')}
           >
             Genie
           </Typography>
@@ -214,12 +216,12 @@ const Header = (props) => {
             elevation={0}
             getContentAnchorEl={null}
             anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "center",
+              vertical: 'bottom',
+              horizontal: 'center',
             }}
             transformOrigin={{
-              vertical: "top",
-              horizontal: "center",
+              vertical: 'top',
+              horizontal: 'center',
             }}
           >
             <MenuItem onClick={handleCloseAvatarMenu}>Profile</MenuItem>
