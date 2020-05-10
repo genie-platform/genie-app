@@ -16,25 +16,25 @@ import { theme } from '../../../theme';
 import { getRandomCoverImage } from '../../../utils/utils';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: '2em',
+  root: {},
+  label: {
+    color: theme.customColors.text,
+    paddingBottom: '0.2em',
   },
   imageCards: {
     height: 150,
-    textAlign: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     cursor: 'pointer',
-    borderRadius: 10,
+    borderRadius: 6,
+    border: '1px solid rgba(0,0,0,0.2)',
     '&:hover': {
-      background: '#ccc',
+      background: theme.palette.primary.main,
     },
   },
-  poolImage: {
-    height: '75%',
-  },
-  poolIcon: {
-    height: '75%',
-    paddingBottom: '0.2em',
-  },
+  poolIcon: {},
+  poolImage: {},
   emojiPicker: {
     position: 'absolute',
     zIndex: 100,
@@ -50,6 +50,11 @@ const PoolDetailsForm = (props) => {
   let poolImage = props.coverImage;
   let helperTextName = '';
   let helperTextDescription = '';
+  let defaultWinner = '';
+
+  if (props.winnerDescription !== '') {
+    defaultWinner = props.winnerDescription;
+  }
 
   const onChangeIconClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -107,10 +112,10 @@ const PoolDetailsForm = (props) => {
     <div>
       <Grid container spacing={3} className={classes.root}>
         <Grid item xs={12}>
+          <Typography className={classes.label}>Name</Typography>
           <TextField
             required
             id="pool-name"
-            label="Pool name"
             variant="outlined"
             fullWidth
             defaultValue={props.name}
@@ -124,12 +129,14 @@ const PoolDetailsForm = (props) => {
         </Grid>
 
         <Grid item xs={12}>
+          <Typography className={classes.label}>Description</Typography>
           <TextField
             required
             multiline
+            rows={4}
             id="pool-description"
-            label="Pool description"
             variant="outlined"
+            placeholder="A few words about the pool"
             fullWidth
             error={validateDescription()}
             defaultValue={props.description}
@@ -142,50 +149,40 @@ const PoolDetailsForm = (props) => {
         </Grid>
 
         <Grid item xs={12}>
+          <Typography className={classes.label}>Challenge</Typography>
           <TextField
             required
-            id="lock-value"
-            label="Lock value"
             variant="outlined"
-            defaultValue={props.lockValue}
             fullWidth
-            type="number"
-            helperText="The amount of DAI each user will lock"
-            onChange={(event) => {
-              props.setPool({ lockValue: event.target.value });
-            }}
-          />
+            defaultValue={defaultWinner}
+            placeholder="The player who wins the 2 week tournament!"
+            helperText="Who will get the reward?"
+            onChange={(event) =>
+              props.setPool({ winnerDescription: event.target.value })
+            }
+          ></TextField>
         </Grid>
+
         <Grid item xs={4}>
-          <Card
-            elevation={3}
-            onClick={onChangeIconClick}
-            className={classes.imageCards}
-          >
-            <CardContent>
-              <Typography
-                variant="h2"
-                id="pool-icon"
-                className={classes.poolIcon}
-              >
-                {poolIcon}
-              </Typography>
-              <Typography>Icon</Typography>
-            </CardContent>
-          </Card>
+          <Typography className={classes.label}>Icon</Typography>
+          <div onClick={onChangeIconClick} className={classes.imageCards}>
+            <Typography
+              variant="h2"
+              id="pool-icon"
+              className={classes.poolIcon}
+            >
+              {poolIcon}
+            </Typography>
+          </div>
         </Grid>
         <Grid item xs={8}>
-          <Card
-            elevation={3}
-            className={classes.imageCards}
-            onClick={chooseCoverImage}
-          >
+          <Typography className={classes.label}>Cover Image</Typography>
+          <Card className={classes.imageCards} onClick={chooseCoverImage}>
             <CardMedia
               className={classes.poolImage}
               image={poolImage}
               component="img"
             ></CardMedia>
-            <Typography>Cover Image</Typography>
           </Card>
         </Grid>
       </Grid>
@@ -221,9 +218,9 @@ const mapStateToProps = (state) => {
   return {
     name: state.createdPool.name,
     description: state.createdPool.description,
-    lockValue: state.createdPool.lockValue,
     icon: state.createdPool.icon,
     coverImage: state.createdPool.coverImage,
+    winnerDescription: state.createdPool.winnerDescription,
   };
 };
 
@@ -235,9 +232,9 @@ const mapDispatchToProps = (dispatch) => {
         payload: {
           name: poolDetails.name,
           description: poolDetails.description,
-          lockValue: poolDetails.lockValue,
           icon: poolDetails.icon,
           coverImage: poolDetails.coverImage,
+          winnerDescription: poolDetails.winnerDescription,
         },
       }),
   };

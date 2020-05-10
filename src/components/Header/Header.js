@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.customColors.text,
     padding: '0 0.8em',
     textDecoration: 'none',
+    fontWeight: '500',
   },
   linkActive: {
     color: theme.palette.primary.main,
@@ -71,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
   },
   authArea: {
     display: 'flex',
+    alignItems: 'center',
   },
   googleLogin: {
     borderRadius: 50,

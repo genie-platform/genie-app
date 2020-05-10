@@ -80,6 +80,22 @@ const PoolExtraForm = (props) => {
         </Grid>
 
         <Grid item xs={12}>
+          <TextField
+            required
+            id="lock-value"
+            label="Lock value"
+            variant="outlined"
+            defaultValue={props.lockValue}
+            fullWidth
+            type="number"
+            helperText="The amount of DAI each user will lock"
+            onChange={(event) => {
+              props.setPool({ lockValue: event.target.value });
+            }}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
           <Typography>Is the reward recurring?</Typography>
           <Checkbox
             onChange={(event) => {

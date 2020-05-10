@@ -92,12 +92,15 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   },
+  stepper: {
+    backgroundColor: 'transparent',
+  },
   content: {
     height: '800px',
   },
   buttons: {
     display: 'flex',
-    padding: '0 2em 2em 2em',
+    paddingTop: '2em',
   },
   button: {
     marginRight: theme.spacing(1),
@@ -229,6 +232,7 @@ const CustomStepper = (props) => {
   return (
     <div className={classes.root}>
       <Stepper
+        className={classes.stepper}
         alternativeLabel
         activeStep={activeStep}
         connector={<ColorlibConnector />}
