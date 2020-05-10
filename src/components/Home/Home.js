@@ -18,8 +18,12 @@ const useStyles = makeStyles((theme) => ({
     padding: '0',
   },
   hero: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
     backgroundImage: theme.customGradients.primary,
-    padding: '9.2em 0',
+    height: 435,
   },
   text: {
     color: 'white',
@@ -40,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     border: '1px solid rgba(0,0,0,0.09)',
     backgroundImage: theme.customGradients.primary,
+    height: 54,
+    width: 166,
+    textTransform: 'none',
     '&:hover': {
       border: '1px solid rgba(0,0,0,0)',
       backgroundImage: theme.customGradients.primaryHover,
@@ -93,46 +100,12 @@ const Home = (props) => {
         icon="🌋"
       />
     </div>
-
-    // <Grid className={classes.poolsGrid} container spacing={1}>
-    //   <Grid item xs={4}>
-    //     <PoolDisplayCard
-    //       clickable
-    //       name="Diablo3 ladder"
-    //       image="images/cover1.jpg"
-    //       description="diablo 3 ladder"
-    //       rewardDuration={14}
-    //       lockValue={5}
-    //       winner={'first player to reach level 100'}
-    //       icon="🧞"
-    //     />
-    //   </Grid>
-    //   <Grid item xs={4}>
-    //     <PoolDisplayCard
-    //       clickable
-    //       name="test pool2"
-    //       image="images/cover2.jpg"
-    //       icon="🌌"
-    //     />
-    //   </Grid>
-    //   <Grid item xs={4}>
-    //     <PoolDisplayCard
-    //       clickable
-    //       name="test pool3"
-    //       image="images/cover3.jpg"
-    //       icon="🌋"
-    //     />
-    //   </Grid>
-    // </Grid>
   );
 
   return (
     <Grid container className={classes.root} spacing={6}>
       <Grid id="hero" item xs={12} style={{ padding: 0 }}>
         <div className={classes.hero}>
-          <Typography className={classes.text} variant="h3">
-            Genie
-          </Typography>
           <Typography className={classes.text} variant="h4">
             The interest based
           </Typography>
@@ -174,7 +147,7 @@ const Home = (props) => {
           variant="contained"
           onClick={onCreatePoolClick}
         >
-          Create a new pool
+          Create a pool
         </Button>
       </Grid>
     </Grid>

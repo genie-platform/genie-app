@@ -7,7 +7,7 @@ export const theme = createMuiTheme({
       main: '#00A7FF',
     },
     secondary: {
-      main: '#43e97b',
+      main: '#3F3F3F',
     },
   },
   customGradients: {
@@ -21,6 +21,7 @@ export const theme = createMuiTheme({
     background: '#f7f8fc',
     backgroundDark: '#333',
     footerBackground: '#363841',
+    text: '#616269',
   },
   customValues: {
     contentWidth: '76%',

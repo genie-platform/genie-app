@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Menu from '@material-ui/core/Menu';
@@ -38,26 +38,57 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     backgroundColor: 'white',
     height: 93,
-    elevation: 0,
     boxShadow: '0 0',
     borderBottom: 'solid 1px rgba(160,160,160,0.2)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  toolbar: {
+    width: '72%',
   },
   logo: {
-    flexGrow: 1,
-    color: theme.palette.secondary.light,
+    paddingRight: '0.3em',
     cursor: 'pointer',
+  },
+  logoText: {
+    color: theme.customColors.text,
+    cursor: 'pointer',
+    fontWeight: '700',
+    letterSpacing: '0.2em',
+    paddingRight: '1.6em',
+  },
+  link: {
+    color: theme.customColors.text,
+    fontWeight: '500',
+    padding: '0 0.8em',
+    textDecoration: 'none',
+  },
+  linkActive: {
+    color: theme.palette.primary.main,
+  },
+  divider: {
+    flexGrow: 1,
   },
   authArea: {
     display: 'flex',
   },
   googleLogin: {
-    borderRadius: 25,
+    borderRadius: 6,
     overflow: 'hidden',
+    height: 52,
+    border: '1px solid rgba(160,160,160,0.2);',
   },
   walletButton: {
-    borderRadius: 25,
+    borderRadius: 6,
     marginRight: '1em',
-    backgroundImage: theme.customGradients.secondary,
+    background: 'white',
+    color: theme.customColors.text,
+    height: 52,
+    width: 165,
+    boxShadow: 'none',
+    border: '1px solid rgba(160,160,160,0.2);',
+    textTransform: 'none',
   },
   userDetails: {
     cursor: 'pointer',
@@ -149,7 +180,7 @@ const Header = (props) => {
 
   const renderGoogleSignInButton = () => {
     gapi.load('auth2', function () {
-      let auth2 = gapi.auth2.init({ client_id: config.googleAuth.clientId });
+      const auth2 = gapi.auth2.init({ client_id: config.googleAuth.clientId });
     });
 
     // customized dynamic render of the google signin button
@@ -157,6 +188,8 @@ const Header = (props) => {
       theme: 'light',
       onsuccess: onSignIn,
       onfailure: onFailure,
+      height: 52,
+      width: 140,
     });
   };
 
@@ -184,7 +217,7 @@ const Header = (props) => {
       <Button
         className={classes.walletButton}
         onClick={onWalletClick}
-        variant="contained"
+        variant="outlined"
         size="small"
       >
         {address ? shortenAddress(address) : 'Connect Wallet'}
@@ -198,14 +231,44 @@ const Header = (props) => {
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static" color="secondary">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
+          {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
           <Typography
-            variant="h6"
+            variant="h3"
             className={classes.logo}
             onClick={() => props.history.push('/')}
           >
-            Genie
+            🧞
           </Typography>
+          <Typography
+            variant="h5"
+            className={classes.logoText}
+            onClick={() => props.history.push('/')}
+          >
+            genie
+          </Typography>
+          <NavLink
+            className={classes.link}
+            to="/explore"
+            activeClassName={classes.linkActive}
+          >
+            Explore
+          </NavLink>
+          <NavLink
+            className={classes.link}
+            to="/create-pool"
+            activeClassName={classes.linkActive}
+          >
+            Create Pool
+          </NavLink>
+          <NavLink
+            className={classes.link}
+            to="/my-pools"
+            activeClassName={classes.linkActive}
+          >
+            My Pools
+          </NavLink>
+          <div className={classes.divider}></div>
           {authArea}
           <Menu
             id="simple-menu"
