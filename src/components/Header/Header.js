@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Menu from '@material-ui/core/Menu';
@@ -12,33 +12,84 @@ import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import { connect } from 'react-redux';
 import { gapi } from 'gapi-script';
 
-import * as actionTypes from '../../store/actions/actionTypes';
+import Portis from '@portis/web3';
+import Web3 from 'web3';
+import Web3Modal from 'web3modal';
 
+import * as actionTypes from '../../store/actions/actionTypes';
+import { shortenAddress } from '../../utils/utils';
 import { config } from '../../config/config';
+
+const providerOptions = {
+  portis: {
+    package: Portis,
+    options: {
+      id: '1dfd0507-d018-4312-9bc1-011aa7c76450',
+    },
+  },
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    width: theme.customValues.contentWidth,
+    margin: 'auto',
   },
   appBar: {
-    backgroundColor: theme.customColors.dark,
+    backgroundColor: 'white',
+    height: 93,
+    boxShadow: '0 0',
+    borderBottom: 'solid 1px rgba(160,160,160,0.2)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  toolbar: {
+    width: '72%',
   },
   logo: {
-    flexGrow: 1,
-    color: theme.palette.secondary.light,
+    paddingRight: '0.3em',
     cursor: 'pointer',
+  },
+  logoText: {
+    color: theme.customColors.text,
+    cursor: 'pointer',
+    fontWeight: '700',
+    letterSpacing: '0.2em',
+    paddingRight: '1.6em',
+  },
+  link: {
+    color: theme.customColors.text,
+    padding: '0 0.8em',
+    textDecoration: 'none',
+    fontWeight: '500',
+  },
+  linkActive: {
+    color: theme.palette.primary.main,
+  },
+  divider: {
+    flexGrow: 1,
   },
   authArea: {
     display: 'flex',
+    alignItems: 'center',
   },
   googleLogin: {
-    borderRadius: 25,
+    borderRadius: 50,
     overflow: 'hidden',
+    height: 52,
+    border: '1px solid rgba(160,160,160,0.2);',
   },
   walletButton: {
-    borderRadius: 25,
+    borderRadius: 50,
     marginRight: '1em',
-    backgroundImage: theme.customGradients.secondary,
+    background: 'white',
+    color: theme.customColors.text,
+    height: 52,
+    width: 165,
+    boxShadow: 'none',
+    border: '1px solid rgba(160,160,160,0.2);',
+    textTransform: 'none',
   },
   userDetails: {
     cursor: 'pointer',
@@ -48,6 +99,29 @@ const useStyles = makeStyles((theme) => ({
 const Header = (props) => {
   const classes = useStyles();
   const [anchorElement, setAnchorElement] = React.useState(null);
+  const [address, setAddress] = React.useState(null);
+
+  const web3Modal = new Web3Modal({
+    network: 'kovan',
+    cacheProvider: true,
+    providerOptions,
+  });
+
+  const onConnect = async () => {
+    const provider = await web3Modal.connect();
+
+    const web3 = new Web3(provider);
+    const accounts = await web3.eth.getAccounts();
+    setAddress(accounts[0]);
+  };
+
+  const onWalletClick = async () => {
+    if (!address) {
+      onConnect();
+    } else {
+      // open menu
+    }
+  };
 
   const handleClickAvatar = (event) => {
     setAnchorElement(event.currentTarget);
@@ -66,6 +140,7 @@ const Header = (props) => {
       window
         .fetch(`${config.backend.url}/login/google`, {
           method: 'POST',
+          mode: 'cors',
           body: JSON.stringify({ tokenId }),
           headers: {
             Accept: 'application/json',
@@ -106,7 +181,7 @@ const Header = (props) => {
 
   const renderGoogleSignInButton = () => {
     gapi.load('auth2', function () {
-      let auth2 = gapi.auth2.init({ client_id: config.googleAuth.clientId });
+      const auth2 = gapi.auth2.init({ client_id: config.googleAuth.clientId });
     });
 
     // customized dynamic render of the google signin button
@@ -114,12 +189,17 @@ const Header = (props) => {
       theme: 'light',
       onsuccess: onSignIn,
       onfailure: onFailure,
+      height: 52,
+      width: 140,
     });
   };
 
   useEffect(() => {
     if (!props.isAuthenticated) {
       renderGoogleSignInButton();
+    }
+    if (web3Modal.cachedProvider) {
+      onConnect();
     }
   }, [props.isAuthenticated]);
 
@@ -135,8 +215,13 @@ const Header = (props) => {
 
   const authArea = (
     <div className={classes.authArea}>
-      <Button className={classes.walletButton} variant="contained" size="small">
-        Connect wallet
+      <Button
+        className={classes.walletButton}
+        onClick={onWalletClick}
+        variant="outlined"
+        size="small"
+      >
+        {address ? shortenAddress(address) : 'Connect Wallet'}
         <AccountBalanceWalletIcon />
       </Button>
       {props.isAuthenticated ? null : googleSigninButton}
@@ -147,14 +232,44 @@ const Header = (props) => {
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static" color="secondary">
-        <Toolbar>
+        <Toolbar className={classes.toolbar}>
+          {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
           <Typography
-            variant="h6"
+            variant="h3"
             className={classes.logo}
             onClick={() => props.history.push('/')}
           >
-            Genie
+            🧞
           </Typography>
+          <Typography
+            variant="h5"
+            className={classes.logoText}
+            onClick={() => props.history.push('/')}
+          >
+            genie
+          </Typography>
+          <NavLink
+            className={classes.link}
+            to="/explore"
+            activeClassName={classes.linkActive}
+          >
+            Explore
+          </NavLink>
+          <NavLink
+            className={classes.link}
+            to="/create-pool"
+            activeClassName={classes.linkActive}
+          >
+            Create Pool
+          </NavLink>
+          <NavLink
+            className={classes.link}
+            to="/my-pools"
+            activeClassName={classes.linkActive}
+          >
+            My Pools
+          </NavLink>
+          <div className={classes.divider}></div>
           {authArea}
           <Menu
             id="simple-menu"

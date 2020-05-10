@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import Stepper from './CustomStepper/CustomStepper';
+import CustomStepper from './CustomStepper/CustomStepper';
 import PoolDetailsForm from './PoolDetailsForm/PoolDetailsForm';
 import PoolExtraForm from './PoolExtraForm/PoolExtraForm';
 import PoolVerifyForm from './PoolVerifyForm/PoolVerifyForm';
@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
     minHeight: 500,
     margin: 'auto',
     borderRadius: 25,
-    background: 'white',
   },
 }));
 
@@ -22,7 +21,7 @@ const PoolCreator = (props) => {
 
   return (
     <div className={classes.root}>
-      <Stepper
+      <CustomStepper
         poolDetails={PoolDetailsForm}
         poolExtra={PoolExtraForm}
         poolVerify={PoolVerifyForm}
