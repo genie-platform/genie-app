@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 25,
     background: 'white',
   },
+  stepper: {
+    background: 'transparent',
+  },
 }));
 
 const PoolCreator = (props) => {
@@ -23,6 +26,7 @@ const PoolCreator = (props) => {
   return (
     <div className={classes.root}>
       <Stepper
+        className={classes.stepper}
         poolDetails={PoolDetailsForm}
         poolExtra={PoolExtraForm}
         poolVerify={PoolVerifyForm}

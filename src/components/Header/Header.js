@@ -60,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     color: theme.customColors.text,
-    fontWeight: '500',
     padding: '0 0.8em',
     textDecoration: 'none',
   },
@@ -74,13 +73,13 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   googleLogin: {
-    borderRadius: 6,
+    borderRadius: 50,
     overflow: 'hidden',
     height: 52,
     border: '1px solid rgba(160,160,160,0.2);',
   },
   walletButton: {
-    borderRadius: 6,
+    borderRadius: 50,
     marginRight: '1em',
     background: 'white',
     color: theme.customColors.text,

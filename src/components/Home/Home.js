@@ -7,6 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 
 import PoolDisplayCard from '../PoolDisplayCard/PoolDisplayCard';
+import MainButton from '../UI/MainButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,18 +41,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
     fontWeight: '600',
   },
-  createPoolButton: {
-    color: 'white',
-    border: '1px solid rgba(0,0,0,0.09)',
-    backgroundImage: theme.customGradients.primary,
-    height: 54,
-    width: 166,
-    textTransform: 'none',
-    '&:hover': {
-      border: '1px solid rgba(0,0,0,0)',
-      backgroundImage: theme.customGradients.primaryHover,
-    },
-  },
   poolsGrid: {
     paddingTop: '1em',
     display: 'flex',
@@ -79,23 +68,23 @@ const Home = (props) => {
     <div className={classes.poolsGrid}>
       <PoolDisplayCard
         clickable
-        name="Diablo3 ladder"
+        name="Path of Exile League"
         image="images/cover1.jpg"
         description="diablo 3 ladder"
         rewardDuration={14}
         lockValue={5}
         winner={'first player to reach level 100'}
-        icon="🧞"
+        icon="⚔️"
       />
       <PoolDisplayCard
         clickable
-        name="test pool2"
+        name="The Purge"
         image="images/cover2.jpg"
         icon="🌌"
       />
       <PoolDisplayCard
         clickable
-        name="test pool3"
+        name="Last Survivor"
         image="images/cover3.jpg"
         icon="🌋"
       />
@@ -142,13 +131,9 @@ const Home = (props) => {
         <Typography className={classes.subTitle} variant="h6">
           INTEGRATE GENIE
         </Typography>
-        <Button
-          className={classes.createPoolButton}
-          variant="contained"
-          onClick={onCreatePoolClick}
-        >
+        <MainButton variant="contained" onClick={onCreatePoolClick}>
           Create a pool
-        </Button>
+        </MainButton>
       </Grid>
     </Grid>
   );

@@ -16,6 +16,7 @@ import web3 from '../../../ethereum/web3';
 import { FundingFactory as FundingFactoryAbi } from 'genie-contracts-abi';
 
 import { config } from '../../../config/config';
+import MainButton from '../../UI/MainButton';
 
 const FIRST_STEP = 0;
 const SECOND_STEP = 1;
@@ -28,12 +29,12 @@ const ColorlibConnector = withStyles((theme) => ({
   },
   active: {
     '& $line': {
-      backgroundImage: theme.customGradients.secondary,
+      backgroundImage: theme.customGradients.primary,
     },
   },
   completed: {
     '& $line': {
-      backgroundImage: theme.customGradients.secondary,
+      backgroundImage: theme.customGradients.primary,
     },
   },
   line: {
@@ -57,11 +58,11 @@ const useColorlibStepIconStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   active: {
-    backgroundImage: theme.customGradients.secondary,
+    backgroundImage: theme.customGradients.primary,
     boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
   },
   completed: {
-    backgroundImage: theme.customGradients.secondary,
+    backgroundImage: theme.customGradients.primary,
   },
 }));
 
@@ -96,17 +97,12 @@ const useStyles = makeStyles((theme) => ({
   },
   buttons: {
     display: 'flex',
-    justifyContent: 'center',
-    paddingBottom: '2em',
+    padding: '0 2em 2em 2em',
   },
   button: {
     marginRight: theme.spacing(1),
-    borderRadius: 25,
   },
-  buttonNext: {
-    backgroundImage: theme.customGradients.primary,
-    color: 'white',
-  },
+  buttonNext: {},
   finished: {
     paddingTop: '5em',
     textAlign: 'center',
@@ -130,7 +126,7 @@ const CustomStepper = (props) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(FIRST_STEP);
   const [canContinue, setCanContinue] = useState(false);
-  const stepNames = ['Pool details', 'Extra', 'Verify'];
+  const stepNames = ['Pool Profile', 'Extra', 'Verify'];
 
   useEffect(() => {
     const MIN_POOL_NAME_LEN = 4;
@@ -178,7 +174,7 @@ const CustomStepper = (props) => {
   };
 
   const handleBack = () => {
-    if (activeStep === 0) {
+    if (activeStep === FIRST_STEP) {
       props.history.push('/'); // go back to homepage
     }
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -195,21 +191,23 @@ const CustomStepper = (props) => {
     <div>
       <FormContent className={classes.content} />
       <div className={classes.buttons}>
-        <Button
-          onClick={handleBack}
-          className={classes.button}
-          variant="outlined"
-        >
-          Back
-        </Button>
-        <Button
+        {activeStep === FIRST_STEP ? null : (
+          <MainButton
+            onClick={handleBack}
+            className={classes.button}
+            variant="outlined"
+          >
+            Back
+          </MainButton>
+        )}
+        <MainButton
           variant="contained"
           onClick={handleNext}
           disabled={!canContinue}
           className={clsx(classes.button, canContinue && classes.buttonNext)}
         >
-          {activeStep === stepNames.length - 1 ? 'Create Pool' : 'Next'}
-        </Button>
+          {activeStep === stepNames.length - 1 ? 'Create Pool' : 'Continue'}
+        </MainButton>
       </div>
     </div>
   );

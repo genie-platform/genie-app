@@ -24,7 +24,7 @@ export const theme = createMuiTheme({
     text: '#616269',
   },
   customValues: {
-    contentWidth: '76%',
+    contentWidth: '78%',
   },
   typography: {
     fontFamily: ['Roboto', 'sans-serif'].join(','),
