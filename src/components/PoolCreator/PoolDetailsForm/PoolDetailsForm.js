@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -6,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import Popover from '@material-ui/core/Popover';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
 import { connect } from 'react-redux';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
@@ -16,25 +16,26 @@ import { theme } from '../../../theme';
 import { getRandomCoverImage } from '../../../utils/utils';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: '2em',
+  root: {},
+  label: {
+    color: theme.customColors.text,
+    paddingBottom: '0.2em',
   },
   imageCards: {
     height: 150,
-    textAlign: 'center',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     cursor: 'pointer',
-    borderRadius: 10,
-    '&:hover': {
-      background: '#ccc',
-    },
-  },
-  poolImage: {
-    height: '75%',
+    borderRadius: 6,
   },
   poolIcon: {
-    height: '75%',
-    paddingBottom: '0.2em',
+    border: '1px solid rgba(0,0,0,0.2)',
+    '&:hover': {
+      background: theme.palette.primary.main,
+    },
   },
+  poolImage: {},
   emojiPicker: {
     position: 'absolute',
     zIndex: 100,
@@ -43,20 +44,25 @@ const useStyles = makeStyles((theme) => ({
 
 const PoolDetailsForm = (props) => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [emojiMallAnchorElement, setEmojiMallAnchorElement] = useState(null);
   const [touched, setTouched] = useState({ name: false, description: false });
 
   let poolIcon = props.icon;
   let poolImage = props.coverImage;
   let helperTextName = '';
   let helperTextDescription = '';
+  let defaultWinner = '';
+
+  if (props.winnerDescription !== '') {
+    defaultWinner = props.winnerDescription;
+  }
 
   const onChangeIconClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setEmojiMallAnchorElement(event.currentTarget);
   };
 
   const closePicker = () => {
-    setAnchorEl(null);
+    setEmojiMallAnchorElement(null);
   };
 
   const onChooseIcon = (emoji) => {
@@ -100,17 +106,17 @@ const PoolDetailsForm = (props) => {
     }
   }, []);
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const isEmojyPickerOpen = Boolean(emojiMallAnchorElement);
+  const emojiPickerPopoverId = isEmojyPickerOpen ? 'simple-popover' : undefined;
 
   return (
     <div>
       <Grid container spacing={3} className={classes.root}>
         <Grid item xs={12}>
+          <Typography className={classes.label}>Name</Typography>
           <TextField
             required
             id="pool-name"
-            label="Pool name"
             variant="outlined"
             fullWidth
             defaultValue={props.name}
@@ -124,12 +130,14 @@ const PoolDetailsForm = (props) => {
         </Grid>
 
         <Grid item xs={12}>
+          <Typography className={classes.label}>Description</Typography>
           <TextField
             required
             multiline
+            rows={4}
             id="pool-description"
-            label="Pool description"
             variant="outlined"
+            placeholder="A few words about the pool"
             fullWidth
             error={validateDescription()}
             defaultValue={props.description}
@@ -142,57 +150,47 @@ const PoolDetailsForm = (props) => {
         </Grid>
 
         <Grid item xs={12}>
+          <Typography className={classes.label}>Challenge</Typography>
           <TextField
             required
-            id="lock-value"
-            label="Lock value"
             variant="outlined"
-            defaultValue={props.lockValue}
             fullWidth
-            type="number"
-            helperText="The amount of DAI each user will lock"
-            onChange={(event) => {
-              props.setPool({ lockValue: event.target.value });
-            }}
-          />
+            defaultValue={defaultWinner}
+            placeholder="Who will get the reward?"
+            onChange={(event) =>
+              props.setPool({ winnerDescription: event.target.value })
+            }
+          ></TextField>
         </Grid>
+
         <Grid item xs={4}>
-          <Card
-            elevation={3}
+          <Typography className={classes.label}>Icon</Typography>
+          <div
             onClick={onChangeIconClick}
-            className={classes.imageCards}
+            className={clsx(classes.imageCards, classes.poolIcon)}
           >
-            <CardContent>
-              <Typography
-                variant="h2"
-                id="pool-icon"
-                className={classes.poolIcon}
-              >
-                {poolIcon}
-              </Typography>
-              <Typography>Icon</Typography>
-            </CardContent>
-          </Card>
+            <Typography variant="h2" id="pool-icon">
+              {poolIcon}
+            </Typography>
+          </div>
         </Grid>
         <Grid item xs={8}>
-          <Card
-            elevation={3}
-            className={classes.imageCards}
-            onClick={chooseCoverImage}
-          >
+          <Typography className={classes.label}>Cover Image</Typography>
+          <Card className={classes.imageCards} onClick={chooseCoverImage}>
             <CardMedia
               className={classes.poolImage}
               image={poolImage}
               component="img"
             ></CardMedia>
-            <Typography>Cover Image</Typography>
           </Card>
         </Grid>
       </Grid>
+
+      {/* This is the emoji pick popover */}
       <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
+        id={emojiPickerPopoverId}
+        open={isEmojyPickerOpen}
+        anchorEl={emojiMallAnchorElement}
         onClose={closePicker}
         anchorOrigin={{
           vertical: 'bottom',
@@ -221,9 +219,9 @@ const mapStateToProps = (state) => {
   return {
     name: state.createdPool.name,
     description: state.createdPool.description,
-    lockValue: state.createdPool.lockValue,
     icon: state.createdPool.icon,
     coverImage: state.createdPool.coverImage,
+    winnerDescription: state.createdPool.winnerDescription,
   };
 };
 
@@ -235,9 +233,9 @@ const mapDispatchToProps = (dispatch) => {
         payload: {
           name: poolDetails.name,
           description: poolDetails.description,
-          lockValue: poolDetails.lockValue,
           icon: poolDetails.icon,
           coverImage: poolDetails.coverImage,
+          winnerDescription: poolDetails.winnerDescription,
         },
       }),
   };

@@ -2,44 +2,56 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 
 import PoolDisplayCard from '../PoolDisplayCard/PoolDisplayCard';
+import MainButton from '../UI/MainButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '70%',
+    width: theme.customValues.contentWidth,
     margin: 'auto',
-    padding: 50,
+    textAlign: '-webkit-center',
+  },
+  heroGridItem: {
+    padding: '0',
+  },
+  hero: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    backgroundImage: theme.customGradients.primary,
+    height: 435,
   },
   text: {
-    textAlign: 'center',
-    backgroundImage: theme.customGradients.primary,
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
+    color: 'white',
+    fontWeight: '700',
+  },
+  subTitle: {
+    color: '#797979',
   },
   kovanText: {
     textAlign: 'center',
     color: 'red',
   },
-  createPoolButton: {
-    borderRadius: 25,
-    color: 'white',
-    backgroundImage: theme.customGradients.primary,
-  },
-  explorePools: {
-    borderRadius: 14,
+  linkButton: {
+    color: theme.palette.primary.main,
+    fontWeight: '600',
   },
   poolsGrid: {
     paddingTop: '1em',
+    display: 'flex',
+    justifyContent: 'center',
   },
   allPools: {
     justifyContent: 'flex-end',
+  },
+  divider: {
+    width: 80,
+    height: 4,
   },
 }));
 
@@ -51,80 +63,77 @@ const Home = (props) => {
     props.history.push('/create-pool');
   };
 
-  const welcomeMessage = 'Genie is an interest based reward platform';
-  const kovanMessage = '*Alpha version - Available only on Kovan network!';
-
   // load pools from backend
   const poolsGrid = (
-    <Grid className={classes.poolsGrid} container spacing={1}>
-      <Grid item xs={3}>
-        <PoolDisplayCard
-          clickable
-          name="Diablo3 ladder"
-          image="images/cover1.jpg"
-          description="diablo 3 ladder"
-          rewardDuration={14}
-          lockValue={5}
-          winner={'first player to reach level 100'}
-          icon="🧞"
-        />
-      </Grid>
-      <Grid item xs={3}>
-        <PoolDisplayCard
-          clickable
-          name="test pool2"
-          image="images/cover2.jpg"
-        />
-      </Grid>
-      <Grid item xs={3}>
-        <PoolDisplayCard
-          clickable
-          name="test pool3"
-          image="images/cover3.jpg"
-        />
-      </Grid>
-      <Grid item xs={3}>
-        <PoolDisplayCard
-          clickable
-          name="test pool4"
-          image="images/cover4.jpg"
-        />
-      </Grid>
-    </Grid>
+    <div className={classes.poolsGrid}>
+      <PoolDisplayCard
+        clickable
+        name="Path of Exile League"
+        image="images/cover1.jpg"
+        description="diablo 3 ladder"
+        rewardDuration={14}
+        lockValue={5}
+        winner={'first player to reach level 100'}
+        icon="⚔️"
+      />
+      <PoolDisplayCard
+        clickable
+        name="The Purge"
+        image="images/cover2.jpg"
+        icon="🌌"
+      />
+      <PoolDisplayCard
+        clickable
+        name="Last Survivor"
+        image="images/cover3.jpg"
+        icon="🌋"
+      />
+    </div>
   );
 
   return (
     <Grid container className={classes.root} spacing={6}>
-      <Grid item xs={12}>
-        <div id="create-pool">
+      <Grid id="hero" item xs={12} style={{ padding: 0 }}>
+        <div className={classes.hero}>
           <Typography className={classes.text} variant="h4">
-            {welcomeMessage}
+            The interest based
           </Typography>
-          <Typography className={classes.kovanText} variant="h6">
-            {kovanMessage}
+          <Typography className={classes.text} variant="h4">
+            reward platform
           </Typography>
-          <Button
-            className={classes.createPoolButton}
-            variant="contained"
-            onClick={onCreatePoolClick}
-          >
-            Create a new pool
-          </Button>
         </div>
       </Grid>
+      <Typography className={classes.kovanText} variant="h6">
+        *Alpha version - Available only on Kovan network!
+      </Typography>
+      <Grid id="how-it-work" item xs={12}>
+        <Typography className={classes.subTitle} variant="h6">
+          HOW IT WORKS?
+        </Typography>
+        <Button className={classes.linkButton}>Learn More</Button>
+      </Grid>
       <Grid item xs={12}>
-        <Card elevation={3} id="explore-pools" className={classes.explorePools}>
-          <CardContent>
-            <Typography variant="h5">Explore pools</Typography>
-            {poolsGrid}
-            <CardActions className={classes.allPools}>
-              <Button>
-                All pools
-                <KeyboardArrowRightIcon />
-              </Button>
-            </CardActions>
-          </CardContent>
-        </Card>
+        <Divider className={classes.divider} />
+      </Grid>
+      <Grid id="popular-pool" item xs={12}>
+        <Typography className={classes.subTitle} variant="h6">
+          POPULAR POOLS
+        </Typography>
+        {poolsGrid}
+      </Grid>
+      <Grid item xs={12} justify="center">
+        <Button className={classes.linkButton}>Explore more pools</Button>
+      </Grid>
+      <Grid item xs={12}>
+        <Divider className={classes.divider} />
+      </Grid>
+      <Grid item xs={12}>
+        <Typography className={classes.subTitle} variant="h6">
+          INTEGRATE GENIE
+        </Typography>
+        <MainButton variant="contained" onClick={onCreatePoolClick}>
+          Create a pool
+        </MainButton>
       </Grid>
     </Grid>
   );
