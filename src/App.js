@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 
 import PoolCreator from './components/PoolCreator/PoolCreator';
+import PoolDashboard from './components/PoolDashboard/PoolDashboard';
 import Header from './components/Header/Header';
 import Home from './components/Home/Home';
 
@@ -24,6 +25,7 @@ const App = (props) => {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/create-pool" exact component={PoolCreator} />
+          <Route path="/dashboard/:poolAddress" exact component={PoolDashboard} />
         </Switch>
       </div>
     </BrowserRouter>

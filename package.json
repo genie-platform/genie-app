@@ -20,9 +20,11 @@
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
+    "react-use": "^14.2.0",
     "redux": "^4.0.5",
     "standard": "^14.3.3",
     "web3": "^1.2.7",
+    "web3-utils": "^1.2.7",
     "web3modal": "^1.5.0"
   },
   "scripts": {
