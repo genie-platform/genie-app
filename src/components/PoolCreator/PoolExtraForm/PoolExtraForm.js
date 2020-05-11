@@ -45,7 +45,9 @@ const PoolExtraForm = (props) => {
         </Grid>
 
         <Grid item xs={12}>
-          <Typography className={classes.label}>Reward Period</Typography>
+          <Typography className={classes.label}>
+            Reward Period (days)
+          </Typography>
           <TextField
             required
             variant="outlined"

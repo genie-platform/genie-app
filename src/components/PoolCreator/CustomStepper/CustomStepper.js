@@ -11,6 +11,7 @@ import LocalFloristIcon from '@material-ui/icons/LocalFlorist';
 import CheckIcon from '@material-ui/icons/Check';
 import StepConnector from '@material-ui/core/StepConnector';
 import Button from '@material-ui/core/Button';
+import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import web3 from '../../../ethereum/web3';
 import { FundingFactory as FundingFactoryAbi } from 'genie-contracts-abi';
@@ -99,7 +100,18 @@ const useStyles = makeStyles((theme) => ({
   },
   buttons: {
     display: 'flex',
+    flexDirection: 'column',
     paddingTop: '2em',
+  },
+  backButtonArea: {
+    display: 'flex',
+    padding: '0.8em 0',
+    color: theme.customColors.lightText,
+  },
+  backButton: {
+    textDecoration: 'none',
+    cursor: 'pointer',
+    paddingLeft: '0.3em',
   },
   button: {
     marginRight: theme.spacing(1),
@@ -193,15 +205,6 @@ const CustomStepper = (props) => {
     <div>
       <FormContent className={classes.content} />
       <div className={classes.buttons}>
-        {activeStep === FIRST_STEP ? null : (
-          <MainButton
-            onClick={handleBack}
-            className={classes.button}
-            variant="outlined"
-          >
-            Back
-          </MainButton>
-        )}
         <MainButton
           variant="contained"
           onClick={handleNext}
@@ -210,6 +213,18 @@ const CustomStepper = (props) => {
         >
           {activeStep === stepNames.length - 1 ? 'Create Pool' : 'Continue'}
         </MainButton>
+        {activeStep === FIRST_STEP ? null : (
+          <div className={classes.backButtonArea}>
+            <Typography>Or </Typography>
+            <Link
+              onClick={handleBack}
+              className={clsx(classes.button, classes.backButton)}
+              variant="outlined"
+            >
+              Back
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

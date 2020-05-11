@@ -160,7 +160,7 @@ const PoolDetailsForm = (props) => {
             onChange={(event) =>
               props.setPool({ winnerDescription: event.target.value })
             }
-          ></TextField>
+          />
         </Grid>
 
         <Grid item xs={4}>
