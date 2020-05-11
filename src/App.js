@@ -2,11 +2,13 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
+import { ApolloProvider } from '@apollo/react-hooks';
 
 import PoolCreator from './components/PoolCreator/PoolCreator';
 import PoolDashboard from './components/PoolDashboard/PoolDashboard';
 import Header from './components/Header/Header';
 import Home from './components/Home/Home';
+import { client } from './services/graphql';
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -20,14 +22,16 @@ const App = (props) => {
 
   return (
     <BrowserRouter>
-      <div className={classes.app}>
-        <Header />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/create-pool" exact component={PoolCreator} />
-          <Route path="/dashboard/:poolAddress" exact component={PoolDashboard} />
-        </Switch>
-      </div>
+      <ApolloProvider client={client}>
+        <div className={classes.app}>
+          <Header />
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/create-pool" exact component={PoolCreator} />
+            <Route path="/dashboard/:poolAddress" exact component={PoolDashboard} />
+          </Switch>
+        </div>
+      </ApolloProvider>
     </BrowserRouter>
   );
 };
