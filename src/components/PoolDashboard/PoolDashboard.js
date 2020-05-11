@@ -1,9 +1,22 @@
 import React from 'react';
 import {useAsync} from 'react-use';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { getTotalStaked, getCurrentPrize, fetchPoolMetadata } from '../../ethereum/pool';
 
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+  },
+  label: {
+    color: theme.customColors.text,
+    paddingBottom: '0.2em',
+  },
+}));
+
 const PoolDashboard = ({ match: { params: { poolAddress }}}) => {
+  const classes = useStyles();
+
   const totalStakedState = useAsync(async () => {
     return getTotalStaked(poolAddress)
   }, [poolAddress]);
@@ -19,7 +32,7 @@ const PoolDashboard = ({ match: { params: { poolAddress }}}) => {
   console.log({ poolMetadataState })
 
   return (
-    <div>
+    <div className={classes.root}>
       {poolMetadataState.value &&
           <div>
             <div>{poolMetadataState.value.name}</div>
