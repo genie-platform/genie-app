@@ -20,15 +20,11 @@ const PoolDashboard = ({ match: { params: { poolAddress }}}) => {
 
   return (
     <div>
-      Dashboard
-
-      {poolMetadataState.loading
-        ? <div>Loading...</div>
-        : poolMetadataState.error
-          ? <div>Total: {poolMetadataState.error.message}</div>
-          : <div><div>Name: {poolMetadataState.value.name}</div>
-            <div>Desc: {poolMetadataState.value.description}</div>
-            </div>
+      {poolMetadataState.value &&
+          <div>
+            <div>{poolMetadataState.value.name}</div>
+            <div>{poolMetadataState.value.description}</div>
+          </div>
       }
       {totalStakedState.loading
         ? <div>Loading...</div>
@@ -39,9 +35,12 @@ const PoolDashboard = ({ match: { params: { poolAddress }}}) => {
       {currentPrizeState.loading
         ? <div>Loading...</div>
         : currentPrizeState.error
-          ? <div>Total: {currentPrizeState.error.message}</div>
-          : <div>Current Prize: {currentPrizeState.value}</div>
+          ? <div>Total Staked {currentPrizeState.error.message}</div>
+          : <div>Current Prizepool: {currentPrizeState.value}</div>
       }
+      <div>
+        <button>Join the pool</button>
+      </div>
     </div>
   )
 
