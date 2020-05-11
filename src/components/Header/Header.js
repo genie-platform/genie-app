@@ -154,7 +154,6 @@ const Header = (props) => {
 
           const userDetails = {
             token: data.token,
-            tokenId: tokenId,
             userId: profile.getId(),
             name: profile.getGivenName(),
             imageUrl: profile.getImageUrl(),

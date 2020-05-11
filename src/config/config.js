@@ -20,7 +20,7 @@ const dev = {
   },
   googleAuth: {
     clientId:
-      '1045886499834-ib4des9sbo7l687rtqoifq2b5l40ec8b.apps.googleusercontent.com',
+      '1045886499834-t0vrjhlq8ep534njprdp8k80jl4iqdra.apps.googleusercontent.com',
   },
   network: {
     addresses: {

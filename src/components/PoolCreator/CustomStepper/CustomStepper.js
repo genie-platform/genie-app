@@ -172,29 +172,28 @@ const CustomStepper = (props) => {
     console.log(txReceipt);
     console.log(txReceipt.events.FundingCreated.returnValues.funding);
 
-    //call backend endpoint to save pool metadata in DB
+    const data = {
+      name: props.name,
+      description: props.description,
+      lockValue: props.lockValue,
+      icon: props.icon,
+      coverImage: props.coverImage,
+      winnerDescription: props.winnerDescription,
+      rewardDuration: props.rewardDuration,
+      txHash: txReceipt.transactionHash,
+      contractAddress: txReceipt.events.FundingCreated.returnValues.funding,
+    };
+
+    // call backend endpoint to save pool metadata in DB
     window.fetch(`${config.backend.url}/pools`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${props.token}`,
       },
-      body:{
-        name: props.name,
-        description: props.description,
-        lockValue: props.lockValue,
-        icon: props.icon,
-        coverImage: props.coverImage,
-        winnerDescription: props.winnerDescription,
-        rewardDuration: props.rewardDuration,
-        txHash: txReceipt.transactionHash,
-        contractAddress: txReceipt.events.FundingCreated.returnValues.funding
-      }
-    })
-
-    // TODO we also need to listen to creation event? when the tx is confirmed
-    // and get the the new contract address
-    // and then update the pool in the db with contract address
+      body: JSON.stringify(data),
+    });
   };
 
   const handleNext = async () => {
@@ -290,6 +289,7 @@ const mapStateToProps = (state) => {
     coverImage: state.createdPool.coverImage,
     winnerDescription: state.createdPool.winnerDescription,
     rewardDuration: state.createdPool.rewardDuration,
+    token: state.auth.token,
   };
 };
 
