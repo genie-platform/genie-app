@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   toolbar: {
-    width: '72%',
+    width: '80%',
   },
   logo: {
     paddingRight: '0.3em',

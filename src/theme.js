@@ -21,9 +21,11 @@ export const theme = createMuiTheme({
     backgroundDark: '#333',
     footerBackground: '#363841',
     text: '#616269',
+    lightText: 'rgba(160,160,160,0.8)',
   },
   customValues: {
     contentWidth: '78%',
+    bigTitleWidth: '30%',
   },
   typography: {
     fontFamily: ['Roboto', 'sans-serif'].join(','),
