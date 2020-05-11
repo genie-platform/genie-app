@@ -170,8 +170,27 @@ const CustomStepper = (props) => {
       .send({ from: accounts[0] });
 
     console.log(txReceipt);
+    console.log(txReceipt.events.FundingCreated.returnValues.funding);
 
-    // TODO save pool data in DB (call backend endpoint)
+    //call backend endpoint to save pool metadata in DB
+    window.fetch(`${config.backend.url}/pools`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body:{
+        name: props.name,
+        description: props.description,
+        lockValue: props.lockValue,
+        icon: props.icon,
+        coverImage: props.coverImage,
+        winnerDescription: props.winnerDescription,
+        rewardDuration: props.rewardDuration,
+        txHash: txReceipt.transactionHash,
+        contractAddress: txReceipt.events.FundingCreated.returnValues.funding
+      }
+    })
 
     // TODO we also need to listen to creation event? when the tx is confirmed
     // and get the the new contract address
@@ -269,6 +288,8 @@ const mapStateToProps = (state) => {
     lockValue: state.createdPool.lockValue,
     icon: state.createdPool.icon,
     coverImage: state.createdPool.coverImage,
+    winnerDescription: state.createdPool.winnerDescription,
+    rewardDuration: state.createdPool.rewardDuration,
   };
 };
 
