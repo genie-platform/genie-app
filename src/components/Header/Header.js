@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
   },
   toolbar: {
-    width: '80%',
+    width: '85%',
   },
   logo: {
     paddingRight: '0.3em',
@@ -91,6 +91,7 @@ const useStyles = makeStyles((theme) => ({
     border: '1px solid rgba(160,160,160,0.2);',
     textTransform: 'none',
   },
+  walletIcon: { paddingLeft: '0.3em' },
   userDetails: {
     cursor: 'pointer',
   },
@@ -222,7 +223,10 @@ const Header = (props) => {
         size="small"
       >
         {address ? shortenAddress(address) : 'Connect Wallet'}
-        <AccountBalanceWalletIcon />
+        <AccountBalanceWalletIcon
+          color="primary"
+          className={classes.walletIcon}
+        />
       </Button>
       {props.isAuthenticated ? null : googleSigninButton}
       {props.isAuthenticated ? userAvatar : null}

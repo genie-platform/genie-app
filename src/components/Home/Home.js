@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     width: theme.customValues.contentWidth,
     margin: 'auto',
     textAlign: '-webkit-center',
+    paddingBottom: '8em',
   },
   heroGridItem: {
     padding: '0',
@@ -25,12 +26,17 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     flexDirection: 'column',
     backgroundImage: theme.customGradients.primary,
-    height: 435,
+    height: '27em',
   },
-  text: {
+  heroTitle: {
     width: theme.customValues.bigTitleWidth,
     color: 'white',
     fontWeight: '700',
+  },
+  heroSubTitle: {
+    paddingTop: '1em',
+    width: theme.customValues.bigTitleWidth,
+    color: 'white',
   },
   subTitle: {
     color: '#797979',
@@ -75,6 +81,7 @@ const useStyles = makeStyles((theme) => ({
   },
   integrationSubTitle: {
     color: theme.customColors.lightText,
+    paddingBottom: '0.4em',
   },
   divider: {
     margin: '2em 0',
@@ -123,8 +130,15 @@ const Home = (props) => {
     <Grid container className={classes.root} spacing={6}>
       <Grid id="hero" item xs={12} style={{ padding: 0 }}>
         <div className={classes.hero}>
-          <Typography className={classes.text} variant="h4">
-            The interest based reward platform
+          <Typography className={classes.heroTitle} variant="h3">
+            The interest based
+          </Typography>
+          <Typography className={classes.heroTitle} variant="h3">
+            reward platform
+          </Typography>
+          <Typography className={classes.heroSubTitle} variant="h6">
+            Genie is an interest based reward platform. Excepteur sint occaecat
+            cupidatat non proident, sunt in culpa qui officia.
           </Typography>
         </div>
       </Grid>
