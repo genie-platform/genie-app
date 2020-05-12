@@ -28,7 +28,8 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    position: 'relative'
   },
   title: {
     fontSize: '2.25em',
@@ -62,6 +63,8 @@ const useStyles = makeStyles(theme => ({
     padding: '5px'
   },
   icon: {
+    position: 'absolute',
+    top: '230px'
   },
   cover: {
     width: '100%',
