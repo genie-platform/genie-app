@@ -99,25 +99,25 @@ const PoolDashboard = ({ match: { params: { poolAddress }}}) => {
               <Typography variant="h2" className={classes.title}>
                 {poolMetadataState.value.name}
               </Typography>
-              <div className={classes.desc}>{poolMetadataState.value.description}</div>
+              <Typography component="subtitle1" className={classes.desc}>{poolMetadataState.value.description}</Typography>
             </>
         }
         <div className={classes.bar}>
           <div>
-            <div className={classes.barTitle}>Current prizepool</div>
-            <div className={classes.barValue}>${Math.round(currentPrizeState.value * 10000) / 10000}</div>
+            <Typography component="subtitle1" className={classes.barTitle}>Current prize</Typography>
+            <Typography component="h2" className={classes.barValue}>${Math.round(currentPrizeState.value * 10000) / 10000}</Typography>
           </div>
           <div>
-            <div className={classes.barTitle}>Next distribution</div>
-            <div className={classes.barValue}>{get(poolMetadataState, 'value.rewardDuration')} days</div>
+            <Typography component="subtitle1" className={classes.barTitle}>Next distribution</Typography>
+            <Typography component="h2" className={classes.barValue}>{get(poolMetadataState, 'value.rewardDuration')} days</Typography>
           </div>
           <div>
-            <div className={classes.barTitle}># of players</div>
-            <div className={classes.barValue}>{get(poolGraphState, 'data.funding.numberOfPlayers')}</div>
+            <Typography component="subtitle1" className={classes.barTitle}># of players</Typography>
+            <Typography component="h2" className={classes.barValue}>{get(poolGraphState, 'data.funding.numberOfPlayers')}</Typography>
           </div>
           <div>
-            <div className={classes.barTitle}>Total staked</div>
-            <div className={classes.barValue}>${fromWei(get(poolGraphState, 'data.funding.totalStaked', ''))}</div>
+            <Typography component="subtitle1" className={classes.barTitle}>Total staked</Typography>
+            <Typography component="h2" className={classes.barValue}>${fromWei(get(poolGraphState, 'data.funding.totalStaked', ''))}</Typography>
           </div>
         </div>
         <div>
