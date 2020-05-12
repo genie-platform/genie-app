@@ -278,15 +278,23 @@ const CustomStepper = (props) => {
 
   const finished = (
     <div className={classes.finished}>
-      <Typography className={classes.instructions}>
-        Congatulations, pool created! Pool dashboard coming soon ™
-      </Typography>
-      <Button
-        onClick={handleReset}
-        className={clsx(classes.button, classes.buttonNext)}
-      >
-        Go back to the home page
-      </Button>
+      {isPoolCreated ? (
+        <React.Fragment>
+          <Typography className={classes.instructions}>
+            Congatulations, pool created! Pool dashboard coming soon ™
+          </Typography>
+          <Button
+            onClick={handleReset}
+            className={clsx(classes.button, classes.buttonNext)}
+          >
+            Go back to the home page
+          </Button>
+        </React.Fragment>
+      ) : (
+        <Typography className={classes.instructions}>
+          Please confirm to create the pool on the blockchain!
+        </Typography>
+      )}
     </div>
   );
 
