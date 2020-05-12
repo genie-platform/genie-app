@@ -166,15 +166,15 @@ const Home = (props) => {
           POPULAR POOLS
         </Typography>
       </Grid>
-      <Grid item xs={12} justify="center">
+      <Grid item xs={12}>
         <Typography className={classes.titleBig} variant="h4">
           Duis aute irure dolor in reprehenderit in
         </Typography>
       </Grid>
-      <Grid item xs={12} justify="center">
+      <Grid item xs={12}>
         {poolsGrid}
       </Grid>
-      <Grid item xs={12} justify="center">
+      <Grid item xs={12}>
         <Button className={classes.linkButton}>Explore more pools</Button>
       </Grid>
       <Grid item xs={12}>
