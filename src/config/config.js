@@ -12,6 +12,9 @@ const prod = {
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
   },
+  graph: {
+    uri: 'https://api.thegraph.com/subgraphs/id/QmXDQkcowPCiJe8CMePx1DCJRP8Y9MrGTk73xWVHYYtrzK'
+  }
 };
 
 const dev = {
@@ -28,6 +31,9 @@ const dev = {
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
   },
+  graph: {
+    uri: 'https://api.thegraph.com/subgraphs/id/QmXDQkcowPCiJe8CMePx1DCJRP8Y9MrGTk73xWVHYYtrzK'
+  }
 };
 
 export const config = process.env.NODE_ENV === 'development' ? dev : prod;

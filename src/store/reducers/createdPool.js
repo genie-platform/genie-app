@@ -21,10 +21,16 @@ const setPool = (state, actionPayload) => {
   return { ...state, ...actionPayload };
 };
 
+const resetPool = () => {
+  return { ...initialState };
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_POOL:
       return setPool(state, action.payload);
+    case actionTypes.RESET_POOL:
+      return resetPool();
     default:
       return state;
   }

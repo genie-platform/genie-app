@@ -4,3 +4,4 @@ export const AUTH_FAIL = 'AUTH_FAIL';
 export const AUTH_SIGNOUT = 'AUTH_SIGNOUT';
 
 export const SET_POOL = 'SET_POOL';
+export const RESET_POOL = 'RESET_POOL';

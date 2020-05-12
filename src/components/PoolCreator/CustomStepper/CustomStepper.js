@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import web3 from '../../../ethereum/web3';
 import { FundingFactory as FundingFactoryAbi } from 'genie-contracts-abi';
 
+import * as actionTypes from '../../../store/actions/actionTypes';
 import { config } from '../../../config/config';
 import MainButton from '../../UI/MainButton';
 import { lowercaseAddress } from '../../../utils/utils';
@@ -142,6 +143,7 @@ const CustomStepper = (props) => {
   const [activeStep, setActiveStep] = useState(FIRST_STEP);
   const [canContinue, setCanContinue] = useState(false);
   const [isPoolCreated, setIsPoolCreated] = useState(false);
+  const [contractAddress, setContractAddress] = useState();
   const stepNames = ['Pool Profile', 'Extra', 'Verify'];
 
   useEffect(() => {
@@ -199,15 +201,17 @@ const CustomStepper = (props) => {
       .createFunding(config.network.addresses.cDai, poolOwnerAddress)
       .send({ from: poolOwnerAddress });
 
-    console.log(txReceipt);
     if (txReceipt) {
+      const contractAddress = lowercaseAddress(
+        txReceipt.events.FundingCreated.returnValues.funding
+      );
+
       setIsPoolCreated(true);
+      setContractAddress(contractAddress);
 
       const poolBlockchainData = {
         txHash: txReceipt.transactionHash,
-        contractAddress: lowercaseAddress(
-          txReceipt.events.FundingCreated.returnValues.funding
-        ),
+        contractAddress,
         poolOwnerAddress: lowercaseAddress(poolOwnerAddress),
       };
 
@@ -242,9 +246,9 @@ const CustomStepper = (props) => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleReset = () => {
-    // setActiveStep(0);
-    props.history.push('/');
+  const openDashboard = () => {
+    props.onPoolCreation(); // reset pool state
+    props.history.push(`/dashboard/${contractAddress}`);
   };
 
   const FormContent = getStepContent(activeStep, props);
@@ -281,18 +285,18 @@ const CustomStepper = (props) => {
       {isPoolCreated ? (
         <React.Fragment>
           <Typography className={classes.instructions}>
-            Congatulations, pool created! Pool dashboard coming soon ™
+            Congatulations, your pool is created!
           </Typography>
           <Button
-            onClick={handleReset}
+            onClick={openDashboard}
             className={clsx(classes.button, classes.buttonNext)}
           >
-            Go back to the home page
+            Open Dashboard
           </Button>
         </React.Fragment>
       ) : (
         <Typography className={classes.instructions}>
-          Please confirm to create the pool on the blockchain!
+          Please confirm the transaction with your Ethereum provider!
         </Typography>
       )}
     </div>
@@ -330,4 +334,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(withRouter(CustomStepper));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onPoolCreation: () => dispatch({ type: actionTypes.RESET_POOL }),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(CustomStepper));
