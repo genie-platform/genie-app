@@ -18,6 +18,7 @@ import { FundingFactory as FundingFactoryAbi } from 'genie-contracts-abi';
 
 import { config } from '../../../config/config';
 import MainButton from '../../UI/MainButton';
+import { lowercaseAddress } from '../../../utils/utils';
 
 const FIRST_STEP = 0;
 const SECOND_STEP = 1;
@@ -140,6 +141,7 @@ const CustomStepper = (props) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(FIRST_STEP);
   const [canContinue, setCanContinue] = useState(false);
+  const [isPoolCreated, setIsPoolCreated] = useState(false);
   const stepNames = ['Pool Profile', 'Extra', 'Verify'];
 
   useEffect(() => {
@@ -157,25 +159,71 @@ const CustomStepper = (props) => {
 
   const createPool = async () => {
     const accounts = await web3.eth.getAccounts();
-    console.log(accounts);
+    const poolOwnerAddress = accounts[0];
 
-    debugger;
     const fundingFactoryContract = new web3.eth.Contract(
       FundingFactoryAbi,
       config.network.addresses.fundingFactory
     );
 
+    // create pool object in backend with non-blockchain data
+    const poolMetadata = {
+      name: props.name,
+      description: props.description,
+      lockValue: props.lockValue,
+      icon: props.icon,
+      coverImage: props.coverImage,
+      winnerDescription: props.winnerDescription,
+      rewardDuration: props.rewardDuration,
+      txHash: null,
+      contractAddress: null,
+      poolOwnerAddress: null,
+    };
+
+    const pool = await window.fetch(`${config.backend.url}/pools`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${props.token}`,
+      },
+      body: JSON.stringify(poolMetadata),
+    });
+
+    // get pool id so we could update it with the blockchain data
+    const dbPoolData = await pool.json();
+    const poolId = dbPoolData.data.pool._id;
+
+    // Get blockchain data after tx confirms, then update pool object
     const txReceipt = await fundingFactoryContract.methods
-      .createFunding(config.network.addresses.cDai, accounts[0])
-      .send({ from: accounts[0] });
+      .createFunding(config.network.addresses.cDai, poolOwnerAddress)
+      .send({ from: poolOwnerAddress });
 
     console.log(txReceipt);
+    if (txReceipt) {
+      setIsPoolCreated(true);
 
-    // TODO save pool data in DB (call backend endpoint)
+      const poolBlockchainData = {
+        txHash: txReceipt.transactionHash,
+        contractAddress: lowercaseAddress(
+          txReceipt.events.FundingCreated.returnValues.funding
+        ),
+        poolOwnerAddress: lowercaseAddress(poolOwnerAddress),
+      };
 
-    // TODO we also need to listen to creation event? when the tx is confirmed
-    // and get the the new contract address
-    // and then update the pool in the db with contract address
+      // call backend endpoint to update pool data in DB
+      window.fetch(`${config.backend.url}/pools/${poolId}`, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${props.token}`,
+        },
+        body: JSON.stringify(poolBlockchainData),
+      });
+    } else {
+      console.log("error - couldn't create pool");
+    }
   };
 
   const handleNext = async () => {
@@ -219,7 +267,6 @@ const CustomStepper = (props) => {
             <Link
               onClick={handleBack}
               className={clsx(classes.button, classes.backButton)}
-              variant="outlined"
             >
               Back
             </Link>
@@ -231,15 +278,23 @@ const CustomStepper = (props) => {
 
   const finished = (
     <div className={classes.finished}>
-      <Typography className={classes.instructions}>
-        Congatulations, pool created! Pool dashboard coming soon ™
-      </Typography>
-      <Button
-        onClick={handleReset}
-        className={clsx(classes.button, classes.buttonNext)}
-      >
-        Go back to the home page
-      </Button>
+      {isPoolCreated ? (
+        <React.Fragment>
+          <Typography className={classes.instructions}>
+            Congatulations, pool created! Pool dashboard coming soon ™
+          </Typography>
+          <Button
+            onClick={handleReset}
+            className={clsx(classes.button, classes.buttonNext)}
+          >
+            Go back to the home page
+          </Button>
+        </React.Fragment>
+      ) : (
+        <Typography className={classes.instructions}>
+          Please confirm to create the pool on the blockchain!
+        </Typography>
+      )}
     </div>
   );
 
@@ -269,6 +324,9 @@ const mapStateToProps = (state) => {
     lockValue: state.createdPool.lockValue,
     icon: state.createdPool.icon,
     coverImage: state.createdPool.coverImage,
+    winnerDescription: state.createdPool.winnerDescription,
+    rewardDuration: state.createdPool.rewardDuration,
+    token: state.auth.token,
   };
 };
 

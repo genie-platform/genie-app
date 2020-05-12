@@ -1,4 +1,4 @@
-import * as actionTypes from "../actions/actionTypes";
+import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   token: null,
@@ -7,12 +7,12 @@ const initialState = {
   imageUrl: null,
   error: null,
   loading: false,
-  authRedirectPath: "/",
+  authRedirectPath: '/',
 };
 
 const signInSuccess = (state, action) => {
   return {
-    token: action.idToken,
+    token: action.token,
     userId: action.userId,
     name: action.name,
     imageUrl: action.imageUrl,
