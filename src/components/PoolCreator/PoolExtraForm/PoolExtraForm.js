@@ -33,7 +33,6 @@ const PoolExtraForm = (props) => {
           <TextField
             required
             id="lock-value"
-            variant="outlined"
             defaultValue={props.lockValue}
             helperText="The amount of DAI each user will lock"
             fullWidth
@@ -50,7 +49,6 @@ const PoolExtraForm = (props) => {
           </Typography>
           <TextField
             required
-            variant="outlined"
             defaultValue={props.rewardDuration}
             helperText="Leave the field empty if reward is not recurring"
             fullWidth

@@ -175,9 +175,12 @@ const CustomStepper = (props) => {
       coverImage: props.coverImage,
       winnerDescription: props.winnerDescription,
       rewardDuration: props.rewardDuration,
+      txHash: null,
+      contractAddress: null,
+      poolOwnerAddress: null,
     };
 
-    const pool = window.fetch(`${config.backend.url}/pools`, {
+    const pool = await window.fetch(`${config.backend.url}/pools`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -187,13 +190,16 @@ const CustomStepper = (props) => {
       body: JSON.stringify(poolMetadata),
     });
 
+    // get pool id so we could update it with the blockchain data
+    const dbPoolData = await pool.json();
+    const poolId = dbPoolData.data.pool._id;
+
     // Get blockchain data after tx confirms, then update pool object
     const txReceipt = await fundingFactoryContract.methods
       .createFunding(config.network.addresses.cDai, poolOwnerAddress)
       .send({ from: poolOwnerAddress });
 
     console.log(txReceipt);
-
     if (txReceipt) {
       setIsPoolCreated(true);
 
@@ -205,8 +211,8 @@ const CustomStepper = (props) => {
         poolOwnerAddress: lowercaseAddress(poolOwnerAddress),
       };
 
-      // call backend endpoint to save pool metadata in DB
-      window.fetch(`${config.backend.url}/pools/${pool._id}`, {
+      // call backend endpoint to update pool data in DB
+      window.fetch(`${config.backend.url}/pools/${poolId}`, {
         method: 'PUT',
         headers: {
           Accept: 'application/json',
@@ -261,7 +267,6 @@ const CustomStepper = (props) => {
             <Link
               onClick={handleBack}
               className={clsx(classes.button, classes.backButton)}
-              variant="outlined"
             >
               Back
             </Link>
