@@ -93,7 +93,10 @@ const PoolDashboard = ({ match: { params: { poolAddress }}}) => {
               <div className={classes.cover}>
                 <img src={poolMetadataState.value.coverImage} />
               </div>
-              <Typography variant="h4" className={classes.title}>
+              <Typography variant="h1" id="pool-icon">
+                {poolMetadataState.value.icon}
+              </Typography>
+              <Typography variant="h2" className={classes.title}>
                 {poolMetadataState.value.name}
               </Typography>
               <div className={classes.desc}>{poolMetadataState.value.description}</div>
