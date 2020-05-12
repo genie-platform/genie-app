@@ -161,12 +161,33 @@ const CustomStepper = (props) => {
     const accounts = await web3.eth.getAccounts();
     const poolOwnerAddress = accounts[0];
 
-    debugger;
     const fundingFactoryContract = new web3.eth.Contract(
       FundingFactoryAbi,
       config.network.addresses.fundingFactory
     );
 
+    // create pool object in backend with non-blockchain data
+    const poolMetadata = {
+      name: props.name,
+      description: props.description,
+      lockValue: props.lockValue,
+      icon: props.icon,
+      coverImage: props.coverImage,
+      winnerDescription: props.winnerDescription,
+      rewardDuration: props.rewardDuration,
+    };
+
+    const pool = window.fetch(`${config.backend.url}/pools`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${props.token}`,
+      },
+      body: JSON.stringify(poolMetadata),
+    });
+
+    // Get blockchain data after tx confirms, then update pool object
     const txReceipt = await fundingFactoryContract.methods
       .createFunding(config.network.addresses.cDai, poolOwnerAddress)
       .send({ from: poolOwnerAddress });
@@ -176,14 +197,7 @@ const CustomStepper = (props) => {
     if (txReceipt) {
       setIsPoolCreated(true);
 
-      const data = {
-        name: props.name,
-        description: props.description,
-        lockValue: props.lockValue,
-        icon: props.icon,
-        coverImage: props.coverImage,
-        winnerDescription: props.winnerDescription,
-        rewardDuration: props.rewardDuration,
+      const poolBlockchainData = {
         txHash: txReceipt.transactionHash,
         contractAddress: lowercaseAddress(
           txReceipt.events.FundingCreated.returnValues.funding
@@ -192,14 +206,14 @@ const CustomStepper = (props) => {
       };
 
       // call backend endpoint to save pool metadata in DB
-      window.fetch(`${config.backend.url}/pools`, {
-        method: 'POST',
+      window.fetch(`${config.backend.url}/pools/${pool._id}`, {
+        method: 'PUT',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
           Authorization: `Bearer ${props.token}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(poolBlockchainData),
       });
     } else {
       console.log("error - couldn't create pool");
