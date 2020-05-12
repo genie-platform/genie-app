@@ -82,12 +82,9 @@ const PoolDashboard = ({ match: { params: { poolAddress }}}) => {
     return fetchPoolMetadata(poolAddress)
   }, [poolAddress]);
 
-  const { loading, error, data } = useQuery(GET_POOL, {
+  const poolGraphState = useQuery(GET_POOL, {
     variables: { poolAddress }
   });
-
-  // console.log(poolMetadataState)
-  // {Math.round
 
   return (
     <div className={classes.root}>
@@ -99,7 +96,6 @@ const PoolDashboard = ({ match: { params: { poolAddress }}}) => {
               <Typography variant="h4" className={classes.title}>
                 {poolMetadataState.value.name}
               </Typography>
-              {/* <div className={classes.title}>{poolMetadataState.value.name}</div> */}
               <div className={classes.desc}>{poolMetadataState.value.description}</div>
             </>
         }
@@ -114,11 +110,11 @@ const PoolDashboard = ({ match: { params: { poolAddress }}}) => {
           </div>
           <div>
             <div className={classes.barTitle}># of players</div>
-            <div className={classes.barValue}>{get(data, 'funding.numberOfPlayers')}</div>
+            <div className={classes.barValue}>{get(poolGraphState, 'data.funding.numberOfPlayers')}</div>
           </div>
           <div>
             <div className={classes.barTitle}>Total staked</div>
-            <div className={classes.barValue}>${fromWei(get(data, 'funding.totalStaked', ''))}</div>
+            <div className={classes.barValue}>${fromWei(get(poolGraphState, 'data.funding.totalStaked', ''))}</div>
           </div>
         </div>
         <div>
