@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import web3 from '../../../ethereum/web3';
 import { FundingFactory as FundingFactoryAbi } from 'genie-contracts-abi';
 
+import * as actionTypes from '../../../store/actions/actionTypes';
 import { config } from '../../../config/config';
 import MainButton from '../../UI/MainButton';
 import { lowercaseAddress } from '../../../utils/utils';
@@ -203,7 +204,7 @@ const CustomStepper = (props) => {
     if (txReceipt) {
       const contractAddress = lowercaseAddress(
         txReceipt.events.FundingCreated.returnValues.funding
-      )
+      );
 
       setIsPoolCreated(true);
       setContractAddress(contractAddress);
@@ -246,7 +247,7 @@ const CustomStepper = (props) => {
   };
 
   const openDashboard = () => {
-    // setActiveStep(0);
+    props.onPoolCreation(); // reset pool state
     props.history.push(`/dashboard/${contractAddress}`);
   };
 
@@ -287,7 +288,7 @@ const CustomStepper = (props) => {
             Congatulations, your pool is created!
           </Typography>
           <Button
-              onClick={openDashboard}
+            onClick={openDashboard}
             className={clsx(classes.button, classes.buttonNext)}
           >
             Open Dashboard
@@ -333,4 +334,13 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(withRouter(CustomStepper));
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onPoolCreation: () => dispatch({ type: actionTypes.RESET_POOL }),
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(CustomStepper));
