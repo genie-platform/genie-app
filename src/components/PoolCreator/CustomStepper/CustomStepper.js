@@ -18,6 +18,7 @@ import { FundingFactory as FundingFactoryAbi } from 'genie-contracts-abi';
 
 import { config } from '../../../config/config';
 import MainButton from '../../UI/MainButton';
+import { lowercaseAddress } from '../../../utils/utils';
 
 const FIRST_STEP = 0;
 const SECOND_STEP = 1;
@@ -140,6 +141,7 @@ const CustomStepper = (props) => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(FIRST_STEP);
   const [canContinue, setCanContinue] = useState(false);
+  const [isPoolCreated, setIsPoolCreated] = useState(false);
   const stepNames = ['Pool Profile', 'Extra', 'Verify'];
 
   useEffect(() => {
@@ -157,7 +159,7 @@ const CustomStepper = (props) => {
 
   const createPool = async () => {
     const accounts = await web3.eth.getAccounts();
-    console.log(accounts);
+    const poolOwnerAddress = accounts[0];
 
     debugger;
     const fundingFactoryContract = new web3.eth.Contract(
@@ -166,34 +168,42 @@ const CustomStepper = (props) => {
     );
 
     const txReceipt = await fundingFactoryContract.methods
-      .createFunding(config.network.addresses.cDai, accounts[0])
-      .send({ from: accounts[0] });
+      .createFunding(config.network.addresses.cDai, poolOwnerAddress)
+      .send({ from: poolOwnerAddress });
 
     console.log(txReceipt);
-    console.log(txReceipt.events.FundingCreated.returnValues.funding);
 
-    const data = {
-      name: props.name,
-      description: props.description,
-      lockValue: props.lockValue,
-      icon: props.icon,
-      coverImage: props.coverImage,
-      winnerDescription: props.winnerDescription,
-      rewardDuration: props.rewardDuration,
-      txHash: txReceipt.transactionHash,
-      contractAddress: txReceipt.events.FundingCreated.returnValues.funding,
-    };
+    if (txReceipt) {
+      setIsPoolCreated(true);
 
-    // call backend endpoint to save pool metadata in DB
-    window.fetch(`${config.backend.url}/pools`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${props.token}`,
-      },
-      body: JSON.stringify(data),
-    });
+      const data = {
+        name: props.name,
+        description: props.description,
+        lockValue: props.lockValue,
+        icon: props.icon,
+        coverImage: props.coverImage,
+        winnerDescription: props.winnerDescription,
+        rewardDuration: props.rewardDuration,
+        txHash: txReceipt.transactionHash,
+        contractAddress: lowercaseAddress(
+          txReceipt.events.FundingCreated.returnValues.funding
+        ),
+        poolOwnerAddress: lowercaseAddress(poolOwnerAddress),
+      };
+
+      // call backend endpoint to save pool metadata in DB
+      window.fetch(`${config.backend.url}/pools`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${props.token}`,
+        },
+        body: JSON.stringify(data),
+      });
+    } else {
+      console.log("error - couldn't create pool");
+    }
   };
 
   const handleNext = async () => {
