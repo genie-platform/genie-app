@@ -8,7 +8,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { connect } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    paddingTop: '2em',
+  },
   label: {
     color: theme.customColors.text,
     paddingBottom: '0.2em',
