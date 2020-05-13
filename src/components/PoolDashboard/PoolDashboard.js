@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
   title: {
     fontWeight: 'bold',
     paddingBottom: '0.8em',
-    paddingTop: '1.6em',
   },
   desc: {
     width: '550px',
@@ -55,12 +54,12 @@ const useStyles = makeStyles((theme) => ({
     padding: '5px',
   },
   icon: {
-    position: 'absolute',
-    top: '230px',
+    position: 'relative',
+    top: '-0.5em',
   },
   cover: {
     width: '100%',
-    height: '300px',
+    height: '35vh',
     position: 'relative',
     overflow: 'hidden',
     '&> img': {
