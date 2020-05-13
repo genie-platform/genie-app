@@ -31,9 +31,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
   },
   title: {
-    fontSize: '2.25em',
     fontWeight: 'bold',
-    lineHeight: '2em',
     paddingBottom: '0.8em',
     paddingTop: '1.6em',
   },
@@ -101,7 +99,7 @@ const PoolDashboard = ({
           <Typography variant="h1" id="pool-icon" className={classes.icon}>
             {poolMetadataState.value.icon}
           </Typography>
-          <Typography variant="h2" className={classes.title}>
+          <Typography variant="h3" className={classes.title}>
             {poolMetadataState.value.name}
           </Typography>
           <Typography component="subtitle1" className={classes.desc}>

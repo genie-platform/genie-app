@@ -6,6 +6,18 @@ const useStyles = makeStyles((theme) => ({
   root: {
     position: 'relative',
     padding: '0.5em',
+    display: 'flex',
+  },
+  icon: {
+    padding: '0 0.2em',
+  },
+  name: {
+    paddingBottom: '0.4em',
+    color: theme.customColors.text,
+    fontWeight: 'bold',
+  },
+  desc: {
+    color: theme.customColors.lightText,
   },
 }));
 
@@ -14,10 +26,16 @@ const PoolDisplayCardWide = (props) => {
 
   return (
     <div className={classes.root}>
-      <Typography id="icon">{props.icon}</Typography>
+      <Typography variant="h1" id="icon" className={classes.icon}>
+        {props.icon}
+      </Typography>
       <div>
-        <Typography id="pool-name">{props.name}</Typography>
-        <Typography id="pool-desc">{props.description}</Typography>
+        <Typography variant="h6" id="pool-name" className={classes.name}>
+          {props.name}
+        </Typography>
+        <Typography variant="h6" id="pool-desc" className={classes.desc}>
+          {props.description}
+        </Typography>
       </div>
     </div>
   );
