@@ -125,14 +125,16 @@ const PoolDashboard = ({
             ${Math.round(currentPrizeState.value * 10000) / 10000}
           </Typography>
         </Grid>
-        <Grid item xs={3}>
-          <Typography component="subtitle1" className={classes.barTitle}>
-            Next distribution
-          </Typography>
-          <Typography component="h2" className={classes.barValue}>
-            {get(poolMetadataState, 'value.rewardDuration')} days
-          </Typography>
-        </Grid>
+        {get(poolMetadataState, 'value.rewardDuration') && (
+          <Grid item xs={3}>
+            <Typography component="subtitle1" className={classes.barTitle}>
+              Next distribution
+            </Typography>
+            <Typography component="h2" className={classes.barValue}>
+              {get(poolMetadataState, 'value.rewardDuration')} days
+            </Typography>
+          </Grid>
+        )}
         <Grid item xs={3}>
           <Typography component="subtitle1" className={classes.barTitle}>
             # of players
