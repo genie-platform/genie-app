@@ -8,6 +8,7 @@ import PoolCreator from './components/PoolCreator/PoolCreator';
 import PoolDashboard from './components/PoolDashboard/PoolDashboard';
 import PoolExplorer from './components/PoolExplorer/PoolExplorer';
 import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
 import Home from './components/Home/Home';
 import { client } from './services/graphql';
 
@@ -36,6 +37,7 @@ const App = (props) => {
               component={PoolDashboard}
             />
           </Switch>
+          <Footer />
         </div>
       </ApolloProvider>
     </BrowserRouter>
