@@ -19,6 +19,7 @@ import Web3Modal from 'web3modal';
 import * as actionTypes from '../../store/actions/actionTypes';
 import { shortenAddress } from '../../utils/utils';
 import { config } from '../../config/config';
+import MainButton from '../UI/MainButton';
 
 const providerOptions = {
   portis: {
@@ -253,17 +254,19 @@ const Header = (props) => {
           </Typography>
           <NavLink
             className={classes.link}
+            to="/create-pool"
+            activeClassName={classes.linkActive}
+          >
+            <MainButton variant="contained">
+              Create a pool
+            </MainButton>
+          </NavLink>
+          <NavLink
+            className={classes.link}
             to="/explore"
             activeClassName={classes.linkActive}
           >
             Explore
-          </NavLink>
-          <NavLink
-            className={classes.link}
-            to="/create-pool"
-            activeClassName={classes.linkActive}
-          >
-            Create Pool
           </NavLink>
           <NavLink
             className={classes.link}
