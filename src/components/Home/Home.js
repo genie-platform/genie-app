@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
     width: theme.customValues.contentWidth,
     margin: 'auto',
     textAlign: '-webkit-center',
-    paddingBottom: '8em',
   },
   heroGridItem: {
     padding: '0',

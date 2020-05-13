@@ -42,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
   },
   bar: {
     width: '40%',
-    padding: '2em',
+    paddingTop: '2em',
+    paddingBottom: '4em',
   },
   barTitle: {
     color: theme.customColors.lightText,

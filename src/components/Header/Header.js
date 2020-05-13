@@ -31,8 +31,8 @@ const providerOptions = {
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    width: '100%',
     flexGrow: 1,
-    width: theme.customValues.contentWidth,
     margin: 'auto',
   },
   appBar: {
