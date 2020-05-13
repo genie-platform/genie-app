@@ -149,38 +149,10 @@ const Home = (props) => {
       <Typography className={classes.kovanText} variant="h6">
         *Alpha version - Available only on Kovan network!
       </Typography>
-      <Grid id="how-it-works" item xs={12}>
-        <Typography className={classes.subTitle} variant="subtitle2">
-          HOW IT WORKS?
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="h6" className={classes.subTitleText}>
-        Genie leverages the Ethereum Network, it uses DAI, a dollar-pegged stablecoin, as a token of value, and it generates interest by lending the DAI using the Compound Protocol.
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Button className={classes.linkButton}><a target="_blank" href='https://www.notion.so/Genie-9a51f51cd3044b7c87f1fe6232171f15'>Learn More</a></Button>
-      </Grid>
       <Grid item xs={12}>
         <Divider className={classes.divider} />
       </Grid>
-      <Grid id="popular-pool" item xs={12}>
-        <Typography className={classes.subTitle} variant="subtitle2">
-          POPULAR POOLS
-        </Typography>
-      </Grid>
-      <Grid item xs={12}>
-      </Grid>
-      <Grid item xs={12}>
-        {poolsGrid}
-      </Grid>
-      <Grid item xs={12}>
-        <Button className={classes.linkButton}>Explore more pools</Button>
-      </Grid>
-      <Grid item xs={12}>
-        <Divider className={classes.divider} />
-      </Grid>
+
       <Grid item xs={12}>
         <Typography className={classes.subTitle} variant="subtitle2">
           INTEGRATE GENIE
@@ -207,26 +179,6 @@ const Home = (props) => {
             </Typography>
           </div>
         </div>
-
-        {/* <div className={classes.integrateGuide}>
-          <div>
-            <CheckCircleRoundedIcon
-              fontSize="large"
-              className={classes.iconCircle}
-            />
-          </div>
-          <div className={classes.integrationText}>
-            <Typography variant="h6" className={classes.integrationTitle}>
-              Connect to a game
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              className={classes.integrationSubTitle}
-            >
-              Connect your pool to a game or build your own integration
-            </Typography>
-          </div>
-        </div> */}
 
         <div className={classes.integrateGuide}>
           <div>
@@ -274,6 +226,39 @@ const Home = (props) => {
           Create a pool
         </MainButton>
       </Grid>
+      
+      <Grid id="popular-pool" item xs={12}>
+        <Typography className={classes.subTitle} variant="subtitle2">
+          POPULAR POOLS
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+      </Grid>
+      <Grid item xs={12}>
+        {poolsGrid}
+      </Grid>
+      <Grid item xs={12}>
+        <Button className={classes.linkButton}>Explore more pools</Button>
+      </Grid>
+      <Grid item xs={12}>
+        <Divider className={classes.divider} />
+      </Grid>
+
+      <Grid id="how-it-works" item xs={12}>
+        <Typography className={classes.subTitle} variant="subtitle2">
+          HOW IT WORKS?
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        <Typography variant="h6" className={classes.subTitleText}>
+        Genie leverages the Ethereum Network, it uses DAI, a dollar-pegged stablecoin, as a token of value, and it generates interest by lending the DAI using the Compound Protocol.
+        </Typography>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Button className={classes.linkButton}><a target="_blank" href='https://www.notion.so/Genie-9a51f51cd3044b7c87f1fe6232171f15'>Learn More</a></Button>
+      </Grid>
+     
     </Grid>
   );
 };
