@@ -109,25 +109,20 @@ const Home = (props) => {
         to="/dashboard/0x3e66d5168b527888a1904d01c8413c24eb302c80"
         className={classes.link}
       >
-        <PoolDisplayCard
-          clickable
-          name="Path of Exile Race"
-          image="images/cover13.jpg"
-          icon="⚔️"
-        />
+        <PoolDisplayCard clickable name="Path of Exile Race" icon="🧙‍♂️" />
       </Link>
-      <PoolDisplayCard
-        clickable
-        name="The Purge"
-        image="images/cover2.jpg"
-        icon="🌌"
-      />
-      <PoolDisplayCard
-        clickable
-        name="Last Survivor"
-        image="images/cover3.jpg"
-        icon="🌋"
-      />
+      <Link
+        to="/dashboard/0x63a86b3782de1df7e547fd78ab872b25ec3d60e6"
+        className={classes.link}
+      >
+        <PoolDisplayCard clickable name="Space Survival" icon="🪐" />
+      </Link>
+      <Link
+        to="/dashboard/0x94e8adb309b629a4a3dfe5534681c034693bf481"
+        className={classes.link}
+      >
+        <PoolDisplayCard clickable name="Volcano Mania" icon="🌋" />
+      </Link>
     </div>
   );
 
