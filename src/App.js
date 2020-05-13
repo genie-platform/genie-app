@@ -6,6 +6,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 
 import PoolCreator from './components/PoolCreator/PoolCreator';
 import PoolDashboard from './components/PoolDashboard/PoolDashboard';
+import PoolExplorer from './components/PoolExplorer/PoolExplorer';
 import Header from './components/Header/Header';
 import Home from './components/Home/Home';
 import { client } from './services/graphql';
@@ -28,7 +29,12 @@ const App = (props) => {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/create-pool" exact component={PoolCreator} />
-            <Route path="/dashboard/:poolAddress" exact component={PoolDashboard} />
+            <Route path="/explore" exact component={PoolExplorer} />
+            <Route
+              path="/dashboard/:poolAddress"
+              exact
+              component={PoolDashboard}
+            />
           </Switch>
         </div>
       </ApolloProvider>

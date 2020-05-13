@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -83,6 +84,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.customColors.lightText,
     paddingBottom: '0.4em',
   },
+  link: {
+    textDecoration: 'none',
+  },
   divider: {
     margin: '2em 0',
     width: 80,
@@ -101,16 +105,17 @@ const Home = (props) => {
   // load pools from backend
   const poolsGrid = (
     <div className={classes.poolsGrid}>
-      <PoolDisplayCard
-        clickable
-        name="Path of Exile League"
-        image="images/cover1.jpg"
-        description="diablo 3 ladder"
-        rewardDuration={14}
-        lockValue={5}
-        winner={'first player to reach level 100'}
-        icon="⚔️"
-      />
+      <Link
+        to="/dashboard/0x3e66d5168b527888a1904d01c8413c24eb302c80"
+        className={classes.link}
+      >
+        <PoolDisplayCard
+          clickable
+          name="Path of Exile Race"
+          image="images/cover13.jpg"
+          icon="⚔️"
+        />
+      </Link>
       <PoolDisplayCard
         clickable
         name="The Purge"
