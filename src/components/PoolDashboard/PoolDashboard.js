@@ -8,7 +8,9 @@ import gql from 'graphql-tag';
 import { fromWei } from 'web3-utils';
 import get from 'lodash/get';
 
-import { getCurrentPrize, fetchPoolMetadata } from '../../ethereum/pool';
+import { getCurrentPrize, fetchPoolMetadata, deposit } from '../../ethereum/pool';
+import { getAllowance, approve } from '../../ethereum/erc20';
+import web3 from '../../ethereum/web3';
 import MainButton from '../UI/MainButton';
 
 const GET_POOL = gql`
@@ -88,7 +90,18 @@ const PoolDashboard = ({
   const poolGraphState = useQuery(GET_POOL, {
     variables: { poolAddress },
   });
-  console.log(poolMetadataState.value);
+
+  const joinPool = async () => {
+    const accounts = await web3.eth.getAccounts();
+    const accountAddress = accounts[0];
+    console.log(await getAllowance(accountAddress, poolAddress))
+    const allowance = await getAllowance(accountAddress, poolAddress)
+    if (parseFloat(allowance) < poolMetadataState.value.lockValue) {
+      await approve(accountAddress, poolAddress)
+    }
+    deposit(accountAddress, poolAddress, poolMetadataState.value.lockValue)
+  }
+
   return (
     <div className={classes.root}>
       {poolMetadataState.value && (
@@ -151,7 +164,7 @@ const PoolDashboard = ({
         </Grid>
       </Grid>
       <div>
-        <MainButton>Join the pool</MainButton>
+        <MainButton onClick={joinPool}>Join the pool</MainButton>
       </div>
     </div>
   );

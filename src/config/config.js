@@ -9,6 +9,7 @@ const prod = {
   network: {
     addresses: {
       fundingFactory: '0xfd99ba75A8515FD8E277b76F36719bA949Cb765F',
+      Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
   },
@@ -28,6 +29,7 @@ const dev = {
   network: {
     addresses: {
       fundingFactory: '0xfd99ba75A8515FD8E277b76F36719bA949Cb765F',
+      Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
   },
