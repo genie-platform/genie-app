@@ -20,6 +20,13 @@ const useStyles = makeStyles((theme) => ({
   disabled: {
     background: '#ccc',
   },
+  warning: {
+    backgroundImage: theme.customGradients.error,
+    '&:hover': {
+      border: '1px solid rgba(0.1,0.1,0.1,0.3)',
+      backgroundImage: theme.customGradients.errorHover,
+    },
+  },
 }));
 
 const MainButton = (props) => {
@@ -28,7 +35,11 @@ const MainButton = (props) => {
   return (
     <Button
       {...props}
-      className={clsx(classes.root, props.disabled && classes.disabled)}
+      className={clsx(
+        classes.root,
+        props.disabled && classes.disabled,
+        props.warning && classes.warning
+      )}
     >
       {props.children}
     </Button>
