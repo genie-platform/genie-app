@@ -266,6 +266,7 @@ const Home = (props) => {
         <Button className={classes.linkButton}>
           <a
             target="_blank"
+            rel="noopener noreferrer"
             href="https://www.notion.so/Genie-9a51f51cd3044b7c87f1fe6232171f15"
             className={classes.link}
           >

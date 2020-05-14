@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import Checkbox from '@material-ui/core/Checkbox';
 import { connect } from 'react-redux';
 
 import * as actionTypes from '../../../store/actions/actionTypes';
@@ -18,12 +17,6 @@ const useStyles = makeStyles((theme) => ({
 
 const PoolExtraForm = (props) => {
   const classes = useStyles();
-
-  let defaultWinner = '';
-
-  if (props.winnerDescription !== '') {
-    defaultWinner = props.winnerDescription;
-  }
 
   return (
     <div className={classes.root}>
