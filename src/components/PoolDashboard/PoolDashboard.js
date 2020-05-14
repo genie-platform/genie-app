@@ -8,7 +8,7 @@ import gql from 'graphql-tag';
 import { fromWei } from 'web3-utils';
 import get from 'lodash/get';
 
-import { getCurrentPrize, fetchPoolMetadata, deposit } from '../../ethereum/pool';
+import { getCurrentPrize, fetchPoolMetadata, balanceOf, deposit, withdraw } from '../../ethereum/pool';
 import { getAllowance, approve } from '../../ethereum/erc20';
 import web3 from '../../ethereum/web3';
 import MainButton from '../UI/MainButton';
@@ -87,6 +87,12 @@ const PoolDashboard = ({
     return fetchPoolMetadata(poolAddress);
   }, [poolAddress]);
 
+  const balanceState = useAsync(async () => {
+    return balanceOf(poolAddress);
+  }, [poolAddress]);
+
+
+  console.log({ balanceState })
   const poolGraphState = useQuery(GET_POOL, {
     variables: { poolAddress },
   });
@@ -100,6 +106,12 @@ const PoolDashboard = ({
       await approve(accountAddress, poolAddress)
     }
     deposit(accountAddress, poolAddress, poolMetadataState.value.lockValue)
+  }
+
+  const leavePool = async () => {
+    const accounts = await web3.eth.getAccounts();
+    const accountAddress = accounts[0];
+    withdraw(accountAddress, poolAddress)
   }
 
   return (
@@ -163,9 +175,13 @@ const PoolDashboard = ({
           </Typography>
         </Grid>
       </Grid>
-      <div>
-        <MainButton onClick={joinPool}>Join the pool</MainButton>
-      </div>
+      {
+        !balanceState.loading && (
+          balanceState.value === '0'
+          ? <MainButton onClick={joinPool}>Join the pool</MainButton>
+          : <MainButton onClick={leavePool}>Leave the pool</MainButton>
+        )
+      }
     </div>
   );
 };

@@ -45,11 +45,29 @@ export const getCurrentPrize = async (contractAddress) => {
   return fromWei(staked);
 };
 
+export const balanceOf  = async (contractAddress) => {
+  const accounts = await web3.eth.getAccounts();
+  const accountAddress = accounts[0];
+
+  const poolContract = new web3.eth.Contract(FundingAbi, contractAddress);
+
+  const balance = await poolContract.methods.balanceOf(accountAddress).call();
+  return fromWei(balance);
+}
+
 export const deposit = (accountAddress, contractAddress, amount) => {
   const poolContract = new web3.eth.Contract(FundingAbi, contractAddress);
-  debugger
+
   return poolContract.methods
     .deposit(toWei(amount.toString()))
     .send({ from: accountAddress });
 
+}
+
+export const withdraw = (accountAddress, contractAddress) => {
+  const poolContract = new web3.eth.Contract(FundingAbi, contractAddress);
+
+  return poolContract.methods
+    .withdraw()
+    .send({ from: accountAddress });
 }
