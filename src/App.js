@@ -37,8 +37,8 @@ const App = (props) => {
               component={PoolDashboard}
             />
           </Switch>
-          <Footer />
         </div>
+        <Footer />
       </ApolloProvider>
     </BrowserRouter>
   );
