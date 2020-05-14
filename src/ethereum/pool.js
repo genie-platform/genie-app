@@ -2,7 +2,9 @@ import { Funding as FundingAbi } from 'genie-contracts-abi';
 import { fromWei, toWei } from 'web3-utils';
 
 import { config } from '../config/config';
-import web3 from './web3';
+import { getWeb3 } from '../services/web3';
+
+const web3 = getWeb3();
 
 
 export const fetchAllPools = async () => {

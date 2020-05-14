@@ -13,13 +13,13 @@ import StepConnector from '@material-ui/core/StepConnector';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import web3 from '../../../ethereum/web3';
 import { FundingFactory as FundingFactoryAbi } from 'genie-contracts-abi';
 
 import * as actionTypes from '../../../store/actions/actionTypes';
 import { config } from '../../../config/config';
 import MainButton from '../../UI/MainButton';
 import { lowercaseAddress } from '../../../utils/utils';
+import { getWeb3 } from '../../../services/web3';
 
 const FIRST_STEP = 0;
 const SECOND_STEP = 1;
@@ -160,6 +160,7 @@ const CustomStepper = (props) => {
   }, [props.name, props.description, props.lockValue]);
 
   const createPool = async () => {
+    const web3 = getWeb3();
     const accounts = await web3.eth.getAccounts();
     const poolOwnerAddress = accounts[0];
 
