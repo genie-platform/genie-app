@@ -121,14 +121,16 @@ const Header = (props) => {
 
   const onWalletClick = async () => {
     if (!address) {
+      // user is not connected to any wallet
       onConnect();
     } else {
-      // clear provider for now
+      // user is already connected to wallet.
+      // TODO open menu to be able to disconnect and do other actions
+
+      // for now, clear provider on click
       web3Modal.clearCachedProvider();
       setAddress(null);
       setWeb3Provider(null); // reset web3 provider
-
-      // TODO open menu to be able to disconnect and do other actions
     }
   };
 
