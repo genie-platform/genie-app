@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import { gapi } from 'gapi-script';
 
 import Portis from '@portis/web3';
-import Web3 from 'web3';
+import { getWeb3, setWeb3Provider } from '../../services/web3';
 import Web3Modal from 'web3modal';
 
 import * as actionTypes from '../../store/actions/actionTypes';
@@ -24,7 +24,7 @@ const providerOptions = {
   portis: {
     package: Portis,
     options: {
-      id: 'ae18109e-f2e1-4ee7-ace7-f7f14cb58bce',
+      id: config.wallets.portisId,
     },
   },
 };
@@ -110,8 +110,10 @@ const Header = (props) => {
 
   const onConnect = async () => {
     const provider = await web3Modal.connect();
-    const web3 = props.web3 === null ? new Web3(provider) : props.web3;
-    props.onWeb3Creation(web3); // add web3 to app state
+    const web3 = getWeb3();
+    if (!web3.currentProvider) {
+      setWeb3Provider(provider);
+    }
 
     const accounts = await web3.eth.getAccounts();
     setAddress(accounts[0]);
@@ -124,7 +126,7 @@ const Header = (props) => {
       // clear provider for now
       web3Modal.clearCachedProvider();
       setAddress(null);
-      props.onWeb3Creation(null); // reset web3 state
+      setWeb3Provider(null); // reset web3 provider
 
       // TODO open menu to be able to disconnect and do other actions
     }
@@ -323,7 +325,6 @@ const mapStateToProps = (state) => {
     loading: state.auth.loading,
     error: state.auth.error,
     isAuthenticated: state.auth.token !== null,
-    web3: state.web3.web3,
   };
 };
 
@@ -338,8 +339,6 @@ const mapDispatchToProps = (dispatch) => {
         imageUrl: userDetails.imageUrl,
       }),
     onSignOut: () => dispatch({ type: actionTypes.AUTH_SIGNOUT }),
-    onWeb3Creation: (web3) =>
-      dispatch({ type: actionTypes.SET_WEB3, web3: web3 }),
   };
 };
 

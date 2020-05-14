@@ -13,8 +13,12 @@ const prod = {
     },
   },
   graph: {
-    uri: 'https://api.thegraph.com/subgraphs/id/QmXDQkcowPCiJe8CMePx1DCJRP8Y9MrGTk73xWVHYYtrzK'
-  }
+    uri:
+      'https://api.thegraph.com/subgraphs/id/QmXDQkcowPCiJe8CMePx1DCJRP8Y9MrGTk73xWVHYYtrzK',
+  },
+  wallets: {
+    portisId: 'ae18109e-f2e1-4ee7-ace7-f7f14cb58bce',
+  },
 };
 
 const dev = {
@@ -32,8 +36,12 @@ const dev = {
     },
   },
   graph: {
-    uri: 'https://api.thegraph.com/subgraphs/id/QmXDQkcowPCiJe8CMePx1DCJRP8Y9MrGTk73xWVHYYtrzK'
-  }
+    uri:
+      'https://api.thegraph.com/subgraphs/id/QmXDQkcowPCiJe8CMePx1DCJRP8Y9MrGTk73xWVHYYtrzK',
+  },
+  wallets: {
+    portisId: 'ae18109e-f2e1-4ee7-ace7-f7f14cb58bce',
+  },
 };
 
 export const config = process.env.NODE_ENV === 'development' ? dev : prod;

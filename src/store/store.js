@@ -2,12 +2,10 @@ import { createStore, combineReducers } from 'redux';
 
 import authReducer from './reducers/auth';
 import createdPoolReducer from './reducers/createdPool';
-import web3Reducer from './reducers/web3';
 
 const rootReducer = combineReducers({
   auth: authReducer,
   createdPool: createdPoolReducer,
-  web3: web3Reducer,
 });
 
 const preloadedState =

@@ -19,6 +19,7 @@ import * as actionTypes from '../../../store/actions/actionTypes';
 import { config } from '../../../config/config';
 import MainButton from '../../UI/MainButton';
 import { lowercaseAddress } from '../../../utils/utils';
+import { getWeb3 } from '../../../services/web3';
 
 const FIRST_STEP = 0;
 const SECOND_STEP = 1;
@@ -159,7 +160,7 @@ const CustomStepper = (props) => {
   }, [props.name, props.description, props.lockValue]);
 
   const createPool = async () => {
-    const web3 = props.web3;
+    const web3 = getWeb3();
     const accounts = await web3.eth.getAccounts();
     const poolOwnerAddress = accounts[0];
 
@@ -331,7 +332,6 @@ const mapStateToProps = (state) => {
     winnerDescription: state.createdPool.winnerDescription,
     rewardDuration: state.createdPool.rewardDuration,
     token: state.auth.token,
-    web3: state.web3.web3,
   };
 };
 

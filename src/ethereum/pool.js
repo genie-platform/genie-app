@@ -1,10 +1,9 @@
 import { Funding as FundingAbi } from 'genie-contracts-abi';
 import { fromWei } from 'web3-utils';
 import { config } from '../config/config';
-import store from '../store/store';
+import { getWeb3 } from '../services/web3';
 
-const state = store.getState();
-const web3 = state.web3.web3;
+const web3 = getWeb3();
 
 export const fetchAllPools = async () => {
   const response = await window.fetch(`${config.backend.url}/pools`, {
