@@ -16,7 +16,7 @@ import {
   withdraw,
 } from '../../ethereum/pool';
 import { getAllowance, approve } from '../../ethereum/erc20';
-import web3 from '../../ethereum/web3';
+import { getWeb3 } from '../../services/web3';
 import MainButton from '../UI/MainButton';
 
 const GET_POOL = gql`
@@ -84,6 +84,7 @@ const PoolDashboard = ({
   },
 }) => {
   const classes = useStyles();
+  const web3 = getWeb3();
 
   const currentPrizeState = useAsync(async () => {
     return getCurrentPrize(poolAddress);
