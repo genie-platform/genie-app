@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
@@ -12,22 +12,12 @@ import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import { connect } from 'react-redux';
 import { gapi } from 'gapi-script';
 
-import Portis from '@portis/web3';
 import { getWeb3, setWeb3Provider } from '../../services/web3';
-import Web3Modal from 'web3modal';
+import useWeb3Modal from '../../hooks/useWeb3Modal';
 
 import * as actionTypes from '../../store/actions/actionTypes';
 import { shortenAddress } from '../../utils/utils';
 import { config } from '../../config/config';
-
-const providerOptions = {
-  portis: {
-    package: Portis,
-    options: {
-      id: config.wallets.portisId,
-    },
-  },
-};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,18 +89,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = (props) => {
   const classes = useStyles();
-  const [anchorElement, setAnchorElement] = React.useState(null);
-  const [address, setAddress] = React.useState(null);
+  const [anchorElement, setAnchorElement] = useState(null);
+  const [address, setAddress] = useState(null);
 
-  const web3Modal = new Web3Modal({
-    network: 'kovan',
-    cacheProvider: true,
-    providerOptions,
-  });
-
-  const onConnect = async () => {
-    const provider = await web3Modal.connect();
-    const web3 = getWeb3();
+  const onConnect = async (provider) => {
+    const web3 = getWeb3(provider);
     if (!web3.currentProvider) {
       setWeb3Provider(provider);
     }
@@ -119,16 +102,18 @@ const Header = (props) => {
     setAddress(accounts[0]);
   };
 
+  const web3Modal = useWeb3Modal(onConnect);
+
   const onWalletClick = async () => {
     if (!address) {
       // user is not connected to any wallet
-      onConnect();
+      web3Modal.core.connect();
     } else {
       // user is already connected to wallet.
       // TODO open menu to be able to disconnect and do other actions
 
       // for now, clear provider on click
-      web3Modal.clearCachedProvider();
+      web3Modal.core.clearCachedProvider();
       setAddress(null);
       setWeb3Provider(null); // reset web3 provider
     }
