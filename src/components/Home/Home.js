@@ -119,7 +119,7 @@ const Home = (props) => {
         to="/dashboard/0x63a86b3782de1df7e547fd78ab872b25ec3d60e6"
         className={classes.link}
       >
-        <PoolDisplayCard clickable name="Space Survival" icon="🪐" />
+        <PoolDisplayCard clickable name="Space Survival" icon="☄️" />
       </Link>
       <Link
         to="/dashboard/0x94e8adb309b629a4a3dfe5534681c034693bf481"
