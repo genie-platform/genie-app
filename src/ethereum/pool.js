@@ -1,8 +1,9 @@
 import { Funding as FundingAbi } from 'genie-contracts-abi';
-import { fromWei } from 'web3-utils';
-import { config } from '../config/config';
+import { fromWei, toWei } from 'web3-utils';
 
+import { config } from '../config/config';
 import web3 from './web3';
+
 
 export const fetchAllPools = async () => {
   const response = await window.fetch(`${config.backend.url}/pools`, {
@@ -43,3 +44,30 @@ export const getCurrentPrize = async (contractAddress) => {
   const staked = await poolContract.methods.interestEarned().call();
   return fromWei(staked);
 };
+
+export const balanceOf  = async (contractAddress) => {
+  const accounts = await web3.eth.getAccounts();
+  const accountAddress = accounts[0];
+
+  const poolContract = new web3.eth.Contract(FundingAbi, contractAddress);
+
+  const balance = await poolContract.methods.balanceOf(accountAddress).call();
+  return fromWei(balance);
+}
+
+export const deposit = (accountAddress, contractAddress, amount) => {
+  const poolContract = new web3.eth.Contract(FundingAbi, contractAddress);
+
+  return poolContract.methods
+    .deposit(toWei(amount.toString()))
+    .send({ from: accountAddress });
+
+}
+
+export const withdraw = (accountAddress, contractAddress) => {
+  const poolContract = new web3.eth.Contract(FundingAbi, contractAddress);
+
+  return poolContract.methods
+    .withdraw()
+    .send({ from: accountAddress });
+}
