@@ -13,7 +13,6 @@ import StepConnector from '@material-ui/core/StepConnector';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import web3 from '../../../ethereum/web3';
 import { FundingFactory as FundingFactoryAbi } from 'genie-contracts-abi';
 
 import * as actionTypes from '../../../store/actions/actionTypes';
@@ -160,6 +159,7 @@ const CustomStepper = (props) => {
   }, [props.name, props.description, props.lockValue]);
 
   const createPool = async () => {
+    const web3 = props.web3;
     const accounts = await web3.eth.getAccounts();
     const poolOwnerAddress = accounts[0];
 
@@ -331,6 +331,7 @@ const mapStateToProps = (state) => {
     winnerDescription: state.createdPool.winnerDescription,
     rewardDuration: state.createdPool.rewardDuration,
     token: state.auth.token,
+    web3: state.web3.web3,
   };
 };
 

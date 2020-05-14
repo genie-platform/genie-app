@@ -24,7 +24,7 @@ const providerOptions = {
   portis: {
     package: Portis,
     options: {
-      id: '1dfd0507-d018-4312-9bc1-011aa7c76450',
+      id: 'ae18109e-f2e1-4ee7-ace7-f7f14cb58bce',
     },
   },
 };
@@ -110,8 +110,9 @@ const Header = (props) => {
 
   const onConnect = async () => {
     const provider = await web3Modal.connect();
+    const web3 = props.web3 === null ? new Web3(provider) : props.web3;
+    props.onWeb3Creation(web3); // add web3 to app state
 
-    const web3 = new Web3(provider);
     const accounts = await web3.eth.getAccounts();
     setAddress(accounts[0]);
   };
@@ -120,7 +121,12 @@ const Header = (props) => {
     if (!address) {
       onConnect();
     } else {
-      // open menu
+      // clear provider for now
+      web3Modal.clearCachedProvider();
+      setAddress(null);
+      props.onWeb3Creation(null); // reset web3 state
+
+      // TODO open menu to be able to disconnect and do other actions
     }
   };
 
@@ -317,6 +323,7 @@ const mapStateToProps = (state) => {
     loading: state.auth.loading,
     error: state.auth.error,
     isAuthenticated: state.auth.token !== null,
+    web3: state.web3.web3,
   };
 };
 
@@ -331,6 +338,8 @@ const mapDispatchToProps = (dispatch) => {
         imageUrl: userDetails.imageUrl,
       }),
     onSignOut: () => dispatch({ type: actionTypes.AUTH_SIGNOUT }),
+    onWeb3Creation: (web3) =>
+      dispatch({ type: actionTypes.SET_WEB3, web3: web3 }),
   };
 };
 

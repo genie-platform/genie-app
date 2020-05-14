@@ -33,8 +33,6 @@ const PoolExplorer = (props) => {
     return fetchAllPools();
   }, []);
 
-  console.log(poolsMetadata.value);
-
   const poolCards =
     poolsMetadata.value &&
     poolsMetadata.value.map((pool) => (

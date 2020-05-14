@@ -88,7 +88,7 @@ const PoolDashboard = ({
   const poolGraphState = useQuery(GET_POOL, {
     variables: { poolAddress },
   });
-  console.log(poolMetadataState.value);
+
   return (
     <div className={classes.root}>
       {poolMetadataState.value && (
@@ -102,7 +102,7 @@ const PoolDashboard = ({
           <Typography variant="h3" className={classes.title}>
             {poolMetadataState.value.name}
           </Typography>
-          <Typography component="subtitle1" className={classes.desc}>
+          <Typography variant="subtitle1" className={classes.desc}>
             {poolMetadataState.value.description}
           </Typography>
         </>
@@ -116,7 +116,7 @@ const PoolDashboard = ({
         spacing={1}
       >
         <Grid item xs={3}>
-          <Typography component="subtitle1" className={classes.barTitle}>
+          <Typography variant="subtitle1" className={classes.barTitle}>
             Current prize
           </Typography>
           <Typography component="h2" className={classes.barValue}>
@@ -125,7 +125,7 @@ const PoolDashboard = ({
         </Grid>
         {get(poolMetadataState, 'value.rewardDuration') && (
           <Grid item xs={3}>
-            <Typography component="subtitle1" className={classes.barTitle}>
+            <Typography variant="subtitle1" className={classes.barTitle}>
               Next distribution
             </Typography>
             <Typography component="h2" className={classes.barValue}>
@@ -134,7 +134,7 @@ const PoolDashboard = ({
           </Grid>
         )}
         <Grid item xs={3}>
-          <Typography component="subtitle1" className={classes.barTitle}>
+          <Typography variant="subtitle1" className={classes.barTitle}>
             # of players
           </Typography>
           <Typography component="h2" className={classes.barValue}>
@@ -142,7 +142,7 @@ const PoolDashboard = ({
           </Typography>
         </Grid>
         <Grid item xs={3}>
-          <Typography component="subtitle1" className={classes.barTitle}>
+          <Typography variant="subtitle1" className={classes.barTitle}>
             Total staked
           </Typography>
           <Typography component="h2" className={classes.barValue}>
