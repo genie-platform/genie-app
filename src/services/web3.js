@@ -8,7 +8,7 @@ let web3 = new Web3(provider);
 
 export const getWeb3 = (provider) => {
   if (provider) {
-    web3 = new Web3(provider);
+    web3.setProvider(provider);
   }
   return web3;
 };

@@ -223,18 +223,22 @@ const PoolDashboard = ({
             Leave the pool
           </MainButton>
         ))}
-      <AllowDaiModal
-        open={allowDaiModalOpen}
-        onClose={() => setAllowDaiModalOpen(false)}
-        onAllowDaiClick={async () => {
-          setAllowDaiModalOpen(false);
-          setConfirmTxModalOpen(true);
-          await approve(accountAddress, poolAddress);
-          setConfirmTxModalOpen(false);
-          setWasDaiApproved(true);
-          setStakeDaiModalOpen(true);
-        }}
-      />
+      {poolMetadataState.value && userBalance.value && (
+        <AllowDaiModal
+          open={allowDaiModalOpen}
+          onClose={() => setAllowDaiModalOpen(false)}
+          lockValue={poolMetadataState.value.lockValue}
+          userBalance={userBalance.value}
+          onAllowDaiClick={async () => {
+            setAllowDaiModalOpen(false);
+            setConfirmTxModalOpen(true);
+            await approve(accountAddress, poolAddress);
+            setConfirmTxModalOpen(false);
+            setWasDaiApproved(true);
+            setStakeDaiModalOpen(true);
+          }}
+        />
+      )}
       {poolMetadataState.value && userBalance.value && (
         <StakeDaiModal
           open={stakeDaiModalOpen}

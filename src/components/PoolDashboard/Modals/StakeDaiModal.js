@@ -34,8 +34,6 @@ const useStyles = makeStyles((theme) => ({
 
 const StakeDaiModal = (props) => {
   const classes = useStyles();
-  console.log('user balance:', props.userBalance);
-  console.log('lockValue:', props.lockValue);
 
   const modalBody = (
     <div className={classes.body}>

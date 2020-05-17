@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Typography } from '@material-ui/core';
 import MainButton from '../../UI/MainButton';
+import ErrorIcon from '@material-ui/icons/Error';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,11 +36,31 @@ const AllowDaiModal = (props) => {
 
   const modalBody = (
     <div className={classes.body}>
-      <img src="/logos/Badge_Dai.svg" alt="dai" className={classes.logo}></img>
-      <Typography variant="h5">
-        Genie requires your approval to transact with DAI
-      </Typography>
-      <MainButton onClick={props.onAllowDaiClick}>Allow DAI</MainButton>
+      {props.userBalance < props.lockValue ? (
+        <>
+          <ErrorIcon color="error" fontSize="large" />
+          <Typography variant="h5">Not enough funds!</Typography>
+          <Typography variant="h5">
+            You have ${props.userBalance} but minimum staking amount is $
+            {props.lockValue}.
+          </Typography>
+          <Typography variant="h5">
+            Please get more DAI to join pool.
+          </Typography>
+        </>
+      ) : (
+        <>
+          <img
+            src="/logos/Badge_Dai.svg"
+            alt="dai"
+            className={classes.logo}
+          ></img>
+          <Typography variant="h5">
+            Genie requires your approval to transact with DAI
+          </Typography>
+          <MainButton onClick={props.onAllowDaiClick}>Allow DAI</MainButton>
+        </>
+      )}
     </div>
   );
 
