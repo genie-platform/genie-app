@@ -18,6 +18,7 @@ import { FundingFactory as FundingFactoryAbi } from 'genie-contracts-abi';
 import * as actionTypes from '../../../store/actions/actionTypes';
 import { config } from '../../../config/config';
 import MainButton from '../../UI/MainButton';
+import ConfirmTxModal from '../../UI/ConfirmTxModal';
 import { lowercaseAddress } from '../../../utils/utils';
 import { getWeb3 } from '../../../services/web3';
 
@@ -144,6 +145,7 @@ const CustomStepper = (props) => {
   const [canContinue, setCanContinue] = useState(false);
   const [isPoolCreated, setIsPoolCreated] = useState(false);
   const [contractAddress, setContractAddress] = useState();
+  const [confirmTxModalOpen, setConfirmTxModalOpen] = useState(false);
   const stepNames = ['Pool Profile', 'Extra', 'Verify'];
 
   useEffect(() => {
@@ -197,10 +199,14 @@ const CustomStepper = (props) => {
     const dbPoolData = await pool.json();
     const poolId = dbPoolData.data.pool._id;
 
+    setConfirmTxModalOpen(true);
+
     // Get blockchain data after tx confirms, then update pool object
     const txReceipt = await fundingFactoryContract.methods
       .createFunding(config.network.addresses.cDai, poolOwnerAddress)
       .send({ from: poolOwnerAddress });
+
+    setConfirmTxModalOpen(false);
 
     if (txReceipt) {
       const contractAddress = lowercaseAddress(
@@ -318,6 +324,10 @@ const CustomStepper = (props) => {
         ))}
       </Stepper>
       <div>{activeStep === stepNames.length ? finished : stepperBody}</div>
+      <ConfirmTxModal
+        open={confirmTxModalOpen}
+        onClose={() => setConfirmTxModalOpen(false)}
+      />
     </div>
   );
 };

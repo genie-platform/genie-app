@@ -26,7 +26,7 @@ const PoolCreator = (props) => {
 
   return (
     <div className={classes.root}>
-      {props.isAuthenticated ? (
+      {props.isAuthenticated && props.address !== null ? (
         <CustomStepper
           poolDetails={PoolDetailsForm}
           poolExtra={PoolExtraForm}
@@ -34,13 +34,22 @@ const PoolCreator = (props) => {
         />
       ) : (
         <div className={classes.loginMessage}>
-          <Typography variant="h5">
-            Please sign in with a google account to create a pool!
-          </Typography>
-          <Typography variant="h5">
-            We know it's annoying and we will work to remove google login
-            entirely soon™
-          </Typography>
+          {!props.isAuthenticated && (
+            <>
+              <Typography variant="h5">
+                Please sign in with a google account to create a pool!
+              </Typography>
+              <Typography variant="h5">
+                We know it's annoying and we will work to remove google login
+                entirely soon™
+              </Typography>
+            </>
+          )}
+          {props.address === null && (
+            <>
+              <Typography variant="h5">Please connect to a wallet!</Typography>
+            </>
+          )}
         </div>
       )}
     </div>
@@ -50,6 +59,7 @@ const PoolCreator = (props) => {
 const mapStateToProps = (state) => {
   return {
     isAuthenticated: state.auth.token !== null,
+    address: state.auth.address,
   };
 };
 

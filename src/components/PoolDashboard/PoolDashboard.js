@@ -16,7 +16,7 @@ import {
   deposit,
   withdraw,
 } from '../../ethereum/pool';
-import { getAllowance, approve } from '../../ethereum/erc20';
+import { getAllowance, approve, getUserBalance } from '../../ethereum/erc20';
 import MainButton from '../UI/MainButton';
 import AllowDaiModal from './Modals/AllowDaiModal';
 import StakeDaiModal from './Modals/StakeDaiModal';
@@ -106,6 +106,11 @@ const PoolDashboard = ({
     return balanceOf(poolAddress);
   }, [poolAddress, accountAddress, didStake]);
 
+  const userBalance = useAsync(async () => {
+    return getUserBalance(accountAddress);
+  }, [accountAddress]);
+
+  console.log('USER BALANCE:', userBalance);
   console.log('BALANCE:', { balanceState });
 
   const poolGraphState = useQuery(GET_POOL, {
