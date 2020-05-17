@@ -2,6 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import { Typography } from '@material-ui/core';
+import ErrorIcon from '@material-ui/icons/Error';
+
 import MainButton from '../../UI/MainButton';
 
 const useStyles = makeStyles((theme) => ({
@@ -32,16 +34,34 @@ const useStyles = makeStyles((theme) => ({
 
 const StakeDaiModal = (props) => {
   const classes = useStyles();
+  console.log('user balance:', props.userBalance);
+  console.log('lockValue:', props.lockValue);
 
   const modalBody = (
     <div className={classes.body}>
-      <Typography variant="h5">
-        Stake ${props.lockValue} and join pool?
-      </Typography>
-      <Typography variant="subtitle1">
-        You can withdraw the entire amount back at any time
-      </Typography>
-      <MainButton onClick={props.onStake}>Join pool</MainButton>
+      {props.userBalance < props.lockValue ? (
+        <>
+          <ErrorIcon color="error" fontSize="large" />
+          <Typography variant="h5">Not enough funds!</Typography>
+          <Typography variant="h5">
+            You have ${props.userBalance} but minimum staking amount is $
+            {props.lockValue}.
+          </Typography>
+          <Typography variant="h5">
+            Please get more DAI to join pool.
+          </Typography>
+        </>
+      ) : (
+        <>
+          <Typography variant="h5">
+            Stake ${props.lockValue} and join pool?
+          </Typography>
+          <Typography variant="subtitle1">
+            You can withdraw the entire amount back at any time
+          </Typography>
+          <MainButton onClick={props.onStake}>Join pool</MainButton>
+        </>
+      )}
     </div>
   );
 

@@ -240,11 +240,12 @@ const PoolDashboard = ({
           setStakeDaiModalOpen(true);
         }}
       />
-      {poolMetadataState.value && (
+      {poolMetadataState.value && userBalance.value && (
         <StakeDaiModal
           open={stakeDaiModalOpen}
           onClose={() => setStakeDaiModalOpen(false)}
           lockValue={poolMetadataState.value.lockValue}
+          userBalance={userBalance.value}
           onStake={async () => {
             console.log(accountAddress);
             setStakeDaiModalOpen(false);
