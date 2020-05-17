@@ -36,7 +36,9 @@ const ConfirmTxModal = (props) => {
   const modalBody = (
     <div className={classes.body}>
       <CircularProgress />
-      <Typography variant="h5">Waiting for transaction confirmation</Typography>
+      <Typography variant="h5">
+        Waiting for transaction confirmation on the network
+      </Typography>
     </div>
   );
 

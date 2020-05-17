@@ -110,15 +110,11 @@ const PoolDashboard = ({
     return getUserBalance(accountAddress);
   }, [accountAddress]);
 
-  console.log('USER BALANCE:', userBalance);
-  console.log('BALANCE:', { balanceState });
-
   const poolGraphState = useQuery(GET_POOL, {
     variables: { poolAddress },
   });
 
   const joinPool = async () => {
-    console.log(await getAllowance(accountAddress, poolAddress));
     const allowance = await getAllowance(accountAddress, poolAddress);
 
     setWasDaiApproved(
@@ -126,7 +122,6 @@ const PoolDashboard = ({
     );
 
     if (!wasDaiApproved) {
-      console.log('WAIT FOR APPROVAL');
       setAllowDaiModalOpen(true);
     } else {
       setStakeDaiModalOpen(true);
@@ -231,7 +226,6 @@ const PoolDashboard = ({
         open={allowDaiModalOpen}
         onClose={() => setAllowDaiModalOpen(false)}
         onAllowDaiClick={async () => {
-          console.log(accountAddress);
           setAllowDaiModalOpen(false);
           setConfirmTxModalOpen(true);
           await approve(accountAddress, poolAddress);
@@ -247,7 +241,6 @@ const PoolDashboard = ({
           lockValue={poolMetadataState.value.lockValue}
           userBalance={userBalance.value}
           onStake={async () => {
-            console.log(accountAddress);
             setStakeDaiModalOpen(false);
             setConfirmTxModalOpen(true);
             await deposit(
