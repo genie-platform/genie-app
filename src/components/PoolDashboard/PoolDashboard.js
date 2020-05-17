@@ -67,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     position: 'relative',
     top: '-0.5em',
+    userSelect: 'none',
   },
   cover: {
     width: '100%',
