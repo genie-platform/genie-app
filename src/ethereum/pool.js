@@ -1,6 +1,5 @@
 import { Funding as FundingAbi } from 'genie-contracts-abi';
 import { fromWei, toWei } from 'web3-utils';
-import { connect } from 'react-redux';
 
 import { config } from '../config/config';
 import { getWeb3 } from '../services/web3';
@@ -43,8 +42,8 @@ export const getTotalStaked = async (contractAddress) => {
 export const getCurrentPrize = async (contractAddress) => {
   const poolContract = new web3.eth.Contract(FundingAbi, contractAddress);
 
-  const staked = await poolContract.methods.interestEarned().call();
-  return fromWei(staked);
+  const currentPrize = await poolContract.methods.interestEarned().call();
+  return fromWei(currentPrize);
 };
 
 export const balanceOf = async (contractAddress) => {

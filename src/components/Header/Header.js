@@ -105,7 +105,7 @@ const Header = (props) => {
 
   const onWalletClick = async () => {
     if (!props.address) {
-      // user is not connected to any wallet
+      // user is not connected to any wallet, open web3modal
       web3Modal.core.connect();
     } else {
       // user is already connected to wallet.

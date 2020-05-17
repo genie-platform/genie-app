@@ -12,6 +12,8 @@ const prod = {
       Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
+    kovanProvider:
+      'https://kovan.infura.io/v3/06b97e4e91db4a059c3060357b884a54',
   },
   graph: {
     uri:
@@ -36,6 +38,8 @@ const dev = {
       Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
+    kovanProvider:
+      'https://kovan.infura.io/v3/06b97e4e91db4a059c3060357b884a54',
   },
   graph: {
     uri:
