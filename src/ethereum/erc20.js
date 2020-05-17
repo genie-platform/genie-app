@@ -20,6 +20,18 @@ export const getAllowance = async (accountAddress, contractAddress) => {
   return fromWei(allowance);
 };
 
+export const getUserBalance = async (accountAddress) => {
+  const tokenContract = new web3.eth.Contract(
+    ERC20Abi,
+    config.network.addresses.Dai
+  );
+
+  const userBalance = await tokenContract.methods
+    .balanceOf(accountAddress)
+    .call();
+  return fromWei(userBalance);
+};
+
 export const approve = async (accountAddress, poolAddress) => {
   const tokenContract = new web3.eth.Contract(
     ERC20Abi,

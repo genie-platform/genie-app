@@ -14,8 +14,10 @@ import { client } from './services/graphql';
 
 const useStyles = makeStyles((theme) => ({
   app: {
-    minHeight: '100vh',
     background: theme.customColors.background,
+  },
+  content: {
+    minHeight: '100vh',
   },
 }));
 
@@ -26,19 +28,21 @@ const App = (props) => {
     <BrowserRouter>
       <ApolloProvider client={client}>
         <div className={classes.app}>
-          <Header />
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/create-pool" exact component={PoolCreator} />
-            <Route path="/explore" exact component={PoolExplorer} />
-            <Route
-              path="/dashboard/:poolAddress"
-              exact
-              component={PoolDashboard}
-            />
-          </Switch>
+          <div className={classes.content}>
+            <Header />
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <Route path="/create-pool" exact component={PoolCreator} />
+              <Route path="/explore" exact component={PoolExplorer} />
+              <Route
+                path="/dashboard/:poolAddress"
+                exact
+                component={PoolDashboard}
+              />
+            </Switch>
+          </div>
+          <Footer />
         </div>
-        <Footer />
       </ApolloProvider>
     </BrowserRouter>
   );

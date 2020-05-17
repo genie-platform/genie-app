@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAsync } from 'react-use';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import { connect } from 'react-redux';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { fromWei } from 'web3-utils';
@@ -15,9 +16,11 @@ import {
   deposit,
   withdraw,
 } from '../../ethereum/pool';
-import { getAllowance, approve } from '../../ethereum/erc20';
-import { getWeb3 } from '../../services/web3';
+import { getAllowance, approve, getUserBalance } from '../../ethereum/erc20';
 import MainButton from '../UI/MainButton';
+import AllowDaiModal from './Modals/AllowDaiModal';
+import StakeDaiModal from './Modals/StakeDaiModal';
+import ConfirmTxModal from '../UI/ConfirmTxModal';
 
 const GET_POOL = gql`
   query Pool($poolAddress: String!) {
@@ -64,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     position: 'relative',
     top: '-0.5em',
+    userSelect: 'none',
   },
   cover: {
     width: '100%',
@@ -82,9 +86,14 @@ const PoolDashboard = ({
   match: {
     params: { poolAddress },
   },
+  address: accountAddress,
 }) => {
   const classes = useStyles();
-  const web3 = getWeb3();
+  const [allowDaiModalOpen, setAllowDaiModalOpen] = useState(false);
+  const [stakeDaiModalOpen, setStakeDaiModalOpen] = useState(false);
+  const [confirmTxModalOpen, setConfirmTxModalOpen] = useState(false);
+  const [wasDaiApproved, setWasDaiApproved] = useState(false);
+  const [didStake, setDidStake] = useState(false);
 
   const currentPrizeState = useAsync(async () => {
     return getCurrentPrize(poolAddress);
@@ -96,28 +105,35 @@ const PoolDashboard = ({
 
   const balanceState = useAsync(async () => {
     return balanceOf(poolAddress);
-  }, [poolAddress]);
+  }, [poolAddress, accountAddress, didStake]);
 
-  console.log({ balanceState });
+  const userBalance = useAsync(async () => {
+    return getUserBalance(accountAddress);
+  }, [accountAddress]);
+
   const poolGraphState = useQuery(GET_POOL, {
     variables: { poolAddress },
   });
 
   const joinPool = async () => {
-    const accounts = await web3.eth.getAccounts();
-    const accountAddress = accounts[0];
-    console.log(await getAllowance(accountAddress, poolAddress));
     const allowance = await getAllowance(accountAddress, poolAddress);
-    if (parseFloat(allowance) < poolMetadataState.value.lockValue) {
-      await approve(accountAddress, poolAddress);
+
+    setWasDaiApproved(
+      parseFloat(allowance) < poolMetadataState.value.lockValue
+    );
+
+    if (!wasDaiApproved) {
+      setAllowDaiModalOpen(true);
+    } else {
+      setStakeDaiModalOpen(true);
     }
-    deposit(accountAddress, poolAddress, poolMetadataState.value.lockValue);
   };
 
   const leavePool = async () => {
-    const accounts = await web3.eth.getAccounts();
-    const accountAddress = accounts[0];
-    withdraw(accountAddress, poolAddress);
+    setConfirmTxModalOpen(true);
+    await withdraw(accountAddress, poolAddress);
+    setConfirmTxModalOpen(false);
+    setDidStake(!didStake);
   };
 
   return (
@@ -148,7 +164,7 @@ const PoolDashboard = ({
       >
         <Grid item xs={3}>
           <Typography variant="subtitle1" className={classes.barTitle}>
-            Current prize
+            Current reward
           </Typography>
           <Typography component="h2" className={classes.barValue}>
             ${Math.round(currentPrizeState.value * 10000) / 10000}
@@ -180,17 +196,76 @@ const PoolDashboard = ({
             ${fromWei(get(poolGraphState, 'data.funding.totalStaked', ''))}
           </Typography>
         </Grid>
+        {poolMetadataState.value && (
+          <Grid item xs={3}>
+            <Typography variant="subtitle1" className={classes.barTitle}>
+              Ticket Price
+            </Typography>
+            <Typography component="h2" className={classes.barValue}>
+              ${poolMetadataState.value.lockValue}
+            </Typography>
+          </Grid>
+        )}
       </Grid>
       {!balanceState.loading &&
-        (balanceState.value === '0' ? (
-          <MainButton onClick={joinPool}>Join the pool</MainButton>
+        (balanceState.value === '0' || accountAddress === null ? (
+          <>
+            <MainButton
+              onClick={joinPool}
+              disabled={accountAddress === null}
+              tooltip={accountAddress === null && 'Connect wallet to join pool'}
+            >
+              Join the pool
+            </MainButton>
+          </>
         ) : (
-          <MainButton onClick={leavePool} warning>
+          <MainButton onClick={leavePool} warning="true">
             Leave the pool
           </MainButton>
         ))}
+      <AllowDaiModal
+        open={allowDaiModalOpen}
+        onClose={() => setAllowDaiModalOpen(false)}
+        onAllowDaiClick={async () => {
+          setAllowDaiModalOpen(false);
+          setConfirmTxModalOpen(true);
+          await approve(accountAddress, poolAddress);
+          setConfirmTxModalOpen(false);
+          setWasDaiApproved(true);
+          setStakeDaiModalOpen(true);
+        }}
+      />
+      {poolMetadataState.value && userBalance.value && (
+        <StakeDaiModal
+          open={stakeDaiModalOpen}
+          onClose={() => setStakeDaiModalOpen(false)}
+          lockValue={poolMetadataState.value.lockValue}
+          userBalance={userBalance.value}
+          onStake={async () => {
+            setStakeDaiModalOpen(false);
+            setConfirmTxModalOpen(true);
+            await deposit(
+              accountAddress,
+              poolAddress,
+              poolMetadataState.value.lockValue
+            );
+            setConfirmTxModalOpen(false);
+            setDidStake(!didStake);
+          }}
+        />
+      )}
+      <ConfirmTxModal
+        open={confirmTxModalOpen}
+        onClose={() => setConfirmTxModalOpen(false)}
+      />
     </div>
   );
 };
 
-export default PoolDashboard;
+const mapStateToProps = (state) => {
+  return {
+    address: state.auth.address,
+  };
+};
+
+export default connect(mapStateToProps, null)(PoolDashboard);

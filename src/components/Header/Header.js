@@ -90,7 +90,6 @@ const useStyles = makeStyles((theme) => ({
 const Header = (props) => {
   const classes = useStyles();
   const [anchorElement, setAnchorElement] = useState(null);
-  const [address, setAddress] = useState(null);
 
   const onConnect = async (provider) => {
     const web3 = getWeb3(provider);
@@ -99,13 +98,13 @@ const Header = (props) => {
     }
 
     const accounts = await web3.eth.getAccounts();
-    setAddress(accounts[0]);
+    props.onWalletConnect(accounts[0]); // set address in redux global state
   };
 
   const web3Modal = useWeb3Modal(onConnect);
 
   const onWalletClick = async () => {
-    if (!address) {
+    if (!props.address) {
       // user is not connected to any wallet
       web3Modal.core.connect();
     } else {
@@ -114,7 +113,7 @@ const Header = (props) => {
 
       // for now, clear provider on click
       web3Modal.core.clearCachedProvider();
-      setAddress(null);
+      props.onWalletConnect(null); // set address in redux global state
       setWeb3Provider(null); // reset web3 provider
     }
   };
@@ -216,7 +215,7 @@ const Header = (props) => {
         variant="outlined"
         size="small"
       >
-        {address ? shortenAddress(address) : 'Connect Wallet'}
+        {props.address ? shortenAddress(props.address) : 'Connect Wallet'}
         <AccountBalanceWalletIcon
           color="primary"
           className={classes.walletIcon}
@@ -312,6 +311,7 @@ const mapStateToProps = (state) => {
     loading: state.auth.loading,
     error: state.auth.error,
     isAuthenticated: state.auth.token !== null,
+    address: state.auth.address,
   };
 };
 
@@ -326,6 +326,8 @@ const mapDispatchToProps = (dispatch) => {
         imageUrl: userDetails.imageUrl,
       }),
     onSignOut: () => dispatch({ type: actionTypes.AUTH_SIGNOUT }),
+    onWalletConnect: (address) =>
+      dispatch({ type: actionTypes.WALLET_CONNECTED, address: address }),
   };
 };
 
