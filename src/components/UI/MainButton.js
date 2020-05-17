@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -32,17 +33,23 @@ const useStyles = makeStyles((theme) => ({
 const MainButton = (props) => {
   const classes = useStyles();
 
+  const tooltipTitle = props.tooltip ? props.tooltip : '';
+
   return (
-    <Button
-      {...props}
-      className={clsx(
-        classes.root,
-        props.disabled && classes.disabled,
-        props.warning && classes.warning
-      )}
-    >
-      {props.children}
-    </Button>
+    <Tooltip title={tooltipTitle}>
+      <span>
+        <Button
+          {...props}
+          className={clsx(
+            classes.root,
+            props.disabled && classes.disabled,
+            props.warning && classes.warning
+          )}
+        >
+          {props.children}
+        </Button>
+      </span>
+    </Tooltip>
   );
 };
 

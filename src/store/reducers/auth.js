@@ -8,6 +8,7 @@ const initialState = {
   error: null,
   loading: false,
   authRedirectPath: '/',
+  address: null,
 };
 
 const signInSuccess = (state, action) => {
@@ -18,11 +19,16 @@ const signInSuccess = (state, action) => {
     imageUrl: action.imageUrl,
     error: null,
     loading: false,
+    address: state.address,
   };
 };
 
 const signOut = (state, action) => {
   return initialState;
+};
+
+const walletConnected = (state, action) => {
+  return { ...state, address: action.address };
 };
 
 const reducer = (state = initialState, action) => {
@@ -31,6 +37,8 @@ const reducer = (state = initialState, action) => {
       return signInSuccess(state, action);
     case actionTypes.AUTH_SIGNOUT:
       return signOut(state, action);
+    case actionTypes.WALLET_CONNECTED:
+      return walletConnected(state, action);
     default:
       return state;
   }
