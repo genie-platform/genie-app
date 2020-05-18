@@ -8,6 +8,7 @@ const initialState = {
   coverImage: '',
   winnerDescription: '',
   rewardDuration: null,
+  game: null,
 };
 
 const setPool = (state, actionPayload) => {

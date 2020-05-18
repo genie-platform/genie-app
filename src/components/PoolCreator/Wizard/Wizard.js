@@ -19,6 +19,7 @@ const CHOOSE_GAME = 0;
 const SETTINGS = 1;
 const POOL_DETAILS = 2;
 const VERIFY = 3;
+const FINISH = 4;
 
 const getStepContent = (step, props) => {
   switch (step) {
@@ -186,7 +187,7 @@ export const Wizard = (props) => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
     // create pool if on last step
-    if (activeStep === POOL_DETAILS) {
+    if (activeStep === VERIFY) {
       await createPool();
     }
   };
@@ -215,7 +216,7 @@ export const Wizard = (props) => {
           disabled={!canContinue}
           className={clsx(classes.button, canContinue && classes.buttonNext)}
         >
-          {activeStep === POOL_DETAILS ? 'Create Pool' : 'Continue'}
+          {activeStep === VERIFY ? 'Create Pool' : 'Continue'}
         </MainButton>
         {activeStep === CHOOSE_GAME ? null : (
           <div className={classes.backButtonArea}>
@@ -260,7 +261,7 @@ export const Wizard = (props) => {
         {stepNames[activeStep]}
       </Typography>
       <div className={classes.root}>
-        {activeStep === VERIFY ? finished : body}
+        {activeStep === FINISH ? finished : body}
       </div>
       <ConfirmTxModal
         open={confirmTxModalOpen}

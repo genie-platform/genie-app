@@ -6,7 +6,7 @@ import { Typography } from '@material-ui/core';
 import CustomStepper from './CustomStepper/CustomStepper';
 import Wizard from './Wizard/Wizard';
 import PoolDetailsForm from './PoolDetailsForm/PoolDetailsForm';
-import PoolExtraForm from './PoolExtraForm/PoolExtraForm';
+import PoolSettingsForm from './PoolSettingForm/PoolSettingsForm';
 import PoolVerifyForm from './PoolVerifyForm/PoolVerifyForm';
 import ChooseGame from './ChooseGame/ChooseGame';
 
@@ -30,7 +30,7 @@ const PoolCreator = (props) => {
     <Wizard
       chooseGame={ChooseGame}
       poolDetails={PoolDetailsForm}
-      poolExtra={PoolExtraForm}
+      poolExtra={PoolSettingsForm}
       poolVerify={PoolVerifyForm}
     />
   );

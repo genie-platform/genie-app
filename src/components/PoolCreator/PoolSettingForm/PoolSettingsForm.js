@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PoolExtraForm = (props) => {
+const PoolSettingsForm = (props) => {
   const classes = useStyles();
 
   return (
@@ -58,12 +58,7 @@ const PoolExtraForm = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    name: state.createdPool.name,
-    description: state.createdPool.description,
     lockValue: state.createdPool.lockValue,
-    icon: state.createdPool.icon,
-    coverImage: state.createdPool.coverImage,
-    winnerDescription: state.createdPool.winnerDescription,
     rewardDuration: state.createdPool.rewardDuration,
   };
 };
@@ -74,16 +69,11 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({
         type: actionTypes.SET_POOL,
         payload: {
-          name: poolDetails.name,
-          description: poolDetails.description,
           lockValue: poolDetails.lockValue,
-          icon: poolDetails.icon,
-          coverImage: poolDetails.coverImage,
-          winnerDescription: poolDetails.winnerDescription,
           rewardDuration: poolDetails.rewardDuration,
         },
       }),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PoolExtraForm);
+export default connect(mapStateToProps, mapDispatchToProps)(PoolSettingsForm);
