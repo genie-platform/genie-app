@@ -49,11 +49,13 @@ const useStyles = makeStyles((theme) => ({
     width: '550px',
     color: theme.customColors.lightText,
     paddingBottom: '0.8em',
+    textAlign: 'center',
   },
   bar: {
     width: '40%',
     paddingTop: '2em',
     paddingBottom: '4em',
+    textAlign: 'center',
   },
   barTitle: {
     color: theme.customColors.lightText,
@@ -72,11 +74,12 @@ const useStyles = makeStyles((theme) => ({
   cover: {
     width: '100%',
     height: '35vh',
+    minHeight: 300,
     position: 'relative',
     overflow: 'hidden',
     '&> img': {
       position: 'absolute',
-      top: '-300px',
+      top: '-100px',
       width: '100%',
     },
   },

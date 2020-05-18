@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     width: theme.customValues.bigTitleWidth,
   },
   subTitleText: {
-    width: '50%',
+    width: theme.customValues.bigTitleWidth,
   },
   titleBig: {
     width: theme.customValues.bigTitleWidth,
