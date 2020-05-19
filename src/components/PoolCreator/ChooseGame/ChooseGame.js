@@ -50,7 +50,7 @@ const ChooseGame = (props) => {
         <GameCard
           cardId={GODS_UNCHAINED}
           checked={chosenGame === GODS_UNCHAINED}
-          setChecked={() => {}}
+          onClick={() => {}}
           disabled
           image="/logos/godsbw.jpg"
           title={GODS_UNCHAINED}
