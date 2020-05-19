@@ -9,7 +9,7 @@ const initialState = {
   winnerDescription: '',
   rewardDuration: null,
   game: null,
-  winningCondition: { type: '', value: null },
+  winningCondition: { type: '', value: 100 },
 };
 
 const setPool = (state, actionPayload) => {

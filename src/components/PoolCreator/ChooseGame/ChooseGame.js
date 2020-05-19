@@ -54,7 +54,7 @@ const ChooseGame = (props) => {
           disabled
           image="/logos/godsbw.jpg"
           title={GODS_UNCHAINED}
-          description="Coming soon!"
+          description="Coming soon"
         />
       </Grid>
     </Grid>

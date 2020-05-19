@@ -147,9 +147,6 @@ export const Wizard = (props) => {
       poolOwnerAddress: null,
     };
 
-    console.log(poolMetadata);
-
-    debugger;
     // send request to create pool in db
     const pool = await window.fetch(`${config.backend.url}/pools`, {
       method: 'POST',

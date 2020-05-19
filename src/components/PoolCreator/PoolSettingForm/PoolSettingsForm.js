@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.customColors.text,
     paddingBottom: '0.2em',
   },
-  winningValue: {
+  winningInput: {
     marginTop: '2em',
   },
 }));
@@ -22,16 +22,29 @@ const useStyles = makeStyles((theme) => ({
 const winningConditionTypes = { LEVEL: 'level', CHALLENGES: 'challenges' };
 const LEVELS = [...Array(100 + 1).keys()].splice(1);
 const CHALLENGES = [...Array(40 + 1).keys()];
+const LEAGUES = {
+  STANDARD: 'Standard',
+  HARDCORE: 'Hardcore',
+  DELIRIUM: 'Delirium',
+  DELIRIUM_HC: 'Delirium Hardcore',
+};
 
 const PoolSettingsForm = (props) => {
   const classes = useStyles();
-  const [winningCondition, setWinningCondition] = useState({
-    type: winningConditionTypes.LEVEL,
-    value: 100,
-  });
+  const [winningCondition, setWinningCondition] = useState(
+    props.winningCondition
+  );
 
   useEffect(() => {
-    props.setPool({ winningCondition: winningCondition });
+    const defaultWinningCondition = {
+      type: winningConditionTypes.LEVEL,
+      value: 100,
+      league: LEAGUES.DELIRIUM,
+    };
+    if (props.game === 'Path of Exile') {
+      setWinningCondition(defaultWinningCondition);
+      props.setPool({ winningCondition: defaultWinningCondition });
+    }
   }, []);
 
   const verifyWinningValue = (value) => {
@@ -56,11 +69,33 @@ const PoolSettingsForm = (props) => {
     return text;
   };
 
-  const handleChange = (event) => {
-    setWinningCondition((prevState) => ({
-      type: event.target.value,
-      value: prevState.value,
-    }));
+  const handleChangeType = (event) => {
+    const type = event.target.value;
+    // setWinningCondition((prevState) => ({
+    //   type: type,
+    //   value: prevState.value,
+    //   league: prevState.league,
+    // }));
+    setWinningCondition({
+      type: type,
+      value: winningCondition.value,
+      league: winningCondition.league,
+    });
+    props.setPool({ winningCondition: winningCondition });
+  };
+
+  const handleChangeLeague = (event) => {
+    const league = event.target.value;
+    // setWinningCondition((prevState) => ({
+    //   type: prevState.type,
+    //   value: prevState.value,
+    //   league: league,
+    // }));
+    setWinningCondition({
+      type: winningCondition.type,
+      value: winningCondition.value,
+      league: league,
+    });
     props.setPool({ winningCondition: winningCondition });
   };
 
@@ -75,7 +110,7 @@ const PoolSettingsForm = (props) => {
           select
           fullWidth
           defaultValue={winningConditionTypes.LEVEL}
-          onChange={handleChange}
+          onChange={handleChangeType}
           SelectProps={{ value: winningCondition.type }}
         >
           <MenuItem value={winningConditionTypes.LEVEL}>
@@ -86,7 +121,7 @@ const PoolSettingsForm = (props) => {
           </MenuItem>
         </TextField>
         <TextField
-          className={classes.winningValue}
+          className={classes.winningInput}
           error={!verifyWinningValue(winningCondition.value)}
           helperText={getHelperText()}
           type="number"
@@ -108,7 +143,26 @@ const PoolSettingsForm = (props) => {
               winningCondition: winningCondition,
             });
           }}
-        ></TextField>
+        />
+        <TextField
+          className={classes.winningInput}
+          variant="outlined"
+          select
+          fullWidth
+          label="League"
+          defaultValue={LEAGUES.DELIRIUM}
+          onChange={handleChangeLeague}
+          SelectProps={{
+            value: winningCondition.league
+              ? winningCondition.league
+              : LEAGUES.DELIRIUM,
+          }}
+        >
+          <MenuItem value={LEAGUES.STANDARD}>{LEAGUES.STANDARD}</MenuItem>
+          <MenuItem value={LEAGUES.HARDCORE}>{LEAGUES.HARDCORE}</MenuItem>
+          <MenuItem value={LEAGUES.DELIRIUM}>{LEAGUES.DELIRIUM}</MenuItem>
+          <MenuItem value={LEAGUES.DELIRIUM_HC}>{LEAGUES.DELIRIUM_HC}</MenuItem>
+        </TextField>
       </Grid>
     </>
   );
