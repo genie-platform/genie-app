@@ -9,6 +9,7 @@ import gql from 'graphql-tag';
 import { fromWei } from 'web3-utils';
 import get from 'lodash/get';
 
+import { winningConditionTypes, GAMES } from '../../utils/constants';
 import {
   getCurrentPrize,
   fetchPoolMetadata,
@@ -139,6 +140,31 @@ const PoolDashboard = ({
     setDidStake(!didStake);
   };
 
+  let winner;
+  if (poolMetadataState.value) {
+    const { game, winningCondition } = poolMetadataState.value;
+    console.log(winningCondition);
+    console.log(game);
+    if (game === GAMES.PATH_OF_EXILE) {
+      if (winningCondition.type === winningConditionTypes.LEVEL) {
+        winner = (
+          <Typography variant="h6">
+            The pool winner is the first character that will reach level {''}
+            {winningCondition.value} on {winningCondition.league} league
+          </Typography>
+        );
+      } else if (winningCondition.type === winningConditionTypes.CHALLENGES) {
+        winner = (
+          <Typography>
+            The pool winner is the first character that will complete
+            {winningCondition.value} challenges on {winningCondition.league}{' '}
+            league
+          </Typography>
+        );
+      }
+    }
+  }
+
   return (
     <div className={classes.root}>
       {poolMetadataState.value && (
@@ -155,6 +181,7 @@ const PoolDashboard = ({
           <Typography variant="subtitle1" className={classes.desc}>
             {poolMetadataState.value.description}
           </Typography>
+          {winner}
         </>
       )}
       <Grid

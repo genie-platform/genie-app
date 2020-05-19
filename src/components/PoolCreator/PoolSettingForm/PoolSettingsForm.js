@@ -7,6 +7,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { connect } from 'react-redux';
 
 import * as actionTypes from '../../../store/actions/actionTypes';
+import {
+  winningConditionTypes,
+  LEVELS,
+  CHALLENGES,
+  LEAGUES,
+} from '../../../utils/constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -18,16 +24,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '2em',
   },
 }));
-
-const winningConditionTypes = { LEVEL: 'level', CHALLENGES: 'challenges' };
-const LEVELS = [...Array(100 + 1).keys()].splice(1);
-const CHALLENGES = [...Array(40 + 1).keys()];
-const LEAGUES = {
-  STANDARD: 'Standard',
-  HARDCORE: 'Hardcore',
-  DELIRIUM: 'Delirium',
-  DELIRIUM_HC: 'Delirium Hardcore',
-};
 
 const PoolSettingsForm = (props) => {
   const classes = useStyles();
@@ -43,7 +39,7 @@ const PoolSettingsForm = (props) => {
     };
     if (props.game === 'Path of Exile') {
       setWinningCondition(defaultWinningCondition);
-      props.setPool({ winningCondition: defaultWinningCondition });
+      props.setPool({ winningCondition: { ...defaultWinningCondition } });
     }
   }, []);
 
@@ -71,32 +67,36 @@ const PoolSettingsForm = (props) => {
 
   const handleChangeType = (event) => {
     const type = event.target.value;
-    // setWinningCondition((prevState) => ({
-    //   type: type,
-    //   value: prevState.value,
-    //   league: prevState.league,
-    // }));
-    setWinningCondition({
+    const newValue = {
       type: type,
       value: winningCondition.value,
       league: winningCondition.league,
-    });
-    props.setPool({ winningCondition: winningCondition });
+    };
+    setWinningCondition(newValue);
+    props.setPool({ winningCondition: newValue });
+  };
+
+  const handleChangeValue = (event) => {
+    console.log(event);
+    const value = event.target.value;
+    const newValue = {
+      type: winningCondition.type,
+      value: value,
+      league: winningCondition.league,
+    };
+    setWinningCondition(newValue);
+    props.setPool({ winningCondition: newValue });
   };
 
   const handleChangeLeague = (event) => {
     const league = event.target.value;
-    // setWinningCondition((prevState) => ({
-    //   type: prevState.type,
-    //   value: prevState.value,
-    //   league: league,
-    // }));
-    setWinningCondition({
+    const newValue = {
       type: winningCondition.type,
       value: winningCondition.value,
       league: league,
-    });
-    props.setPool({ winningCondition: winningCondition });
+    };
+    setWinningCondition(newValue);
+    props.setPool({ winningCondition: newValue });
   };
 
   const winningConditions = props.game === 'Path of Exile' && (
@@ -133,16 +133,7 @@ const PoolSettingsForm = (props) => {
               ? 'Winning level'
               : '# of challenges to win'
           }
-          onChange={(event) => {
-            const value = event.target.valueAsNumber;
-            setWinningCondition((prevState) => ({
-              type: prevState.type,
-              value: value,
-            }));
-            props.setPool({
-              winningCondition: winningCondition,
-            });
-          }}
+          onChange={handleChangeValue}
         />
         <TextField
           className={classes.winningInput}
