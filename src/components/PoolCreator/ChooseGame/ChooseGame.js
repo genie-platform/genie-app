@@ -12,7 +12,7 @@ const LOTTERY = 'Lottery';
 const GODS_UNCHAINED = 'Gods Unchained';
 const YOUR_GAME = 'Your Game';
 
-function ChooseGame(props) {
+const ChooseGame = (props) => {
   const [chosenGame, setChosenGame] = useState(PATH_OF_EXILE);
 
   useEffect(() => {
@@ -20,6 +20,7 @@ function ChooseGame(props) {
   }, []);
 
   const onChooseGame = (game) => {
+    setChosenGame(game);
     props.setPool({ game: game });
   };
 
@@ -29,10 +30,7 @@ function ChooseGame(props) {
         <GameCard
           cardId={PATH_OF_EXILE}
           checked={chosenGame === PATH_OF_EXILE}
-          setChecked={(id) => {
-            setChosenGame(id);
-          }}
-          onClick={() => onChooseGame(chosenGame)}
+          onClick={() => onChooseGame(PATH_OF_EXILE)}
           image="/logos/poe2.jpg"
           title={PATH_OF_EXILE}
           description="Path of Exile is a free online Action RPG set in a dark fantasy world"
@@ -42,10 +40,7 @@ function ChooseGame(props) {
         <GameCard
           cardId={MANUAL}
           checked={chosenGame === MANUAL}
-          setChecked={(id) => {
-            setChosenGame(id);
-          }}
-          onClick={() => onChooseGame(chosenGame)}
+          onClick={() => onChooseGame(MANUAL)}
           image="/logos/manual.jpg"
           title={MANUAL}
           description="Choose any game and reward the winner manualy"
@@ -64,7 +59,7 @@ function ChooseGame(props) {
       </Grid>
     </Grid>
   );
-}
+};
 
 const mapStateToProps = (state) => {
   return {

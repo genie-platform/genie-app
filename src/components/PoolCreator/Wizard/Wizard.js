@@ -91,15 +91,31 @@ export const Wizard = (props) => {
     const MIN_POOL_NAME_LEN = 4;
     const MIN_POOL_DESCRIPTION_LEN = 0;
     const MIN_LOCK_VALUE = 0;
+    const MAX_LEVEL = 100;
+    const MIN_LEVEL = 0;
 
-    return (
-      activeStep !== POOL_DETAILS ||
-      (activeStep === POOL_DETAILS &&
-        props.name.length > MIN_POOL_NAME_LEN &&
-        props.description.length > MIN_POOL_DESCRIPTION_LEN &&
-        props.lockValue > MIN_LOCK_VALUE)
-    );
-  }, [props.name, props.description, props.lockValue, activeStep]);
+    const currentStepVerify =
+      activeStep !== POOL_DETAILS && activeStep !== SETTINGS;
+
+    const settingsVerify =
+      activeStep === SETTINGS &&
+      props.winningCondition.value <= MAX_LEVEL &&
+      props.winningCondition.value > MIN_LEVEL;
+
+    const detailsVerify =
+      activeStep === POOL_DETAILS &&
+      props.name.length > MIN_POOL_NAME_LEN &&
+      props.description.length > MIN_POOL_DESCRIPTION_LEN &&
+      props.lockValue > MIN_LOCK_VALUE;
+
+    return currentStepVerify || settingsVerify || detailsVerify;
+  }, [
+    props.name,
+    props.description,
+    props.lockValue,
+    props.winningCondition,
+    activeStep,
+  ]);
 
   useEffect(() => {
     setCanContinue(verifyForm());
@@ -124,11 +140,16 @@ export const Wizard = (props) => {
       coverImage: props.coverImage,
       winnerDescription: props.winnerDescription,
       rewardDuration: props.rewardDuration,
+      game: props.game,
+      winningCondition: props.winningCondition,
       txHash: null,
       contractAddress: null,
       poolOwnerAddress: null,
     };
 
+    console.log(poolMetadata);
+
+    debugger;
     // send request to create pool in db
     const pool = await window.fetch(`${config.backend.url}/pools`, {
       method: 'POST',
@@ -280,6 +301,8 @@ const mapStateToProps = (state) => {
     coverImage: state.createdPool.coverImage,
     winnerDescription: state.createdPool.winnerDescription,
     rewardDuration: state.createdPool.rewardDuration,
+    game: state.createdPool.game,
+    winningCondition: state.createdPool.winningCondition,
     token: state.auth.token,
     address: state.auth.address,
   };

@@ -59,7 +59,7 @@ const GameCard = (props) => {
         props.disabled && classes.disabled
       )}
       elevation={0}
-      onClick={() => props.setChecked(props.cardId)}
+      onClick={() => props.onClick()}
     >
       <CardHeader title={props.title}></CardHeader>
       <CardMedia image={props.image} className={classes.image}></CardMedia>

@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
-import CustomStepper from './CustomStepper/CustomStepper';
 import Wizard from './Wizard/Wizard';
 import PoolDetailsForm from './PoolDetailsForm/PoolDetailsForm';
 import PoolSettingsForm from './PoolSettingForm/PoolSettingsForm';
