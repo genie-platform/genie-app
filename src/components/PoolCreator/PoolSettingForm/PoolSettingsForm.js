@@ -9,11 +9,12 @@ import { connect } from 'react-redux';
 import * as actionTypes from '../../../store/actions/actionTypes';
 import {
   winningConditionTypes,
-  LEVELS,
-  CHALLENGES,
   LEAGUES,
   GAMES,
 } from '../../../utils/constants';
+
+const LEVELS = [...Array(100 + 1).keys()].splice(1);
+const CHALLENGES = [...Array(40 + 1).keys()];
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -45,6 +46,7 @@ const PoolSettingsForm = (props) => {
   }, []);
 
   const verifyWinningValue = (value) => {
+    value = parseInt(value);
     if (winningCondition.type === winningConditionTypes.LEVEL) {
       return LEVELS.includes(value);
     }

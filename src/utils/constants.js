@@ -9,8 +9,6 @@ export const winningConditionTypes = {
   LEVEL: 'level',
   CHALLENGES: 'challenges',
 };
-export const LEVELS = [...Array(100 + 1).keys()].splice(1);
-export const CHALLENGES = [...Array(40 + 1).keys()];
 export const LEAGUES = {
   STANDARD: 'Standard',
   HARDCORE: 'Hardcore',

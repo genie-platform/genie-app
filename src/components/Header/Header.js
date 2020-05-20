@@ -44,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
   logo2: {
     paddingRight: '1em',
     cursor: 'pointer',
-    // width: 100,
     height: 70,
   },
   logoText: {
