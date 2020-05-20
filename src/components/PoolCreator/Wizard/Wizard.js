@@ -130,6 +130,7 @@ export const Wizard = (props) => {
       FundingFactoryAbi,
       config.network.addresses.fundingFactory
     );
+    console.log(config.network.addresses.fundingFactory);
 
     // create pool object in backend with non-blockchain data
     const poolMetadata = {
@@ -167,7 +168,14 @@ export const Wizard = (props) => {
     // create pool contract on the blockchain
     // Get blockchain data after tx confirms, then update pool object
     const txReceipt = await fundingFactoryContract.methods
-      .createFunding(config.network.addresses.cDai, poolOwnerAddress)
+      .createFunding(
+        config.network.addresses.cDai,
+        poolOwnerAddress,
+        config.oracles.pathOfExile.url,
+        config.oracles.pathOfExile.path,
+        props.winningCondition.value,
+        web3.utils.toWei(props.lockValue.toString())
+      )
       .send({ from: poolOwnerAddress });
 
     setConfirmTxModalOpen(false);

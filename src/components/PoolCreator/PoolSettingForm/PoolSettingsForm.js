@@ -12,6 +12,7 @@ import {
   LEVELS,
   CHALLENGES,
   LEAGUES,
+  GAMES,
 } from '../../../utils/constants';
 
 const useStyles = makeStyles((theme) => ({
@@ -37,7 +38,7 @@ const PoolSettingsForm = (props) => {
       value: 100,
       league: LEAGUES.DELIRIUM,
     };
-    if (props.game === 'Path of Exile') {
+    if (props.game === GAMES.PATH_OF_EXILE) {
       setWinningCondition(defaultWinningCondition);
       props.setPool({ winningCondition: { ...defaultWinningCondition } });
     }
@@ -178,22 +179,24 @@ const PoolSettingsForm = (props) => {
           />
         </Grid>
 
-        <Grid item xs={12}>
-          <Typography className={classes.label}>
-            Reward Period (days)
-          </Typography>
-          <TextField
-            required
-            defaultValue={props.rewardDuration}
-            helperText="Leave the field empty if reward is not recurring"
-            fullWidth
-            type="number"
-            variant="outlined"
-            onChange={(event) => {
-              props.setPool({ rewardDuration: event.target.value });
-            }}
-          />
-        </Grid>
+        {props.game !== GAMES.PATH_OF_EXILE && (
+          <Grid item xs={12}>
+            <Typography className={classes.label}>
+              Reward Period (days)
+            </Typography>
+            <TextField
+              required
+              defaultValue={props.rewardDuration}
+              helperText="Leave the field empty if reward is not recurring"
+              fullWidth
+              type="number"
+              variant="outlined"
+              onChange={(event) => {
+                props.setPool({ rewardDuration: event.target.value });
+              }}
+            />
+          </Grid>
+        )}
       </Grid>
     </div>
   );

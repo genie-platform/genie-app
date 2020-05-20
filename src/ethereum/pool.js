@@ -56,11 +56,12 @@ export const balanceOf = async (contractAddress) => {
   return fromWei(balance);
 };
 
-export const deposit = (accountAddress, contractAddress, amount) => {
+export const deposit = (accountAddress, contractAddress, amount, userId) => {
+  debugger;
   const poolContract = new web3.eth.Contract(FundingAbi, contractAddress);
-
+  debugger;
   return poolContract.methods
-    .deposit(toWei(amount.toString()))
+    .deposit(toWei(amount.toString()), userId)
     .send({ from: accountAddress });
 };
 

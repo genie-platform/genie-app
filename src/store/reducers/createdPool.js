@@ -20,9 +20,6 @@ const setPool = (state, actionPayload) => {
     }
   });
 
-  console.log(actionPayload);
-  console.log({ ...state, ...actionPayload });
-
   return { ...state, ...actionPayload };
 };
 

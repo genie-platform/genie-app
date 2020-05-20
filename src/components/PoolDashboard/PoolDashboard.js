@@ -23,6 +23,7 @@ import AllowDaiModal from './Modals/AllowDaiModal';
 import StakeDaiModal from './Modals/StakeDaiModal';
 import PathofexileModal from './Modals/PathofexileModal';
 import ConfirmTxModal from '../UI/ConfirmTxModal';
+import { generateGenieToken } from '../../utils/utils';
 
 const GET_POOL = gql`
   query Pool($poolAddress: String!) {
@@ -292,7 +293,8 @@ const PoolDashboard = ({
             await deposit(
               address,
               poolAddress,
-              poolMetadataState.value.lockValue
+              poolMetadataState.value.lockValue,
+              poeAccountName + '#' + generateGenieToken(address)
             );
             setConfirmTxModalOpen(false);
             setDidStake(!didStake);
