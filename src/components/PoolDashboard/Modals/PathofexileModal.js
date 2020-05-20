@@ -92,7 +92,6 @@ const PathofexileModal = (props) => {
       <MainButton
         onClick={() => {
           setTimeout(() => {
-            console.log('closing');
             props.onEnterAccount(accountName);
             props.onClose();
           }, 2500);

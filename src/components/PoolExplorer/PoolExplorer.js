@@ -35,20 +35,22 @@ const PoolExplorer = (props) => {
 
   const poolCards =
     poolsMetadata.value &&
-    poolsMetadata.value.map((pool) => (
-      <Grid item xs={12} key={pool._id}>
-        <Link
-          to={`/dashboard/${pool.contractAddress}`}
-          className={classes.link}
-        >
-          <PoolDisplayCardWide
-            name={pool.name}
-            description={pool.description}
-            icon={pool.icon}
-          />
-        </Link>
-      </Grid>
-    ));
+    poolsMetadata.value.map((pool) =>
+      pool.contractAddress ? (
+        <Grid item xs={12} key={pool._id}>
+          <Link
+            to={`/dashboard/${pool.contractAddress}`}
+            className={classes.link}
+          >
+            <PoolDisplayCardWide
+              name={pool.name}
+              description={pool.description}
+              icon={pool.icon}
+            />
+          </Link>
+        </Grid>
+      ) : null
+    );
 
   return (
     <div className={classes.root}>

@@ -99,17 +99,16 @@ const PoolDashboard = ({
   const [stakeDaiModalOpen, setStakeDaiModalOpen] = useState(false);
   const [pathofExileModalOpen, setPathofExileModalOpen] = useState(false);
   const [confirmTxModalOpen, setConfirmTxModalOpen] = useState(false);
-  const [wasDaiApproved, setWasDaiApproved] = useState(false);
   const [didStake, setDidStake] = useState(false);
   const [poeAccountName, setPoeAccountName] = useState('');
 
   const currentPrizeState = useAsync(async () => {
     return getCurrentPrize(poolAddress);
-  }, [poolAddress]);
+  }, [poolAddress, didStake]);
 
   const poolMetadataState = useAsync(async () => {
     return fetchPoolMetadata(poolAddress);
-  }, [poolAddress]);
+  }, [poolAddress, didStake]);
 
   const balanceState = useAsync(async () => {
     return balanceOf(poolAddress);
@@ -123,6 +122,11 @@ const PoolDashboard = ({
     variables: { poolAddress },
   });
 
+  const didAllowDai = useAsync(async () => {
+    const allowance = await getAllowance(address, poolAddress);
+    return parseFloat(allowance) >= poolMetadataState.value.lockValue;
+  }, [address, poolAddress, poolMetadataState]);
+
   const joinPool = async () => {
     const { game } = poolMetadataState.value;
     if (game === GAMES.PATH_OF_EXILE) {
@@ -134,13 +138,7 @@ const PoolDashboard = ({
   };
 
   const joinPoolModals = async () => {
-    const allowance = await getAllowance(address, poolAddress);
-
-    setWasDaiApproved(
-      parseFloat(allowance) < poolMetadataState.value.lockValue
-    );
-
-    if (!wasDaiApproved) {
+    if (!didAllowDai.value) {
       setAllowDaiModalOpen(true);
     } else {
       setStakeDaiModalOpen(true);
@@ -151,7 +149,8 @@ const PoolDashboard = ({
     setConfirmTxModalOpen(true);
     await withdraw(address, poolAddress);
     setConfirmTxModalOpen(false);
-    setDidStake(!didStake);
+    setDidStake((didStake) => !didStake);
+    poolGraphState.refetch();
   };
 
   let winner;
@@ -255,7 +254,7 @@ const PoolDashboard = ({
             <MainButton
               onClick={joinPool}
               disabled={address === null}
-              tooltip={address === null && 'Connect wallet to join pool'}
+              tooltip={address === null ? 'Connect wallet to join pool' : null}
             >
               Join the pool
             </MainButton>
@@ -276,7 +275,6 @@ const PoolDashboard = ({
             setConfirmTxModalOpen(true);
             await approve(address, poolAddress);
             setConfirmTxModalOpen(false);
-            setWasDaiApproved(true);
             setStakeDaiModalOpen(true);
           }}
         />
@@ -297,7 +295,8 @@ const PoolDashboard = ({
               poeAccountName + '#' + generateGenieToken(address, poolAddress)
             );
             setConfirmTxModalOpen(false);
-            setDidStake(!didStake);
+            setDidStake((didStake) => !didStake);
+            poolGraphState.refetch();
           }}
         />
       )}
