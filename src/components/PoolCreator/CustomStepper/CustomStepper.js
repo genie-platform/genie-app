@@ -27,6 +27,8 @@ const SECOND_STEP = 1;
 const THIRD_STEP = 2;
 const FINISH_STEP = 3;
 
+const siaUrl = 'https://siasky.net/skynet/skyfile';
+
 const ColorlibConnector = withStyles((theme) => ({
   alternativeLabel: {
     top: 22,
@@ -171,13 +173,23 @@ const CustomStepper = (props) => {
       config.network.addresses.fundingFactory
     );
 
+    //Call sia POST method to save the file and get the link
+    var formData = new FormData();
+    formData.append("file", props.coverImage);
+    var skyLink = '';
+    skyLink = await window.fetch(siaUrl, {
+      method: 'POST',
+      body: formData
+    });
+
+
     // create pool object in backend with non-blockchain data
     const poolMetadata = {
       name: props.name,
       description: props.description,
       lockValue: props.lockValue,
       icon: props.icon,
-      coverImage: props.coverImage,
+      coverImage: skyLink,
       winnerDescription: props.winnerDescription,
       rewardDuration: props.rewardDuration,
       txHash: null,
