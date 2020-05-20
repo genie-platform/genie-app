@@ -32,6 +32,15 @@ export const shortenAddress = (address) => {
 };
 
 /**
+ * Generate a token using the users address
+ * We need a token for a path of exile character as a proof of ownership
+ * @param {String} address
+ */
+export const generateGenieToken = (address) => {
+  return '_G' + address.slice(address.length - 7, address.length);
+};
+
+/**
  * Changes the address to lowercase.
  *
  * An address with uppercase letters is checksummed.
