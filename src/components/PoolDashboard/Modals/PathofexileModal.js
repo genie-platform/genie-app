@@ -85,7 +85,9 @@ const PathofexileModal = (props) => {
         which character of yours is in the pool!
       </Typography>
       <Typography variant="h4" className={classes.text}>
-        {props.address ? generateGenieToken(props.address) : 'CONNECT WALLET!'}
+        {props.address
+          ? generateGenieToken(props.address, props.poolAddress)
+          : 'CONNECT WALLET!'}
       </Typography>
       <MainButton
         onClick={() => {

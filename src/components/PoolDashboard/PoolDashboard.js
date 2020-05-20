@@ -294,7 +294,7 @@ const PoolDashboard = ({
               address,
               poolAddress,
               poolMetadataState.value.lockValue,
-              poeAccountName + '#' + generateGenieToken(address)
+              poeAccountName + '#' + generateGenieToken(address, poolAddress)
             );
             setConfirmTxModalOpen(false);
             setDidStake(!didStake);
@@ -307,6 +307,7 @@ const PoolDashboard = ({
       />
       <PathofexileModal
         address={address}
+        poolAddress={poolAddress}
         open={pathofExileModalOpen}
         onClose={() => setPathofExileModalOpen(false)}
         onEnterAccount={(accountName) => {
