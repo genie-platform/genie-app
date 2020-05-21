@@ -130,7 +130,6 @@ export const Wizard = (props) => {
       FundingFactoryAbi,
       config.network.addresses.fundingFactory
     );
-    console.log(config.network.addresses.fundingFactory);
 
     // create pool object in backend with non-blockchain data
     const poolMetadata = {

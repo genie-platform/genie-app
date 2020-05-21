@@ -7,7 +7,11 @@ import { uploadToSkynet } from '../../services/sia';
 import { getImagesNameArray } from '../../utils/utils';
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    '& > *': {
+      borderRadius: '12px',
+    },
+  },
   top: {
     display: 'flex',
     alignItems: 'center',
@@ -80,7 +84,7 @@ const ImagePicker = (props) => {
     >
       <div className={classes.top}>
         <Typography variant="h6" className={classes.title}>
-          Choose Cover Image
+          Select Cover Image
         </Typography>
         {/* <input
           accept="image/*"
