@@ -57,7 +57,7 @@ const ImagePicker = (props) => {
   const images = getImagesNameArray().map((name) => (
     <Grid item xs={4} key={name} onClick={() => onImageChosen(name)}>
       <Card className={classes.imageCard} elevation={0}>
-        <CardMedia image={name} className={classes.image} />
+        <CardMedia image={`/images/thumbs/${name}`} className={classes.image} />
       </Card>
     </Grid>
   ));

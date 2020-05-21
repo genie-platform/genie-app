@@ -9,7 +9,7 @@ export const getRandomCoverImage = () => {
 export const getImagesNameArray = () => {
   let arr = [...Array(NUMBER_OF_IMAGES + 1).keys()].splice(1); // creates array [1,2,...,NUMBER_OF_IMAGES]
 
-  return arr.map((num) => `/images/cover${num}.jpg`);
+  return arr.map((num) => `cover${num}.jpg`);
 };
 
 export const getRandomGradient = () => {
