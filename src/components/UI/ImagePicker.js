@@ -49,8 +49,9 @@ const ImagePicker = (props) => {
   };
 
   const onImageChosen = (name) => {
-    setImage(name);
-    props.onChosenImage(name);
+    const path = `/images/${name}`;
+    setImage(path);
+    props.onChosenImage(path);
     props.onClose();
   };
 
