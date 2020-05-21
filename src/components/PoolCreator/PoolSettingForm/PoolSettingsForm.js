@@ -119,9 +119,9 @@ const PoolSettingsForm = (props) => {
           <MenuItem value={winningConditionTypes.LEVEL}>
             The first character to reach level
           </MenuItem>
-          <MenuItem value={winningConditionTypes.CHALLENGES}>
+          {/* <MenuItem value={winningConditionTypes.CHALLENGES}>
             The first character to complete league challenges
-          </MenuItem>
+          </MenuItem> */}
         </TextField>
         <TextField
           className={classes.winningInput}

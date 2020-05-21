@@ -86,6 +86,9 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
     },
   },
+  token: {
+    paddingTop: '2em',
+  },
 }));
 
 const PoolDashboard = ({
@@ -127,9 +130,12 @@ const PoolDashboard = ({
     return parseFloat(allowance) >= poolMetadataState.value.lockValue;
   }, [address, poolAddress, poolMetadataState]);
 
+  const game = useAsync(async () => {
+    return poolMetadataState.value.game;
+  }, [poolMetadataState]);
+
   const joinPool = async () => {
-    const { game } = poolMetadataState.value;
-    if (game === GAMES.PATH_OF_EXILE) {
+    if (game.value === GAMES.PATH_OF_EXILE) {
       // open the pathofexile modal to get path of exile data
       setPathofExileModalOpen(true);
     } else {
@@ -155,8 +161,8 @@ const PoolDashboard = ({
 
   let winner;
   if (poolMetadataState.value) {
-    const { game, winningCondition } = poolMetadataState.value;
-    if (game === GAMES.PATH_OF_EXILE) {
+    const { winningCondition } = poolMetadataState.value;
+    if (game.value === GAMES.PATH_OF_EXILE) {
       if (winningCondition.type === winningConditionTypes.LEVEL) {
         winner = (
           <Typography variant="h6">
@@ -260,9 +266,17 @@ const PoolDashboard = ({
             </MainButton>
           </>
         ) : (
-          <MainButton onClick={leavePool} warning="true">
-            Leave the pool
-          </MainButton>
+          <>
+            <MainButton onClick={leavePool} warning="true">
+              Leave the pool
+            </MainButton>
+            {game && game.value === GAMES.PATH_OF_EXILE && (
+              <Typography variant="h6" className={classes.token}>
+                You character token is{' '}
+                {generateGenieToken(address, poolAddress)}
+              </Typography>
+            )}
+          </>
         ))}
       {poolMetadataState.value && userBalance.value && (
         <AllowDaiModal
@@ -292,7 +306,7 @@ const PoolDashboard = ({
               address,
               poolAddress,
               poolMetadataState.value.lockValue,
-              poeAccountName + '#' + generateGenieToken(address, poolAddress)
+              `${poeAccountName}#${generateGenieToken(address, poolAddress)}`
             );
             setConfirmTxModalOpen(false);
             setDidStake((didStake) => !didStake);

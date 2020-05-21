@@ -110,7 +110,7 @@ const Home = (props) => {
   const poolsGrid = (
     <div className={classes.poolsGrid}>
       <Link
-        to="/dashboard/0x3e66d5168b527888a1904d01c8413c24eb302c80"
+        to="/dashboard/0x1aa4d35ab874b4dff6e52a1953e5bc81fef0363f"
         className={classes.link}
       >
         <PoolDisplayCard clickable name="Path of Exile Race" icon="🧙‍♂️" />
