@@ -46,6 +46,7 @@ const ImagePicker = (props) => {
   const [image, setImage] = useState(null);
 
   const onFileChosen = async (event) => {
+    debugger
     const file = event.target.files[0];
     const image = await uploadToSkynet(file);
 
@@ -86,7 +87,7 @@ const ImagePicker = (props) => {
         <Typography variant="h6" className={classes.title}>
           Select Cover Image
         </Typography>
-        {/* <input
+        <input
           accept="image/*"
           className={classes.input}
           id="contained-button-file"
@@ -97,7 +98,7 @@ const ImagePicker = (props) => {
           <Button variant="outlined" color="primary" component="span">
             Upload
           </Button>
-        </label> */}
+        </label>
       </div>
       <div>
         <Grid container spacing={2} className={classes.grid}>

@@ -1,17 +1,18 @@
-import axios from 'axios';
-const siaUrl = 'https://siasky.net/skynet/skyfile';
+import { upload } from "skynet-js";
+
+const siaUrl = 'https://siasky.net';
+
+const onUploadProgress = (progress, { loaded, total }) => {
+  console.info(`Progress ${Math.round(progress * 100)}%`);
+};
 
 export const uploadToSkynet = async (file) => {
-  let skyLink = '';
 
   try {
-    let response = await axios.post(siaUrl, file);
-
-    console.log(response);
-    skyLink = await response.data;
+    const { skylink } = await upload(siaUrl, file, { onUploadProgress });
+    console.log(skylink)
+    return skylink
   } catch (error) {
     console.log(error);
   }
-
-  return skyLink;
 };
