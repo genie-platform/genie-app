@@ -15,6 +15,7 @@ import * as actionTypes from '../../../store/actions/actionTypes';
 import { theme } from '../../../theme';
 import { getRandomCoverImage } from '../../../utils/utils';
 import ImagePicker from '../../UI/ImagePicker';
+import { GAMES } from '../../../utils/constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -166,19 +167,21 @@ const PoolDetailsForm = (props) => {
           />
         </Grid>
 
-        <Grid item xs={12}>
-          <Typography className={classes.label}>Challenge</Typography>
-          <TextField
-            required
-            variant="outlined"
-            fullWidth
-            defaultValue={defaultWinner}
-            placeholder="Who will get the reward?"
-            onChange={(event) =>
-              props.setPool({ winnerDescription: event.target.value })
-            }
-          />
-        </Grid>
+        {props.game !== GAMES.PATH_OF_EXILE && (
+          <Grid item xs={12}>
+            <Typography className={classes.label}>Challenge</Typography>
+            <TextField
+              required
+              variant="outlined"
+              fullWidth
+              defaultValue={defaultWinner}
+              placeholder="Who will get the reward?"
+              onChange={(event) =>
+                props.setPool({ winnerDescription: event.target.value })
+              }
+            />
+          </Grid>
+        )}
 
         <Grid item xs={4}>
           <Typography className={classes.label}>Icon</Typography>
@@ -246,6 +249,7 @@ const mapStateToProps = (state) => {
     icon: state.createdPool.icon,
     coverImage: state.createdPool.coverImage,
     winnerDescription: state.createdPool.winnerDescription,
+    game: state.createdPool.game,
   };
 };
 

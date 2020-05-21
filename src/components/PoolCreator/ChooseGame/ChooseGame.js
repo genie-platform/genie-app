@@ -37,7 +37,7 @@ const ChooseGame = (props) => {
           cardId={GAMES.MANUAL}
           checked={chosenGame === GAMES.MANUAL}
           onClick={() => onChooseGame(GAMES.MANUAL)}
-          image="/logos/manual.jpg"
+          image="/logos/manual.svg"
           title={GAMES.MANUAL}
           description="Choose any game and reward the winner manualy"
         />
