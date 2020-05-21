@@ -7,6 +7,22 @@ const exec = util.promisify(require('child_process').exec);
  * The script builds the app, deploys to AWS S3 and then invalidates cloudfront
  *
  * We need to invalidate cloudfron so we could see the changes on the domain
+ *
+ * -----
+ * The dapp is hosted on an AWS S3 bucket -
+ * the bucket is used for Static website hosting.
+ * When using S3 bucket for static website hosting we are given a URL for public access.
+
+ * To deploy the dapp to the bucket we use the aws CLI tool using the command `yarn run deploy`
+
+ * To install aws CLI tool follow these steps:
+  https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
+
+ * To give access to the CLI tool we need an access key. To create an access key follow these steps:
+ * https://aws.amazon.com/blogs/security/wheres-my-secret-access-key/
+
+ * A nice tutorial can be found here:
+ * https://medium.com/serverlessguru/deploy-reactjs-app-with-s3-static-hosting-f640cb49d7e6
  */
 async function deploy() {
   const BUILD_CMD = 'yarn build';
