@@ -9,6 +9,7 @@ import gql from 'graphql-tag';
 import { fromWei } from 'web3-utils';
 import get from 'lodash/get';
 
+import { winningConditionTypes, GAMES } from '../../utils/constants';
 import {
   getCurrentPrize,
   fetchPoolMetadata,
@@ -20,7 +21,9 @@ import { getAllowance, approve, getUserBalance } from '../../ethereum/erc20';
 import MainButton from '../UI/MainButton';
 import AllowDaiModal from './Modals/AllowDaiModal';
 import StakeDaiModal from './Modals/StakeDaiModal';
+import PathofexileModal from './Modals/PathofexileModal';
 import ConfirmTxModal from '../UI/ConfirmTxModal';
+import { generateGenieToken } from '../../utils/utils';
 
 const GET_POOL = gql`
   query Pool($poolAddress: String!) {
@@ -89,43 +92,53 @@ const PoolDashboard = ({
   match: {
     params: { poolAddress },
   },
-  address: accountAddress,
+  address,
 }) => {
   const classes = useStyles();
   const [allowDaiModalOpen, setAllowDaiModalOpen] = useState(false);
   const [stakeDaiModalOpen, setStakeDaiModalOpen] = useState(false);
+  const [pathofExileModalOpen, setPathofExileModalOpen] = useState(false);
   const [confirmTxModalOpen, setConfirmTxModalOpen] = useState(false);
-  const [wasDaiApproved, setWasDaiApproved] = useState(false);
   const [didStake, setDidStake] = useState(false);
+  const [poeAccountName, setPoeAccountName] = useState('');
 
   const currentPrizeState = useAsync(async () => {
     return getCurrentPrize(poolAddress);
-  }, [poolAddress]);
+  }, [poolAddress, didStake]);
 
   const poolMetadataState = useAsync(async () => {
     return fetchPoolMetadata(poolAddress);
-  }, [poolAddress]);
+  }, [poolAddress, didStake]);
 
   const balanceState = useAsync(async () => {
     return balanceOf(poolAddress);
-  }, [poolAddress, accountAddress, didStake]);
+  }, [poolAddress, address, didStake]);
 
   const userBalance = useAsync(async () => {
-    return getUserBalance(accountAddress);
-  }, [accountAddress]);
+    return getUserBalance(address);
+  }, [address]);
 
   const poolGraphState = useQuery(GET_POOL, {
     variables: { poolAddress },
   });
 
+  const didAllowDai = useAsync(async () => {
+    const allowance = await getAllowance(address, poolAddress);
+    return parseFloat(allowance) >= poolMetadataState.value.lockValue;
+  }, [address, poolAddress, poolMetadataState]);
+
   const joinPool = async () => {
-    const allowance = await getAllowance(accountAddress, poolAddress);
+    const { game } = poolMetadataState.value;
+    if (game === GAMES.PATH_OF_EXILE) {
+      // open the pathofexile modal to get path of exile data
+      setPathofExileModalOpen(true);
+    } else {
+      joinPoolModals();
+    }
+  };
 
-    setWasDaiApproved(
-      parseFloat(allowance) < poolMetadataState.value.lockValue
-    );
-
-    if (!wasDaiApproved) {
+  const joinPoolModals = async () => {
+    if (!didAllowDai.value) {
       setAllowDaiModalOpen(true);
     } else {
       setStakeDaiModalOpen(true);
@@ -134,10 +147,34 @@ const PoolDashboard = ({
 
   const leavePool = async () => {
     setConfirmTxModalOpen(true);
-    await withdraw(accountAddress, poolAddress);
+    await withdraw(address, poolAddress);
     setConfirmTxModalOpen(false);
-    setDidStake(!didStake);
+    setDidStake((didStake) => !didStake);
+    poolGraphState.refetch();
   };
+
+  let winner;
+  if (poolMetadataState.value) {
+    const { game, winningCondition } = poolMetadataState.value;
+    if (game === GAMES.PATH_OF_EXILE) {
+      if (winningCondition.type === winningConditionTypes.LEVEL) {
+        winner = (
+          <Typography variant="h6">
+            The pool winner is the first character that will reach level {''}
+            {winningCondition.value} on {winningCondition.league} league
+          </Typography>
+        );
+      } else if (winningCondition.type === winningConditionTypes.CHALLENGES) {
+        winner = (
+          <Typography>
+            The pool winner is the first character that will complete
+            {winningCondition.value} challenges on {winningCondition.league}{' '}
+            league
+          </Typography>
+        );
+      }
+    }
+  }
 
   return (
     <div className={classes.root}>
@@ -155,6 +192,7 @@ const PoolDashboard = ({
           <Typography variant="subtitle1" className={classes.desc}>
             {poolMetadataState.value.description}
           </Typography>
+          {winner}
         </>
       )}
       <Grid
@@ -211,12 +249,12 @@ const PoolDashboard = ({
         )}
       </Grid>
       {!balanceState.loading &&
-        (balanceState.value === '0' || accountAddress === null ? (
+        (balanceState.value === '0' || address === null ? (
           <>
             <MainButton
               onClick={joinPool}
-              disabled={accountAddress === null}
-              tooltip={accountAddress === null && 'Connect wallet to join pool'}
+              disabled={address === null}
+              tooltip={address === null ? 'Connect wallet to join pool' : null}
             >
               Join the pool
             </MainButton>
@@ -235,9 +273,8 @@ const PoolDashboard = ({
           onAllowDaiClick={async () => {
             setAllowDaiModalOpen(false);
             setConfirmTxModalOpen(true);
-            await approve(accountAddress, poolAddress);
+            await approve(address, poolAddress);
             setConfirmTxModalOpen(false);
-            setWasDaiApproved(true);
             setStakeDaiModalOpen(true);
           }}
         />
@@ -252,18 +289,30 @@ const PoolDashboard = ({
             setStakeDaiModalOpen(false);
             setConfirmTxModalOpen(true);
             await deposit(
-              accountAddress,
+              address,
               poolAddress,
-              poolMetadataState.value.lockValue
+              poolMetadataState.value.lockValue,
+              poeAccountName + '#' + generateGenieToken(address, poolAddress)
             );
             setConfirmTxModalOpen(false);
-            setDidStake(!didStake);
+            setDidStake((didStake) => !didStake);
+            poolGraphState.refetch();
           }}
         />
       )}
       <ConfirmTxModal
         open={confirmTxModalOpen}
         onClose={() => setConfirmTxModalOpen(false)}
+      />
+      <PathofexileModal
+        address={address}
+        poolAddress={poolAddress}
+        open={pathofExileModalOpen}
+        onClose={() => setPathofExileModalOpen(false)}
+        onEnterAccount={(accountName) => {
+          setPoeAccountName(accountName);
+          joinPoolModals();
+        }}
       />
     </div>
   );

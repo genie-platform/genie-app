@@ -1,18 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import React, { useState, useEffect, useCallback } from 'react';
 import clsx from 'clsx';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import EditIcon from '@material-ui/icons/Edit';
-import LocalFloristIcon from '@material-ui/icons/LocalFlorist';
-import CheckIcon from '@material-ui/icons/Check';
-import StepConnector from '@material-ui/core/StepConnector';
-import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import { FundingFactory as FundingFactoryAbi } from 'genie-contracts-abi';
 
 import * as actionTypes from '../../../store/actions/actionTypes';
@@ -22,84 +15,38 @@ import ConfirmTxModal from '../../UI/ConfirmTxModal';
 import { lowercaseAddress } from '../../../utils/utils';
 import { getWeb3 } from '../../../services/web3';
 
-const FIRST_STEP = 0;
-const SECOND_STEP = 1;
-const THIRD_STEP = 2;
-const FINISH_STEP = 3;
+const CHOOSE_GAME = 0;
+const SETTINGS = 1;
+const POOL_DETAILS = 2;
+const VERIFY = 3;
+const FINISH = 4;
 
-const ColorlibConnector = withStyles((theme) => ({
-  alternativeLabel: {
-    top: 22,
-  },
-  active: {
-    '& $line': {
-      backgroundImage: theme.customGradients.primary,
-    },
-  },
-  completed: {
-    '& $line': {
-      backgroundImage: theme.customGradients.primary,
-    },
-  },
-  line: {
-    height: 3,
-    border: 0,
-    backgroundColor: '#eaeaf0',
-    borderRadius: 1,
-  },
-}))(StepConnector);
-
-const useColorlibStepIconStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: '#ccc',
-    zIndex: 1,
-    color: '#fff',
-    width: 50,
-    height: 50,
-    display: 'flex',
-    borderRadius: '50%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  active: {
-    backgroundImage: theme.customGradients.primary,
-  },
-  completed: {
-    backgroundImage: theme.customGradients.primary,
-  },
-}));
-
-const ColorlibStepIcon = (props) => {
-  const classes = useColorlibStepIconStyles();
-  const { active, completed } = props;
-
-  const icons = {
-    1: <EditIcon />,
-    2: <LocalFloristIcon />,
-    3: <CheckIcon />,
-  };
-
-  return (
-    <div
-      className={clsx(classes.root, {
-        [classes.active]: active,
-        [classes.completed]: completed,
-      })}
-    >
-      {icons[String(props.icon)]}
-    </div>
-  );
+const getStepContent = (step, props) => {
+  switch (step) {
+    case CHOOSE_GAME:
+      return props.chooseGame;
+    case POOL_DETAILS:
+      return props.poolDetails;
+    case SETTINGS:
+      return props.poolExtra;
+    case VERIFY:
+      return props.poolVerify;
+    default:
+      return 'Unknown step';
+  }
 };
 
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
   },
-  stepper: {
-    backgroundColor: 'transparent',
-  },
   content: {
     height: '800px',
+  },
+  title: {
+    padding: '1.5em 0',
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   buttons: {
     display: 'flex',
@@ -126,50 +73,64 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const getStepContent = (step, props) => {
-  switch (step) {
-    case FIRST_STEP:
-      return props.poolDetails;
-    case SECOND_STEP:
-      return props.poolExtra;
-    case THIRD_STEP:
-      return props.poolVerify;
-    default:
-      return 'Unknown step';
-  }
-};
-
-const CustomStepper = (props) => {
+export const Wizard = (props) => {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = useState(FIRST_STEP);
+  const [activeStep, setActiveStep] = useState(CHOOSE_GAME);
   const [canContinue, setCanContinue] = useState(false);
   const [isPoolCreated, setIsPoolCreated] = useState(false);
   const [contractAddress, setContractAddress] = useState();
   const [confirmTxModalOpen, setConfirmTxModalOpen] = useState(false);
-  const stepNames = ['Pool Profile', 'Extra', 'Verify'];
+  const stepNames = [
+    'Select a Game',
+    'Pool Settings',
+    'Pool Details',
+    'Preview',
+  ];
 
-  useEffect(() => {
+  const verifyForm = useCallback(() => {
     const MIN_POOL_NAME_LEN = 4;
     const MIN_POOL_DESCRIPTION_LEN = 0;
     const MIN_LOCK_VALUE = 0;
+    const MAX_LEVEL = 100;
+    const MIN_LEVEL = 0;
 
-    let canContinue =
+    const currentStepVerify =
+      activeStep !== POOL_DETAILS && activeStep !== SETTINGS;
+
+    const settingsVerify =
+      activeStep === SETTINGS &&
+      props.winningCondition.value <= MAX_LEVEL &&
+      props.winningCondition.value > MIN_LEVEL;
+
+    const detailsVerify =
+      activeStep === POOL_DETAILS &&
       props.name.length > MIN_POOL_NAME_LEN &&
       props.description.length > MIN_POOL_DESCRIPTION_LEN &&
       props.lockValue > MIN_LOCK_VALUE;
 
-    setCanContinue(canContinue);
-  }, [props.name, props.description, props.lockValue]);
+    return currentStepVerify || settingsVerify || detailsVerify;
+  }, [
+    props.name,
+    props.description,
+    props.lockValue,
+    props.winningCondition,
+    activeStep,
+  ]);
 
+  useEffect(() => {
+    setCanContinue(verifyForm());
+  }, [props.name, props.description, props.lockValue, activeStep, verifyForm]);
+
+  // TODO FUNC TOO LARGE - REFACTOR!!!
   const createPool = async () => {
     const web3 = getWeb3();
-    const accounts = await web3.eth.getAccounts();
-    const poolOwnerAddress = accounts[0];
+    const poolOwnerAddress = props.address;
 
     const fundingFactoryContract = new web3.eth.Contract(
       FundingFactoryAbi,
       config.network.addresses.fundingFactory
     );
+    console.log(config.network.addresses.fundingFactory);
 
     // create pool object in backend with non-blockchain data
     const poolMetadata = {
@@ -180,11 +141,14 @@ const CustomStepper = (props) => {
       coverImage: props.coverImage,
       winnerDescription: props.winnerDescription,
       rewardDuration: props.rewardDuration,
+      game: props.game,
+      winningCondition: props.winningCondition,
       txHash: null,
       contractAddress: null,
       poolOwnerAddress: null,
     };
 
+    // send request to create pool in db
     const pool = await window.fetch(`${config.backend.url}/pools`, {
       method: 'POST',
       headers: {
@@ -201,9 +165,17 @@ const CustomStepper = (props) => {
 
     setConfirmTxModalOpen(true);
 
+    // create pool contract on the blockchain
     // Get blockchain data after tx confirms, then update pool object
     const txReceipt = await fundingFactoryContract.methods
-      .createFunding(config.network.addresses.cDai, poolOwnerAddress)
+      .createFunding(
+        config.network.addresses.cDai,
+        poolOwnerAddress,
+        config.oracles.pathOfExile.url,
+        config.oracles.pathOfExile.path,
+        props.winningCondition.value,
+        web3.utils.toWei(props.lockValue.toString())
+      )
       .send({ from: poolOwnerAddress });
 
     setConfirmTxModalOpen(false);
@@ -241,13 +213,13 @@ const CustomStepper = (props) => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
     // create pool if on last step
-    if (activeStep === THIRD_STEP) {
+    if (activeStep === VERIFY) {
       await createPool();
     }
   };
 
   const handleBack = () => {
-    if (activeStep === FIRST_STEP) {
+    if (activeStep === CHOOSE_GAME) {
       props.history.push('/'); // go back to homepage
     }
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -260,7 +232,7 @@ const CustomStepper = (props) => {
 
   const FormContent = getStepContent(activeStep, props);
 
-  const stepperBody = (
+  const body = (
     <div>
       <FormContent className={classes.content} />
       <div className={classes.buttons}>
@@ -270,9 +242,9 @@ const CustomStepper = (props) => {
           disabled={!canContinue}
           className={clsx(classes.button, canContinue && classes.buttonNext)}
         >
-          {activeStep === stepNames.length - 1 ? 'Create Pool' : 'Continue'}
+          {activeStep === VERIFY ? 'Create Pool' : 'Continue'}
         </MainButton>
-        {activeStep === FIRST_STEP ? null : (
+        {activeStep === CHOOSE_GAME ? null : (
           <div className={classes.backButtonArea}>
             <Typography>Or </Typography>
             <Link
@@ -295,6 +267,7 @@ const CustomStepper = (props) => {
             Congatulations, your pool is created!
           </Typography>
           <Button
+            color="primary"
             onClick={openDashboard}
             className={clsx(classes.button, classes.buttonNext)}
           >
@@ -310,20 +283,13 @@ const CustomStepper = (props) => {
   );
 
   return (
-    <div className={classes.root}>
-      <Stepper
-        className={classes.stepper}
-        alternativeLabel
-        activeStep={activeStep}
-        connector={<ColorlibConnector />}
-      >
-        {stepNames.map((label) => (
-          <Step key={label}>
-            <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      <div>{activeStep === stepNames.length ? finished : stepperBody}</div>
+    <div>
+      <Typography variant="h4" className={classes.title}>
+        {stepNames[activeStep]}
+      </Typography>
+      <div className={classes.root}>
+        {activeStep === FINISH ? finished : body}
+      </div>
       <ConfirmTxModal
         open={confirmTxModalOpen}
         onClose={() => setConfirmTxModalOpen(false)}
@@ -341,7 +307,10 @@ const mapStateToProps = (state) => {
     coverImage: state.createdPool.coverImage,
     winnerDescription: state.createdPool.winnerDescription,
     rewardDuration: state.createdPool.rewardDuration,
+    game: state.createdPool.game,
+    winningCondition: state.createdPool.winningCondition,
     token: state.auth.token,
+    address: state.auth.address,
   };
 };
 
@@ -351,7 +320,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(withRouter(CustomStepper));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Wizard));

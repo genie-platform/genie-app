@@ -41,6 +41,11 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: '0.3em',
     cursor: 'pointer',
   },
+  logo2: {
+    paddingRight: '1em',
+    cursor: 'pointer',
+    height: 70,
+  },
   logoText: {
     color: theme.customColors.text,
     cursor: 'pointer',
@@ -231,13 +236,18 @@ const Header = (props) => {
       <AppBar className={classes.appBar} position="static" color="secondary">
         <Toolbar className={classes.toolbar}>
           {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-          <Typography
+          <img
+            src="/logos/genie.png"
+            alt="genie"
+            className={classes.logo2}
+          ></img>
+          {/* <Typography
             variant="h3"
             className={classes.logo}
             onClick={() => props.history.push('/')}
           >
             🧞
-          </Typography>
+          </Typography> */}
           <Typography
             variant="h5"
             className={classes.logoText}

@@ -8,7 +8,7 @@ const prod = {
   },
   network: {
     addresses: {
-      fundingFactory: '0xfd99ba75A8515FD8E277b76F36719bA949Cb765F',
+      fundingFactory: '0x28b541f3942e207fB25CEB8b74D8Cdef33Cb17f7',
       Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
@@ -17,10 +17,13 @@ const prod = {
   },
   graph: {
     uri:
-      'https://api.thegraph.com/subgraphs/id/QmXDQkcowPCiJe8CMePx1DCJRP8Y9MrGTk73xWVHYYtrzK',
+      'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph-v2',
   },
   wallets: {
     portisId: 'ae18109e-f2e1-4ee7-ace7-f7f14cb58bce',
+  },
+  oracles: {
+    pathOfExile: { url: '', path: '' },
   },
 };
 
@@ -34,7 +37,7 @@ const dev = {
   },
   network: {
     addresses: {
-      fundingFactory: '0xfd99ba75A8515FD8E277b76F36719bA949Cb765F',
+      fundingFactory: '0x28b541f3942e207fB25CEB8b74D8Cdef33Cb17f7',
       Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
@@ -43,10 +46,13 @@ const dev = {
   },
   graph: {
     uri:
-      'https://api.thegraph.com/subgraphs/id/QmXDQkcowPCiJe8CMePx1DCJRP8Y9MrGTk73xWVHYYtrzK',
+      'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph-v2',
   },
   wallets: {
     portisId: 'ae18109e-f2e1-4ee7-ace7-f7f14cb58bce',
+  },
+  oracles: {
+    pathOfExile: { url: '', path: '' },
   },
 };
 

@@ -8,6 +8,8 @@ const initialState = {
   coverImage: '',
   winnerDescription: '',
   rewardDuration: null,
+  game: null,
+  winningCondition: { type: '', value: 100 },
 };
 
 const setPool = (state, actionPayload) => {
