@@ -1,8 +1,15 @@
+const NUMBER_OF_IMAGES = 18;
+
 export const getRandomCoverImage = () => {
-  const NUMBER_OF_IMAGES = 18;
   const imageNumber = Math.ceil(Math.random() * NUMBER_OF_IMAGES);
 
   return `/images/cover${imageNumber}.jpg`;
+};
+
+export const getImagesNameArray = () => {
+  let arr = [...Array(NUMBER_OF_IMAGES + 1).keys()].splice(1); // creates array [1,2,...,NUMBER_OF_IMAGES]
+
+  return arr.map((num) => `/images/cover${num}.jpg`);
 };
 
 export const getRandomGradient = () => {

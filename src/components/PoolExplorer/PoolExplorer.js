@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 
 import PoolDisplayCardWide from '../PoolDisplayCard/PoolDisplayCardWide';
 import { fetchAllPools } from '../../ethereum/pool';
+import ImagePicker from '../UI/ImagePicker';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,6 +58,7 @@ const PoolExplorer = (props) => {
       <Typography variant="h3" className={classes.title}>
         Explore
       </Typography>
+      {/* <ImagePicker open={true}></ImagePicker> */}
       {poolsMetadata.loading ? (
         <div>Loading...</div>
       ) : poolsMetadata.error ? (

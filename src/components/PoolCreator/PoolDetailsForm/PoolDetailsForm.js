@@ -9,11 +9,12 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import { connect } from 'react-redux';
 import 'emoji-mart/css/emoji-mart.css';
-import { Picker } from 'emoji-mart';
+import { Picker as EmojiPicker } from 'emoji-mart';
 
 import * as actionTypes from '../../../store/actions/actionTypes';
 import { theme } from '../../../theme';
 import { getRandomCoverImage } from '../../../utils/utils';
+import ImagePicker from '../../UI/ImagePicker';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -35,7 +36,10 @@ const useStyles = makeStyles((theme) => ({
       background: theme.palette.primary.main,
     },
   },
-  poolImage: {},
+  imagePicker: {
+    width: 500,
+    height: 400,
+  },
   emojiPicker: {
     position: 'absolute',
     zIndex: 100,
@@ -45,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 const PoolDetailsForm = (props) => {
   const classes = useStyles();
   const [emojiMallAnchorElement, setEmojiMallAnchorElement] = useState(null);
+  const [imagePickerAnchor, setImagePickerAnchor] = useState(null);
   const [touched, setTouched] = useState({ name: false, description: false });
 
   let poolIcon = props.icon;
@@ -61,17 +66,29 @@ const PoolDetailsForm = (props) => {
     setEmojiMallAnchorElement(event.currentTarget);
   };
 
-  const closePicker = () => {
+  const closeEmojiPicker = () => {
     setEmojiMallAnchorElement(null);
   };
 
   const onChooseIcon = (emoji) => {
     props.setPool({ icon: emoji.native });
-    closePicker();
+    closeEmojiPicker();
   };
 
-  const chooseCoverImage = () => {
-    props.setPool({ coverImage: getRandomCoverImage() });
+  const clickCoverImage = (event) => {
+    if (event) {
+      setImagePickerAnchor(event.currentTarget);
+    } else {
+      chooseCoverImage(getRandomCoverImage());
+    }
+  };
+
+  const chooseCoverImage = (image) => {
+    props.setPool({ coverImage: image });
+  };
+
+  const closeCoverImagePicker = () => {
+    setImagePickerAnchor(null);
   };
 
   const validateName = () => {
@@ -102,7 +119,7 @@ const PoolDetailsForm = (props) => {
 
   useEffect(() => {
     if (poolImage === '') {
-      chooseCoverImage();
+      clickCoverImage();
     }
   }, []);
 
@@ -176,7 +193,7 @@ const PoolDetailsForm = (props) => {
         </Grid>
         <Grid item xs={8}>
           <Typography className={classes.label}>Cover Image</Typography>
-          <Card className={classes.imageCards} onClick={chooseCoverImage}>
+          <Card className={classes.imageCards} onClick={clickCoverImage}>
             <CardMedia
               className={classes.poolImage}
               image={poolImage}
@@ -191,7 +208,7 @@ const PoolDetailsForm = (props) => {
         id={emojiPickerPopoverId}
         open={isEmojyPickerOpen}
         anchorEl={emojiMallAnchorElement}
-        onClose={closePicker}
+        onClose={closeEmojiPicker}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',
@@ -201,7 +218,7 @@ const PoolDetailsForm = (props) => {
           horizontal: 'center',
         }}
       >
-        <Picker
+        <EmojiPicker
           native
           title=""
           theme="dark"
@@ -211,6 +228,13 @@ const PoolDetailsForm = (props) => {
           onSelect={onChooseIcon}
         />
       </Popover>
+      <ImagePicker
+        className={classes.imagePicker}
+        anchorEl={imagePickerAnchor}
+        open={Boolean(imagePickerAnchor)}
+        onChosenImage={chooseCoverImage}
+        onClose={closeCoverImagePicker}
+      />
     </div>
   );
 };
