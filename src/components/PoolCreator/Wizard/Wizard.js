@@ -266,6 +266,7 @@ export const Wizard = (props) => {
             Congatulations, your pool is created!
           </Typography>
           <Button
+            variant="contained"
             color="primary"
             onClick={openDashboard}
             className={clsx(classes.button, classes.buttonNext)}
