@@ -32,27 +32,30 @@ export const shortenAddress = (address) => {
 };
 
 /**
- * Generate a token using the users address
+ * Generate a token using the users and pool addresses
  * We need a token for a path of exile character as a proof of ownership
- * Token is _G + last 4 letters of pool contract address + last 4 letters of user address
+ * Token format is '_G' + last 4 letters of pool contract address + last 4 letters of user address
  * (notice we removed the numbers from the addresses because poe character names cant use numbers)
  * @param {String} address
  */
 export const generateGenieToken = (address, poolAddress) => {
   const TOKEN_LEN = 4;
 
+  // remove numbers for addresses
   let addressNoNums = address.replace(/[0-9]/g, '');
   let poolAddressNoNums = poolAddress.replace(/[0-9]/g, '');
 
-  let token =
-    '_G' +
-    poolAddressNoNums.slice(
-      poolAddressNoNums.length - TOKEN_LEN,
-      poolAddressNoNums.length
-    ) +
-    addressNoNums.slice(addressNoNums.length - TOKEN_LEN, addressNoNums.length);
+  // get last 4 chars of each address
+  addressNoNums = addressNoNums.slice(
+    addressNoNums.length - TOKEN_LEN,
+    addressNoNums.length
+  );
+  poolAddressNoNums = poolAddressNoNums.slice(
+    poolAddressNoNums.length - TOKEN_LEN,
+    poolAddressNoNums.length
+  );
 
-  return token;
+  return `_G${poolAddressNoNums}${addressNoNums}`;
 };
 
 /**
