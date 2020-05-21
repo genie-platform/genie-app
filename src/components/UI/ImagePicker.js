@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Popover from '@material-ui/core/Popover';
 import { Button, Typography, Grid, Card, CardMedia } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { uploadToSkynet } from '../../services/sia';
+import { uploadToSkynet, siaUrl } from '../../services/sia';
 import { getImagesNameArray } from '../../utils/utils';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,26 +37,44 @@ const useStyles = makeStyles((theme) => ({
     height: 100,
     borderRadius: '6px',
   },
+  loading: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    padding: '3em',
+    width: 500,
+    height: 200,
+  },
   input: {
     display: 'none',
+  },
+  skynet: {
+    width: 90,
+    height: 90,
   },
 }));
 
 const ImagePicker = (props) => {
   const classes = useStyles();
-  const [image, setImage] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const onFileChosen = async (event) => {
-    debugger
     const file = event.target.files[0];
-    const image = await uploadToSkynet(file);
 
-    setImage(image);
+    setIsUploading(true);
+    const imageId = await uploadToSkynet(file);
+    setIsUploading(false);
+
+    const path = `${siaUrl}/${imageId}`;
+
+    props.onChosenImage(path);
+    props.onClose();
   };
 
   const onImageChosen = (name) => {
     const path = `/images/${name}`;
-    setImage(path);
+
     props.onChosenImage(path);
     props.onClose();
   };
@@ -83,28 +102,42 @@ const ImagePicker = (props) => {
         horizontal: 'center',
       }}
     >
-      <div className={classes.top}>
-        <Typography variant="h6" className={classes.title}>
-          Select Cover Image
-        </Typography>
-        <input
-          accept="image/*"
-          className={classes.input}
-          id="contained-button-file"
-          type="file"
-          onChange={onFileChosen}
-        />
-        <label htmlFor="contained-button-file">
-          <Button variant="outlined" color="primary" component="span">
-            Upload
-          </Button>
-        </label>
-      </div>
-      <div>
-        <Grid container spacing={2} className={classes.grid}>
-          {images}
-        </Grid>
-      </div>
+      {isUploading ? (
+        <div className={classes.loading}>
+          <img
+            src="/logos/skynet.svg"
+            alt="skynet"
+            className={classes.skynet}
+          />
+          <Typography variant="h5">Uploading image to skynet...</Typography>
+          <CircularProgress />
+        </div>
+      ) : (
+        <>
+          <div className={classes.top}>
+            <Typography variant="h6" className={classes.title}>
+              Select Cover Image
+            </Typography>
+            <input
+              accept="image/*"
+              className={classes.input}
+              id="contained-button-file"
+              type="file"
+              onChange={onFileChosen}
+            />
+            <label htmlFor="contained-button-file">
+              <Button variant="outlined" color="primary" component="span">
+                Upload
+              </Button>
+            </label>
+          </div>
+          <div>
+            <Grid container spacing={2} className={classes.grid}>
+              {images}
+            </Grid>
+          </div>
+        </>
+      )}
     </Popover>
   );
 };
