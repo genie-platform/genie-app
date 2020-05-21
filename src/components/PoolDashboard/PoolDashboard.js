@@ -27,7 +27,7 @@ import { generateGenieToken } from '../../utils/utils';
 
 const GET_POOL = gql`
   query Pool($poolAddress: String!) {
-    funding(id: $poolAddress) {
+    pool(id: $poolAddress) {
       address
       totalStaked
       numberOfPlayers
@@ -232,7 +232,7 @@ const PoolDashboard = ({
             # of players
           </Typography>
           <Typography component="h2" className={classes.barValue}>
-            {get(poolGraphState, 'data.funding.numberOfPlayers')}
+            {get(poolGraphState, 'data.pool.numberOfPlayers')}
           </Typography>
         </Grid>
         <Grid item xs={3}>
@@ -240,7 +240,7 @@ const PoolDashboard = ({
             Total staked
           </Typography>
           <Typography component="h2" className={classes.barValue}>
-            ${fromWei(get(poolGraphState, 'data.funding.totalStaked', ''))}
+            ${fromWei(get(poolGraphState, 'data.pool.totalStaked', ''))}
           </Typography>
         </Grid>
         {poolMetadataState.value && (

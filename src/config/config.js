@@ -17,7 +17,7 @@ const prod = {
   },
   graph: {
     uri:
-      'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph-v2',
+      'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph',
   },
   wallets: {
     portisId: 'ae18109e-f2e1-4ee7-ace7-f7f14cb58bce',
@@ -46,7 +46,7 @@ const dev = {
   },
   graph: {
     uri:
-      'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph-v2',
+      'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph',
   },
   wallets: {
     portisId: 'ae18109e-f2e1-4ee7-ace7-f7f14cb58bce',
