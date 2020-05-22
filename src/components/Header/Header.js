@@ -11,13 +11,13 @@ import Typography from '@material-ui/core/Typography';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import { connect } from 'react-redux';
 import { gapi } from 'gapi-script';
+import Portis from '@portis/web3';
 
 import { getWeb3, setWeb3Provider } from '../../services/web3';
-import useWeb3Modal from '../../hooks/useWeb3Modal';
-
 import * as actionTypes from '../../store/actions/actionTypes';
 import { shortenAddress } from '../../utils/utils';
 import { config } from '../../config/config';
+import WalletsModal from './WalletsModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -95,40 +95,62 @@ const useStyles = makeStyles((theme) => ({
 const Header = (props) => {
   const classes = useStyles();
   const [anchorElement, setAnchorElement] = useState(null);
+  const [walletAnchorElement, setWalletAnchorElement] = useState(null);
+  const [walletsModalOpen, setWalletsModalOpen] = useState(true);
+  const [portis, setPortis] = useState(null);
 
-  const onConnect = async (provider) => {
-    const web3 = getWeb3(provider);
-    if (!web3.currentProvider) {
-      setWeb3Provider(provider);
-    }
+  let web3;
 
+  const onPortisClick = async () => {
+    const portisInstance = new Portis(config.wallets.portisId, 'kovan');
+
+    portisInstance.onLogin((walletAddress, email, reputation) => {
+      console.log(walletAddress, email, reputation);
+      portis.showPortis();
+    });
+
+    web3 = getWeb3(portisInstance.provider);
     const accounts = await web3.eth.getAccounts();
     props.onWalletConnect(accounts[0]); // set address in redux global state
+
+    setPortis(portisInstance);
+    setWalletsModalOpen(false); // close wallets modal
   };
 
-  const web3Modal = useWeb3Modal(onConnect);
+  const onMetaMaskClick = async () => {
+    const ethereum = window.ethereum;
 
-  const onWalletClick = async () => {
+    const metamaskProvider = window['ethereum'];
+    web3 = getWeb3(metamaskProvider);
+
+    const accounts = await ethereum.enable();
+    props.onWalletConnect(accounts[0]); // set address in redux global state
+
+    console.log(accounts);
+    setWalletsModalOpen(false); // close wallets modal
+  };
+
+  const onWalletClick = async (event) => {
     if (!props.address) {
-      // user is not connected to any wallet, open web3modal
-      web3Modal.core.connect();
+      // open wallets modal
+      setWalletsModalOpen(true);
     } else {
-      // user is already connected to wallet.
-      // TODO open menu to be able to disconnect and do other actions
-
-      // for now, clear provider on click
-      web3Modal.core.clearCachedProvider();
-      props.onWalletConnect(null); // set address in redux global state
-      setWeb3Provider(null); // reset web3 provider
+      // open menu
+      setWalletAnchorElement(event.currentTarget);
     }
+  };
+
+  const onWalletDisconnet = () => {
+    if (portis) {
+      portis.logout();
+      setPortis(null);
+    }
+    props.onWalletConnect(null); // set address in redux global state
+    setWeb3Provider(null); // reset web3 provider
   };
 
   const handleClickAvatar = (event) => {
     setAnchorElement(event.currentTarget);
-  };
-
-  const handleCloseAvatarMenu = () => {
-    setAnchorElement(null);
   };
 
   // event handler for google signin
@@ -196,9 +218,6 @@ const Header = (props) => {
   useEffect(() => {
     if (!props.isAuthenticated) {
       renderGoogleSignInButton();
-    }
-    if (web3Modal.cachedProvider) {
-      onConnect();
     }
   }, [props.isAuthenticated]);
 
@@ -279,11 +298,13 @@ const Header = (props) => {
           <div className={classes.divider}></div>
           {authArea}
           <Menu
-            id="simple-menu"
+            id="google-menu"
             anchorEl={anchorElement}
             keepMounted
             open={Boolean(anchorElement)}
-            onClose={handleCloseAvatarMenu}
+            onClose={() => {
+              setAnchorElement(null);
+            }}
             elevation={0}
             getContentAnchorEl={null}
             anchorOrigin={{
@@ -295,12 +316,50 @@ const Header = (props) => {
               horizontal: 'center',
             }}
           >
-            <MenuItem onClick={handleCloseAvatarMenu}>Profile</MenuItem>
-            <MenuItem onClick={handleCloseAvatarMenu}>My account</MenuItem>
             <MenuItem
               onClick={() => {
-                handleCloseAvatarMenu();
+                setAnchorElement(null);
                 signOut();
+              }}
+            >
+              Logout
+            </MenuItem>
+          </Menu>
+          <Menu
+            id="wallet-menu"
+            anchorEl={walletAnchorElement}
+            keepMounted
+            open={Boolean(walletAnchorElement)}
+            onClose={() => {
+              setWalletAnchorElement(null);
+            }}
+            elevation={0}
+            getContentAnchorEl={null}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+          >
+            {portis && (
+              <MenuItem
+                onClick={() => {
+                  if (portis) {
+                    portis.showPortis();
+                  }
+                  setWalletAnchorElement(null);
+                }}
+              >
+                Show account
+              </MenuItem>
+            )}
+            <MenuItem
+              onClick={() => {
+                onWalletDisconnet(); // disconnect
+                setWalletAnchorElement(null);
               }}
             >
               Logout
@@ -308,6 +367,14 @@ const Header = (props) => {
           </Menu>
         </Toolbar>
       </AppBar>
+      <WalletsModal
+        open={walletsModalOpen}
+        onClose={() => {
+          setWalletsModalOpen(null);
+        }}
+        onPortisClick={onPortisClick}
+        onMetaMaskClick={onMetaMaskClick}
+      />
     </div>
   );
 };
