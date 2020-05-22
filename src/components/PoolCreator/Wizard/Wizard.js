@@ -166,12 +166,24 @@ export const Wizard = (props) => {
 
     // create pool contract on the blockchain
     // Get blockchain data after tx confirms, then update pool object
+    console.log({ pathOfExile: config.oracles.pathOfExile })
+    console.log(web3.utils.toHex(config.oracles.pathOfExile.jobId))
+    
+    console.log(
+      config.network.addresses.cDai,
+      poolOwnerAddress,
+      config.oracles.pathOfExile.address,
+      web3.utils.toHex(config.oracles.pathOfExile.jobId),
+      props.winningCondition.value,
+      web3.utils.toWei(props.lockValue.toString())
+    )
+    debugger
     const txReceipt = await fundingFactoryContract.methods
       .createFunding(
         config.network.addresses.cDai,
         poolOwnerAddress,
-        config.oracles.pathOfExile.url,
-        config.oracles.pathOfExile.path,
+        config.oracles.pathOfExile.address,
+        web3.utils.toHex(config.oracles.pathOfExile.jobId),
         props.winningCondition.value,
         web3.utils.toWei(props.lockValue.toString())
       )

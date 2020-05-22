@@ -8,7 +8,7 @@ const prod = {
   },
   network: {
     addresses: {
-      fundingFactory: '0x28b541f3942e207fB25CEB8b74D8Cdef33Cb17f7',
+      fundingFactory: '0xb1567598A1B0f892Df8683092eCa1B97520bBb32',
       Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
@@ -17,13 +17,13 @@ const prod = {
   },
   graph: {
     uri:
-      'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph',
+      'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph-v2',
   },
   wallets: {
     portisId: 'ae18109e-f2e1-4ee7-ace7-f7f14cb58bce',
   },
   oracles: {
-    pathOfExile: { url: '', path: '' },
+    pathOfExile: { address: '0xAA1DC356dc4B18f30C347798FD5379F3D77ABC5b', jobId: 'e3f7bc7bf75a4d05a315976c429a0c42' },
   },
 };
 
@@ -37,7 +37,7 @@ const dev = {
   },
   network: {
     addresses: {
-      fundingFactory: '0x28b541f3942e207fB25CEB8b74D8Cdef33Cb17f7',
+      fundingFactory: '0xb1567598A1B0f892Df8683092eCa1B97520bBb32',
       Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
@@ -46,13 +46,14 @@ const dev = {
   },
   graph: {
     uri:
-      'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph',
+      'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph-v2',
   },
   wallets: {
     portisId: 'ae18109e-f2e1-4ee7-ace7-f7f14cb58bce',
   },
+
   oracles: {
-    pathOfExile: { url: '', path: '' },
+    pathOfExile: { address: '0xAA1DC356dc4B18f30C347798FD5379F3D77ABC5b', jobId: 'e3f7bc7bf75a4d05a315976c429a0c42' },
   },
 };
 
