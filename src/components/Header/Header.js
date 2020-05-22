@@ -145,9 +145,6 @@ const Header = (props) => {
       portis.logout();
       setPortis(null);
     }
-    if (window.ethereum) {
-      // TODO disconnect from metamask ?
-    }
     props.onWalletConnect(null); // set address in redux global state
     setWeb3Provider(null); // reset web3 provider
   };
@@ -372,7 +369,9 @@ const Header = (props) => {
       </AppBar>
       <WalletsModal
         open={walletsModalOpen}
-        onClose={() => {}}
+        onClose={() => {
+          setWalletsModalOpen(null);
+        }}
         onPortisClick={onPortisClick}
         onMetaMaskClick={onMetaMaskClick}
       />
