@@ -282,13 +282,13 @@ const Header = (props) => {
           >
             Create pool
           </NavLink>
-          <NavLink
+          {/* <NavLink
             className={classes.link}
             to="/my-pools"
             activeClassName={classes.linkActive}
           >
             My Pools
-          </NavLink>
+          </NavLink> */}
           <div className={classes.divider}></div>
           {authArea}
           <Menu
