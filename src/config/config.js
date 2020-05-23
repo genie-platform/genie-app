@@ -14,6 +14,7 @@ const prod = {
     },
     kovanProvider:
       'https://kovan.infura.io/v3/06b97e4e91db4a059c3060357b884a54',
+    operator: '0xa79bd80f1a5c9faba2c03bbd1a36af61a32253a0'
   },
   graph: {
     uri:
@@ -43,6 +44,7 @@ const dev = {
     },
     kovanProvider:
       'https://kovan.infura.io/v3/06b97e4e91db4a059c3060357b884a54',
+    operator: '0xa79bd80f1a5c9faba2c03bbd1a36af61a32253a0'
   },
   graph: {
     uri:
@@ -51,7 +53,6 @@ const dev = {
   wallets: {
     portisId: 'ae18109e-f2e1-4ee7-ace7-f7f14cb58bce',
   },
-
   oracles: {
     pathOfExile: { address: '0xAA1DC356dc4B18f30C347798FD5379F3D77ABC5b', jobId: 'e3f7bc7bf75a4d05a315976c429a0c42' },
   },
