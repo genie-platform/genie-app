@@ -287,17 +287,20 @@ const PoolDashboard = ({
         )}
       </Grid>
       {!balanceState.loading &&
-        !isGameOver() &&
         (balanceState.value === '0' || address === null ? (
           <>
-            <MainButton
-              className={classes.button}
-              onClick={joinPool}
-              disabled={address === null}
-              tooltip={address === null ? 'Connect wallet to join pool' : null}
-            >
-              Join the pool
-            </MainButton>
+            {!isGameOver() && (
+              <MainButton
+                className={classes.button}
+                onClick={joinPool}
+                disabled={address === null}
+                tooltip={
+                  address === null ? 'Connect wallet to join pool' : null
+                }
+              >
+                Join the pool
+              </MainButton>
+            )}
           </>
         ) : (
           <>
