@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: 'red',
     width: '100%',
-    marginBottom: '2em',
+    marginBottom: '1em',
   },
   divider: {
     margin: '2em 0',
@@ -45,7 +45,7 @@ const Home = (props) => {
         *Alpha version - Available only on Kovan network!
       </Typography>
 
-      <IntegrateGenie />
+      <HowItWorks />
 
       <Grid item xs={12}>
         <Divider className={classes.divider} />
@@ -57,7 +57,7 @@ const Home = (props) => {
         <Divider className={classes.divider} />
       </Grid>
 
-      <HowItWorks />
+      <IntegrateGenie />
     </Grid>
   );
 };

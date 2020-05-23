@@ -32,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 6,
   },
   poolIcon: {
+    width: 150,
+    height: 150,
     border: '1px solid rgba(0,0,0,0.2)',
     '&:hover': {
       background: theme.palette.primary.main,
@@ -130,7 +132,7 @@ const PoolDetailsForm = (props) => {
   return (
     <div>
       <Grid container spacing={3} className={classes.root}>
-        <Grid item xs={12}>
+        <Grid item xs={10}>
           <Typography className={classes.label}>Name</Typography>
           <TextField
             required
@@ -147,7 +149,7 @@ const PoolDetailsForm = (props) => {
           />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={10}>
           <Typography className={classes.label}>Description</Typography>
           <TextField
             required
@@ -168,7 +170,7 @@ const PoolDetailsForm = (props) => {
         </Grid>
 
         {props.game !== GAMES.PATH_OF_EXILE && (
-          <Grid item xs={12}>
+          <Grid item xs={10}>
             <Typography className={classes.label}>Challenge</Typography>
             <TextField
               required
@@ -183,7 +185,7 @@ const PoolDetailsForm = (props) => {
           </Grid>
         )}
 
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <Typography className={classes.label}>Icon</Typography>
           <div
             onClick={onChangeIconClick}
@@ -194,7 +196,7 @@ const PoolDetailsForm = (props) => {
             </Typography>
           </div>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={7}>
           <Typography className={classes.label}>Cover Image</Typography>
           <Card className={classes.imageCards} onClick={clickCoverImage}>
             <CardMedia

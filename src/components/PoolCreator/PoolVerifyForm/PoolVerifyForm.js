@@ -7,6 +7,8 @@ import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import { connect } from 'react-redux';
 
+import { GAMES } from '../../../utils/constants';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: '2em',
@@ -27,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 6,
   },
   poolIcon: {
+    height: 150,
+    width: 150,
     border: '1px solid rgba(0,0,0,0.2)',
     '&:hover': {
       background: theme.palette.primary.main,
@@ -41,28 +45,30 @@ const PoolVerifyForm = (props) => {
   return (
     <div className={classes.root}>
       <Grid container spacing={3} className={classes.root}>
-        <Grid item xs={12}>
+        <Grid item xs={10}>
           <Typography className={classes.label}>Name</Typography>
           <Typography variant="h5" className={classes.text}>
             {props.name}
           </Typography>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={10}>
           <Typography className={classes.label}>Description</Typography>
           <Typography variant="h5" className={classes.text}>
             {props.description}
           </Typography>
         </Grid>
 
-        <Grid item xs={12}>
-          <Typography className={classes.label}>Challenge</Typography>
-          <Typography variant="h5" className={classes.text}>
-            {props.winnerDescription}
-          </Typography>
-        </Grid>
+        {props.game !== GAMES.PATH_OF_EXILE && (
+          <Grid item xs={10}>
+            <Typography className={classes.label}>Challenge</Typography>
+            <Typography variant="h5" className={classes.text}>
+              {props.winnerDescription}
+            </Typography>
+          </Grid>
+        )}
 
-        <Grid item xs={12}>
+        <Grid item xs={10}>
           <Typography className={classes.label}>Ticket Price</Typography>
           <Typography variant="h5" className={classes.text}>
             {props.lockValue}
@@ -70,7 +76,7 @@ const PoolVerifyForm = (props) => {
         </Grid>
 
         {props.rewardDuration ? (
-          <Grid item xs={12}>
+          <Grid item xs={10}>
             <Typography className={classes.label}>Reward Duration</Typography>
             <Typography variant="h5" className={classes.text}>
               {props.rewardDuration}
@@ -78,7 +84,7 @@ const PoolVerifyForm = (props) => {
           </Grid>
         ) : null}
 
-        <Grid item xs={4}>
+        <Grid item xs={3}>
           <Typography className={classes.label}>Icon</Typography>
           <div className={clsx(classes.imageCards, classes.poolIcon)}>
             <Typography variant="h2" id="pool-icon">
@@ -86,7 +92,7 @@ const PoolVerifyForm = (props) => {
             </Typography>
           </div>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={7}>
           <Typography className={classes.label}>Cover Image</Typography>
           <Card className={classes.imageCards}>
             <CardMedia
@@ -110,6 +116,7 @@ const mapStateToProps = (state) => {
     coverImage: state.createdPool.coverImage,
     winnerDescription: state.createdPool.winnerDescription,
     rewardDuration: state.createdPool.rewardDuration,
+    game: state.createdPool.game,
   };
 };
 
