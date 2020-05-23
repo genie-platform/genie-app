@@ -9,7 +9,8 @@ import Avatar from '@material-ui/core/Avatar';
 const useStyles = makeStyles((theme) => ({
   flow: {
     justifyContent: 'center',
-    marginBottom: '2em',
+    marginBottom: '1em',
+    width: '99%',
   },
   flowTitle: {
     padding: '0.5em',
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '2em',
   },
   subTitleText: {
-    width: 800,
+    width: 600,
   },
   linkButton: {
     color: theme.palette.primary.main,
@@ -48,7 +49,7 @@ const HowItWorks = (props) => {
         </Typography>
       </Grid>
 
-      <Grid container spacing={3} className={classes.flow}>
+      <Grid container item spacing={3} className={classes.flow}>
         <Grid item xs={2}>
           <Avatar className={classes.numberIcon}>1</Avatar>
           <img src="/assets/1.svg" alt="join a pool" />
