@@ -320,7 +320,29 @@ const PoolDashboard = ({
         ))}
       {get(rewardsState, 'data.rewards', []).length > 0 && (
         <>
-          <Typography variant='h5' className={classes.rewardsTitle}>Pool Winner</Typography>
+          <Typography variant='h5' className={classes.rewardsTitle}>
+            Game is over!
+          </Typography>
+          <Grid
+            direction='row'
+            container
+            justify='center'
+            alignItems='center'
+          >
+            <Grid item xs={1}>
+              <Typography
+                variant='subtitle1'
+                className={classes.accountAddress}
+              >
+                Winner
+              </Typography>
+            </Grid>
+            <Grid item xs={1}>
+              <Typography variant='subtitle1' className={classes.accountAddress}>
+                Reward
+              </Typography>
+            </Grid>
+          </Grid>
           {get(rewardsState, 'data.rewards', []).map((reward, i) => (
             <Grid
               key={i}
@@ -330,7 +352,10 @@ const PoolDashboard = ({
               alignItems='center'
             >
               <Grid item xs={1}>
-                <Typography variant='subtitle1' className={classes.accountAddress}>
+                <Typography
+                  variant='subtitle1'
+                  className={classes.accountAddress}
+                >
                   {shortenAddress(reward.receiver)}
                 </Typography>
               </Grid>
