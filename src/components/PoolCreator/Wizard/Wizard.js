@@ -233,7 +233,7 @@ export const Wizard = (props) => {
 
   const body = (
     <div>
-      <FormContent className={classes.content} />
+      <FormContent className={classes.content} onGameClick={handleNext} />
       <div className={classes.buttons}>
         <MainButton
           variant="contained"

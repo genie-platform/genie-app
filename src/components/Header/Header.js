@@ -127,7 +127,6 @@ const Header = (props) => {
     const accounts = await ethereum.enable();
     props.onWalletConnect(accounts[0]); // set address in redux global state
 
-    console.log(accounts);
     setWalletsModalOpen(false); // close wallets modal
   };
 

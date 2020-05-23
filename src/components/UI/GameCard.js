@@ -64,7 +64,8 @@ const GameCard = (props) => {
       <CardHeader title={props.title}></CardHeader>
       <CardMedia image={props.image} className={classes.image}></CardMedia>
       <CardContent>
-        <Typography variant="body1">{props.description}</Typography>
+        <Typography variant="body1">{props.subtitle}</Typography>
+        <Typography variant="body2">{props.description}</Typography>
       </CardContent>
       <CardContent>
         <CheckCircleRoundedIcon

@@ -3,7 +3,7 @@ export const GAMES = {
   MANUAL: 'Manual',
   LOTTERY: 'Lottery',
   GODS_UNCHAINED: 'Gods Unchained',
-  YOUR_GAME: 'Your Game',
+  CUSTOM: 'Your Game',
 };
 export const winningConditionTypes = {
   LEVEL: 'level',
