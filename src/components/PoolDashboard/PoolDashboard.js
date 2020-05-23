@@ -1,29 +1,29 @@
-import React, { useState } from 'react';
-import { useAsync } from 'react-use';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import { connect } from 'react-redux';
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
-import { fromWei } from 'web3-utils';
-import get from 'lodash/get';
+import React, { useState } from 'react'
+import { useAsync } from 'react-use'
+import { makeStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import Grid from '@material-ui/core/Grid'
+import { connect } from 'react-redux'
+import { useQuery } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
+import { fromWei } from 'web3-utils'
+import get from 'lodash/get'
 
-import { winningConditionTypes, GAMES } from '../../utils/constants';
+import { winningConditionTypes, GAMES } from '../../utils/constants'
+import { generateGenieToken, shortenAddress } from '../../utils/utils'
 import {
   getCurrentPrize,
   fetchPoolMetadata,
   balanceOf,
   deposit,
-  withdraw,
-} from '../../ethereum/pool';
-import { getAllowance, approve, getUserBalance } from '../../ethereum/erc20';
-import MainButton from '../UI/MainButton';
-import AllowDaiModal from './Modals/AllowDaiModal';
-import StakeDaiModal from './Modals/StakeDaiModal';
-import PathofexileModal from './Modals/PathofexileModal';
-import ConfirmTxModal from '../UI/ConfirmTxModal';
-import { generateGenieToken } from '../../utils/utils';
+  withdraw
+} from '../../ethereum/pool'
+import { getAllowance, approve, getUserBalance } from '../../ethereum/erc20'
+import MainButton from '../UI/MainButton'
+import AllowDaiModal from './Modals/AllowDaiModal'
+import StakeDaiModal from './Modals/StakeDaiModal'
+import PathofexileModal from './Modals/PathofexileModal'
+import ConfirmTxModal from '../UI/ConfirmTxModal'
 
 const GET_POOL = gql`
   query Pool($poolAddress: String!) {
@@ -33,46 +33,59 @@ const GET_POOL = gql`
       numberOfPlayers
     }
   }
-`;
+`
 
-const useStyles = makeStyles((theme) => ({
+const GET_REWARDS = gql`
+  query getRewards($poolAddress: String!) {
+    rewards(where: { pool: $poolAddress }) {
+      id
+      txHash
+      createdAt
+      pool
+      amount
+      receiver
+    }
+  }
+`
+
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
-    position: 'relative',
+    position: 'relative'
   },
   title: {
     fontWeight: 'bold',
-    paddingBottom: '0.8em',
+    paddingBottom: '0.8em'
   },
   desc: {
     width: '550px',
     color: theme.customColors.lightText,
     paddingBottom: '0.8em',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   bar: {
     width: '40%',
     paddingTop: '2em',
     paddingBottom: '4em',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   barTitle: {
     color: theme.customColors.lightText,
-    padding: '5px',
+    padding: '5px'
   },
   barValue: {
     fontSize: '1.5em',
     fontWeight: 'bold',
-    padding: '5px',
+    padding: '5px'
   },
   icon: {
     position: 'relative',
     top: '-0.5em',
-    userSelect: 'none',
+    userSelect: 'none'
   },
   cover: {
     width: '100%',
@@ -83,93 +96,114 @@ const useStyles = makeStyles((theme) => ({
     '&> img': {
       position: 'absolute',
       top: '-100px',
-      width: '100%',
-    },
+      width: '100%'
+    }
   },
   token: {
-    paddingTop: '2em',
+    paddingTop: '2em'
   },
-}));
+  rewardsTitle: {
+    padding: '2em',
+    letterSpacing: '3px',
+    fontWeight: 'bold',
+    color: '#797979',
+    fontFamily: 'Roboto'
+  },
+  accountAddress: {
+    fontFamily: 'Calibre',
+    fontSize: '22px',
+    fontWeight: 500,
+    color: '#3F3F3F'
+  }
+}))
 
 const PoolDashboard = ({
   match: {
-    params: { poolAddress },
+    params: { poolAddress }
   },
-  address,
+  address
 }) => {
-  const classes = useStyles();
-  const [allowDaiModalOpen, setAllowDaiModalOpen] = useState(false);
-  const [stakeDaiModalOpen, setStakeDaiModalOpen] = useState(false);
-  const [pathofExileModalOpen, setPathofExileModalOpen] = useState(false);
-  const [confirmTxModalOpen, setConfirmTxModalOpen] = useState(false);
-  const [didStake, setDidStake] = useState(false);
-  const [poeAccountName, setPoeAccountName] = useState('');
+  const classes = useStyles()
+  const [allowDaiModalOpen, setAllowDaiModalOpen] = useState(false)
+  const [stakeDaiModalOpen, setStakeDaiModalOpen] = useState(false)
+  const [pathofExileModalOpen, setPathofExileModalOpen] = useState(false)
+  const [confirmTxModalOpen, setConfirmTxModalOpen] = useState(false)
+  const [didStake, setDidStake] = useState(false)
+  const [poeAccountName, setPoeAccountName] = useState('')
 
   const currentPrizeState = useAsync(async () => {
-    return getCurrentPrize(poolAddress);
-  }, [poolAddress, didStake]);
+    return getCurrentPrize(poolAddress)
+  }, [poolAddress, didStake])
 
   const poolMetadataState = useAsync(async () => {
-    return fetchPoolMetadata(poolAddress);
-  }, [poolAddress, didStake]);
+    return fetchPoolMetadata(poolAddress)
+  }, [poolAddress, didStake])
 
   const balanceState = useAsync(async () => {
-    return balanceOf(poolAddress);
-  }, [poolAddress, address, didStake]);
+    return balanceOf(poolAddress)
+  }, [poolAddress, address, didStake])
 
   const userBalance = useAsync(async () => {
-    return getUserBalance(address);
-  }, [address]);
+    return getUserBalance(address)
+  }, [address])
 
   const poolGraphState = useQuery(GET_POOL, {
-    variables: { poolAddress },
-  });
+    variables: { poolAddress }
+  })
+
+  const rewardsState = useQuery(GET_REWARDS, {
+    variables: { poolAddress }
+  })
+
+  console.log(rewardsState.data)
 
   const didAllowDai = useAsync(async () => {
-    const allowance = await getAllowance(address, poolAddress);
-    return parseFloat(allowance) >= poolMetadataState.value.lockValue;
-  }, [address, poolAddress, poolMetadataState]);
+    const allowance = await getAllowance(address, poolAddress)
+    return parseFloat(allowance) >= poolMetadataState.value.lockValue
+  }, [address, poolAddress, poolMetadataState])
 
   const game = useAsync(async () => {
-    return poolMetadataState.value.game;
-  }, [poolMetadataState]);
+    return poolMetadataState.value.game
+  }, [poolMetadataState])
 
   const joinPool = async () => {
     if (game.value === GAMES.PATH_OF_EXILE) {
       // open the pathofexile modal to get path of exile data
-      setPathofExileModalOpen(true);
+      setPathofExileModalOpen(true)
     } else {
-      joinPoolModals();
+      joinPoolModals()
     }
-  };
+  }
 
   const joinPoolModals = async () => {
     if (!didAllowDai.value) {
-      setAllowDaiModalOpen(true);
+      setAllowDaiModalOpen(true)
     } else {
-      setStakeDaiModalOpen(true);
+      setStakeDaiModalOpen(true)
     }
-  };
+  }
 
   const leavePool = async () => {
-    setConfirmTxModalOpen(true);
-    await withdraw(address, poolAddress);
-    setConfirmTxModalOpen(false);
-    setDidStake((didStake) => !didStake);
-    poolGraphState.refetch();
-  };
+    setConfirmTxModalOpen(true)
+    await withdraw(address, poolAddress)
+    setConfirmTxModalOpen(false)
+    setDidStake(didStake => !didStake)
+    poolGraphState.refetch()
+  }
 
-  let winner;
+  const isGameOver = () => get(rewardsState, 'data.rewards', []).length > 0
+
+  let winner
   if (poolMetadataState.value) {
-    const { winningCondition } = poolMetadataState.value;
+    const { winningCondition } = poolMetadataState.value
     if (game.value === GAMES.PATH_OF_EXILE) {
       if (winningCondition.type === winningConditionTypes.LEVEL) {
         winner = (
-          <Typography variant="h6">
+          <Typography variant='h6'>
             The pool winner is the first character that will reach level {''}
             {winningCondition.value} on {winningCondition.league} league
           </Typography>
-        );
+        )
       } else if (winningCondition.type === winningConditionTypes.CHALLENGES) {
         winner = (
           <Typography>
@@ -177,7 +211,7 @@ const PoolDashboard = ({
             {winningCondition.value} challenges on {winningCondition.league}{' '}
             league
           </Typography>
-        );
+        )
       }
     }
   }
@@ -187,15 +221,15 @@ const PoolDashboard = ({
       {poolMetadataState.value && (
         <>
           <div className={classes.cover}>
-            <img src={poolMetadataState.value.coverImage} alt="cover" />
+            <img src={poolMetadataState.value.coverImage} alt='cover' />
           </div>
-          <Typography variant="h1" id="pool-icon" className={classes.icon}>
+          <Typography variant='h1' id='pool-icon' className={classes.icon}>
             {poolMetadataState.value.icon}
           </Typography>
-          <Typography variant="h3" className={classes.title}>
+          <Typography variant='h3' className={classes.title}>
             {poolMetadataState.value.name}
           </Typography>
-          <Typography variant="subtitle1" className={classes.desc}>
+          <Typography variant='subtitle1' className={classes.desc}>
             {poolMetadataState.value.description}
           </Typography>
           {winner}
@@ -204,51 +238,51 @@ const PoolDashboard = ({
       <Grid
         className={classes.bar}
         container
-        direction="row"
-        justify="center"
-        alignItems="center"
+        direction='row'
+        justify='center'
+        alignItems='center'
         spacing={1}
       >
         <Grid item xs={3}>
-          <Typography variant="subtitle1" className={classes.barTitle}>
+          <Typography variant='subtitle1' className={classes.barTitle}>
             Current reward
           </Typography>
-          <Typography component="h2" className={classes.barValue}>
+          <Typography component='h2' className={classes.barValue}>
             ${Math.round(currentPrizeState.value * 10000) / 10000}
           </Typography>
         </Grid>
         {get(poolMetadataState, 'value.rewardDuration') && (
           <Grid item xs={3}>
-            <Typography variant="subtitle1" className={classes.barTitle}>
+            <Typography variant='subtitle1' className={classes.barTitle}>
               Next distribution
             </Typography>
-            <Typography component="h2" className={classes.barValue}>
+            <Typography component='h2' className={classes.barValue}>
               {get(poolMetadataState, 'value.rewardDuration')} days
             </Typography>
           </Grid>
         )}
         <Grid item xs={3}>
-          <Typography variant="subtitle1" className={classes.barTitle}>
+          <Typography variant='subtitle1' className={classes.barTitle}>
             # of players
           </Typography>
-          <Typography component="h2" className={classes.barValue}>
+          <Typography component='h2' className={classes.barValue}>
             {get(poolGraphState, 'data.pool.numberOfPlayers')}
           </Typography>
         </Grid>
         <Grid item xs={3}>
-          <Typography variant="subtitle1" className={classes.barTitle}>
+          <Typography variant='subtitle1' className={classes.barTitle}>
             Total staked
           </Typography>
-          <Typography component="h2" className={classes.barValue}>
+          <Typography component='h2' className={classes.barValue}>
             ${fromWei(get(poolGraphState, 'data.pool.totalStaked', ''))}
           </Typography>
         </Grid>
         {poolMetadataState.value && (
           <Grid item xs={3}>
-            <Typography variant="subtitle1" className={classes.barTitle}>
+            <Typography variant='subtitle1' className={classes.barTitle}>
               Ticket Price
             </Typography>
-            <Typography component="h2" className={classes.barValue}>
+            <Typography component='h2' className={classes.barValue}>
               ${poolMetadataState.value.lockValue}
             </Typography>
           </Grid>
@@ -259,25 +293,56 @@ const PoolDashboard = ({
           <>
             <MainButton
               onClick={joinPool}
-              disabled={address === null}
-              tooltip={address === null ? 'Connect wallet to join pool' : null}
+              disabled={address === null || isGameOver()}
+              tooltip={
+                isGameOver()
+                  ? 'Game is over!'
+                  : address === null
+                  ? 'Connect wallet to join pool'
+                  : null
+              }
             >
               Join the pool
             </MainButton>
           </>
         ) : (
           <>
-            <MainButton onClick={leavePool} warning="true">
+            <MainButton onClick={leavePool} warning='true'>
               Leave the pool
             </MainButton>
             {game && game.value === GAMES.PATH_OF_EXILE && (
-              <Typography variant="h6" className={classes.token}>
+              <Typography variant='h6' className={classes.token}>
                 You character token is{' '}
                 {generateGenieToken(address, poolAddress)}
               </Typography>
             )}
           </>
         ))}
+      {get(rewardsState, 'data.rewards', []).length > 0 && (
+        <>
+          <Typography variant='h5' className={classes.rewardsTitle}>Pool Winner</Typography>
+          {get(rewardsState, 'data.rewards', []).map((reward, i) => (
+            <Grid
+              key={i}
+              direction='row'
+              container
+              justify='center'
+              alignItems='center'
+            >
+              <Grid item xs={1}>
+                <Typography variant='subtitle1' className={classes.accountAddress}>
+                  {shortenAddress(reward.receiver)}
+                </Typography>
+              </Grid>
+              <Grid item xs={1}>
+                <Typography variant='subtitle1' className={classes.barTitle}>
+                  ${fromWei(reward.amount)}
+                </Typography>
+              </Grid>
+            </Grid>
+          ))}
+        </>
+      )}
       {poolMetadataState.value && userBalance.value && (
         <AllowDaiModal
           open={allowDaiModalOpen}
@@ -285,11 +350,11 @@ const PoolDashboard = ({
           lockValue={poolMetadataState.value.lockValue}
           userBalance={userBalance.value}
           onAllowDaiClick={async () => {
-            setAllowDaiModalOpen(false);
-            setConfirmTxModalOpen(true);
-            await approve(address, poolAddress);
-            setConfirmTxModalOpen(false);
-            setStakeDaiModalOpen(true);
+            setAllowDaiModalOpen(false)
+            setConfirmTxModalOpen(true)
+            await approve(address, poolAddress)
+            setConfirmTxModalOpen(false)
+            setStakeDaiModalOpen(true)
           }}
         />
       )}
@@ -300,17 +365,17 @@ const PoolDashboard = ({
           lockValue={poolMetadataState.value.lockValue}
           userBalance={userBalance.value}
           onStake={async () => {
-            setStakeDaiModalOpen(false);
-            setConfirmTxModalOpen(true);
+            setStakeDaiModalOpen(false)
+            setConfirmTxModalOpen(true)
             await deposit(
               address,
               poolAddress,
               poolMetadataState.value.lockValue,
               `${poeAccountName}#${generateGenieToken(address, poolAddress)}`
-            );
-            setConfirmTxModalOpen(false);
-            setDidStake((didStake) => !didStake);
-            poolGraphState.refetch();
+            )
+            setConfirmTxModalOpen(false)
+            setDidStake(didStake => !didStake)
+            poolGraphState.refetch()
           }}
         />
       )}
@@ -323,19 +388,19 @@ const PoolDashboard = ({
         poolAddress={poolAddress}
         open={pathofExileModalOpen}
         onClose={() => setPathofExileModalOpen(false)}
-        onEnterAccount={(accountName) => {
-          setPoeAccountName(accountName);
-          joinPoolModals();
+        onEnterAccount={accountName => {
+          setPoeAccountName(accountName)
+          joinPoolModals()
         }}
       />
     </div>
-  );
-};
+  )
+}
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    address: state.auth.address,
-  };
-};
+    address: state.auth.address
+  }
+}
 
-export default connect(mapStateToProps, null)(PoolDashboard);
+export default connect(mapStateToProps, null)(PoolDashboard)
