@@ -8,62 +8,11 @@ import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import MainButton from '../UI/MainButton';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: theme.customValues.contentWidth,
-    margin: 'auto',
-    textAlign: '-webkit-center',
-  },
-  heroGridItem: {
-    padding: '0',
-  },
-  hero: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
-    backgroundImage: theme.customGradients.primary,
-    height: '27em',
-  },
-  heroTitle: {
-    width: theme.customValues.bigTitleWidth,
-    color: 'white',
-    fontWeight: '700',
-  },
-  heroSubTitle: {
-    paddingTop: '1em',
-    width: theme.customValues.bigTitleWidth,
-    color: 'white',
-  },
   subTitle: {
     color: '#797979',
     fontWeight: '600',
     letterSpacing: '0.2em',
     width: theme.customValues.bigTitleWidth,
-  },
-  subTitleText: {
-    width: theme.customValues.bigTitleWidth,
-  },
-  titleBig: {
-    width: theme.customValues.bigTitleWidth,
-    color: 'black',
-    fontWeight: '1000',
-  },
-  kovanText: {
-    textAlign: 'center',
-    color: 'red',
-    width: '100%',
-  },
-  linkButton: {
-    color: theme.palette.primary.main,
-    fontWeight: '600',
-  },
-  poolsGrid: {
-    paddingTop: '1em',
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  allPools: {
-    justifyContent: 'flex-end',
   },
   integrateGuide: {
     display: 'flex',
@@ -83,14 +32,6 @@ const useStyles = makeStyles((theme) => ({
   integrationSubTitle: {
     color: theme.customColors.lightText,
     paddingBottom: '0.4em',
-  },
-  link: {
-    textDecoration: 'none',
-  },
-  divider: {
-    margin: '2em 0',
-    width: 80,
-    height: 4,
   },
 }));
 
