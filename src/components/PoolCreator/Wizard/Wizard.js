@@ -173,14 +173,12 @@ export const Wizard = (props) => {
       config.oracles.pathOfExile.address,
       web3.utils.toHex(config.oracles.pathOfExile.jobId),
       props.winningCondition.value,
-      web3.utils.toWei(props.lockValue.toString())
-    ]
-    console.log(args)
+      web3.utils.toWei(props.lockValue.toString()),
+    ];
+    console.log(args);
 
     const txReceipt = await fundingFactoryContract.methods
-      .createFunding(
-        ...args
-      )
+      .createFunding(...args)
       .send({ from: poolOwnerAddress });
 
     setConfirmTxModalOpen(false);
