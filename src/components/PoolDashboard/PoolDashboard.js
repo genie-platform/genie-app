@@ -99,18 +99,16 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
     },
   },
+  button: {},
   token: {
     paddingTop: '2em',
   },
   rewardsTitle: {
-    padding: '2em',
     letterSpacing: '3px',
     fontWeight: 'bold',
     color: '#797979',
-    fontFamily: 'Roboto',
   },
   accountAddress: {
-    fontFamily: 'Calibre',
     fontSize: '22px',
     fontWeight: 500,
     color: '#3F3F3F',
@@ -289,25 +287,25 @@ const PoolDashboard = ({
         )}
       </Grid>
       {!balanceState.loading &&
+        !isGameOver() &&
         (balanceState.value === '0' || address === null ? (
           <>
             <MainButton
+              className={classes.button}
               onClick={joinPool}
-              disabled={address === null || isGameOver()}
-              tooltip={
-                isGameOver()
-                  ? 'Game is over!'
-                  : address === null
-                  ? 'Connect wallet to join pool'
-                  : null
-              }
+              disabled={address === null}
+              tooltip={address === null ? 'Connect wallet to join pool' : null}
             >
               Join the pool
             </MainButton>
           </>
         ) : (
           <>
-            <MainButton onClick={leavePool} warning="true">
+            <MainButton
+              className={classes.button}
+              onClick={leavePool}
+              warning="true"
+            >
               Leave the pool
             </MainButton>
             {game && game.value === GAMES.PATH_OF_EXILE && (
@@ -323,47 +321,43 @@ const PoolDashboard = ({
           <Typography variant="h5" className={classes.rewardsTitle}>
             Game is over!
           </Typography>
-          <Grid direction="row" container justify="center" alignItems="center">
-            <Grid item xs={1}>
-              <Typography
-                variant="subtitle1"
-                className={classes.accountAddress}
-              >
+          <Grid
+            className={classes.bar}
+            container
+            direction="row"
+            justify="center"
+            alignItems="center"
+            spacing={1}
+          >
+            <Grid item xs={6}>
+              <Typography variant="h6" className={classes.accountAddress}>
                 Winner
               </Typography>
             </Grid>
-            <Grid item xs={1}>
-              <Typography
-                variant="subtitle1"
-                className={classes.accountAddress}
-              >
+            <Grid item xs={6}>
+              <Typography variant="h6" className={classes.accountAddress}>
                 Reward
               </Typography>
             </Grid>
+
+            {get(rewardsState, 'data.rewards', []).map((reward, i) => (
+              <>
+                <Grid item xs={6}>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.accountAddress}
+                  >
+                    {shortenAddress(reward.receiver)}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="subtitle1" className={classes.barTitle}>
+                    ${fromWei(reward.amount)}
+                  </Typography>
+                </Grid>
+              </>
+            ))}
           </Grid>
-          {get(rewardsState, 'data.rewards', []).map((reward, i) => (
-            <Grid
-              key={i}
-              direction="row"
-              container
-              justify="center"
-              alignItems="center"
-            >
-              <Grid item xs={1}>
-                <Typography
-                  variant="subtitle1"
-                  className={classes.accountAddress}
-                >
-                  {shortenAddress(reward.receiver)}
-                </Typography>
-              </Grid>
-              <Grid item xs={1}>
-                <Typography variant="subtitle1" className={classes.barTitle}>
-                  ${fromWei(reward.amount)}
-                </Typography>
-              </Grid>
-            </Grid>
-          ))}
         </>
       )}
       {poolMetadataState.value && userBalance.value && (
