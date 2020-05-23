@@ -15,9 +15,9 @@ import Portis from '@portis/web3';
 
 import { getWeb3, setWeb3Provider } from '../../services/web3';
 import * as actionTypes from '../../store/actions/actionTypes';
-import { shortenAddress } from '../../utils/utils';
 import { config } from '../../config/config';
 import WalletsModal from './WalletsModal';
+import Address from '../UI/Address';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -126,7 +126,6 @@ const Header = (props) => {
     const accounts = await ethereum.enable();
     props.onWalletConnect(accounts[0]); // set address in redux global state
 
-    console.log(accounts);
     setWalletsModalOpen(false); // close wallets modal
   };
 
@@ -239,11 +238,17 @@ const Header = (props) => {
         variant="outlined"
         size="small"
       >
-        {props.address ? shortenAddress(props.address) : 'Connect Wallet'}
-        <AccountBalanceWalletIcon
-          color="primary"
-          className={classes.walletIcon}
-        />
+        {props.address ? (
+          <Address address={props.address} />
+        ) : (
+          <>
+            Connect Wallet
+            <AccountBalanceWalletIcon
+              color="primary"
+              className={classes.walletIcon}
+            />
+          </>
+        )}
       </Button>
       {props.isAuthenticated ? null : googleSigninButton}
       {props.isAuthenticated ? userAvatar : null}
@@ -255,18 +260,7 @@ const Header = (props) => {
       <AppBar className={classes.appBar} position="static" color="secondary">
         <Toolbar className={classes.toolbar}>
           {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-          <img
-            src="/logos/genie.png"
-            alt="genie"
-            className={classes.logo2}
-          ></img>
-          {/* <Typography
-            variant="h3"
-            className={classes.logo}
-            onClick={() => props.history.push('/')}
-          >
-            🧞
-          </Typography> */}
+          <img src="/logos/genie.svg" alt="genie" className={classes.logo2} />
           <Typography
             variant="h5"
             className={classes.logoText}

@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import clsx from 'clsx';
-import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
@@ -50,8 +49,8 @@ const useStyles = makeStyles((theme) => ({
   },
   buttons: {
     display: 'flex',
-    flexDirection: 'column',
-    paddingTop: '2em',
+    flexDirection: 'row',
+    padding: '2em 0',
   },
   backButtonArea: {
     display: 'flex',
@@ -61,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
   backButton: {
     textDecoration: 'none',
     cursor: 'pointer',
-    paddingLeft: '0.3em',
   },
   button: {
     marginRight: theme.spacing(1),
@@ -233,26 +231,26 @@ export const Wizard = (props) => {
 
   const body = (
     <div>
-      <FormContent className={classes.content} />
+      <FormContent className={classes.content} onGameClick={handleNext} />
       <div className={classes.buttons}>
-        <MainButton
-          variant="contained"
-          onClick={handleNext}
-          disabled={!canContinue}
-          className={clsx(classes.button, canContinue && classes.buttonNext)}
-        >
-          {activeStep === VERIFY ? 'Create Pool' : 'Continue'}
-        </MainButton>
+        <div className={classes.button}>
+          <MainButton
+            variant="contained"
+            onClick={handleNext}
+            disabled={!canContinue}
+            className={clsx(classes.button, canContinue && classes.buttonNext)}
+          >
+            {activeStep === VERIFY ? 'Create Pool' : 'Continue'}
+          </MainButton>
+        </div>
         {activeStep === CHOOSE_GAME ? null : (
-          <div className={classes.backButtonArea}>
-            <Typography>Or </Typography>
-            <Link
-              onClick={handleBack}
-              className={clsx(classes.button, classes.backButton)}
-            >
-              Back
-            </Link>
-          </div>
+          <MainButton
+            variant="outlined"
+            onClick={handleBack}
+            className={clsx(classes.button, classes.backButton)}
+          >
+            Back
+          </MainButton>
         )}
       </div>
     </div>

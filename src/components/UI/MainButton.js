@@ -2,7 +2,21 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+
+const CustomButton = withStyles((theme) => ({
+  root: {
+    boxShadow: 'none',
+    '&:hover': {
+      border: 'none',
+      boxShadow: 'none',
+      // backgroundImage: theme.customGradients.primaryHover,
+    },
+    '&:active': {
+      boxShadow: 'none',
+    },
+  },
+}))(Button);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,9 +27,18 @@ const useStyles = makeStyles((theme) => ({
     height: 50,
     width: 160,
     textTransform: 'none',
+    fontWeight: 'bold',
     '&:hover': {
-      border: '1px solid rgba(0,0,0,0)',
       backgroundImage: theme.customGradients.primaryHover,
+    },
+  },
+  outlined: {
+    backgroundImage: 'none',
+    color: theme.palette.primary.main,
+    border: `1px solid ${theme.palette.primary.main}`,
+    '&:hover': {
+      backgroundImage: theme.customGradients.whiteHover,
+      border: `1px solid ${theme.palette.primary.main}`,
     },
   },
   disabled: {
@@ -24,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
   warning: {
     backgroundImage: theme.customGradients.error,
     '&:hover': {
-      border: '1px solid rgba(0.1,0.1,0.1,0.3)',
       backgroundImage: theme.customGradients.errorHover,
     },
   },
@@ -38,16 +60,17 @@ const MainButton = (props) => {
   return (
     <Tooltip title={tooltipTitle}>
       <span>
-        <Button
+        <CustomButton
           {...props}
           className={clsx(
             classes.root,
             props.disabled && classes.disabled,
-            props.warning && classes.warning
+            props.warning && classes.warning,
+            props.variant === 'outlined' && classes.outlined
           )}
         >
           {props.children}
-        </Button>
+        </CustomButton>
       </span>
     </Tooltip>
   );

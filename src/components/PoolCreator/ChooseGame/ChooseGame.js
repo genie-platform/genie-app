@@ -26,7 +26,10 @@ const ChooseGame = (props) => {
         <GameCard
           cardId={GAMES.PATH_OF_EXILE}
           checked={chosenGame === GAMES.PATH_OF_EXILE}
-          onClick={() => onChooseGame(GAMES.PATH_OF_EXILE)}
+          onClick={() => {
+            onChooseGame(GAMES.PATH_OF_EXILE);
+            props.onGameClick();
+          }}
           image="/logos/poe2.jpg"
           title={GAMES.PATH_OF_EXILE}
           description="Path of Exile is a free online Action RPG set in a dark fantasy world"
@@ -36,10 +39,35 @@ const ChooseGame = (props) => {
         <GameCard
           cardId={GAMES.MANUAL}
           checked={chosenGame === GAMES.MANUAL}
-          onClick={() => onChooseGame(GAMES.MANUAL)}
+          onClick={() => {
+            onChooseGame(GAMES.MANUAL);
+            props.onGameClick();
+          }}
           image="/logos/manual.svg"
           title={GAMES.MANUAL}
-          description="Choose any game and reward the winner manualy"
+          description="Choose any game and reward the winner manually"
+        />
+      </Grid>
+      <Grid item xs={4}>
+        <GameCard
+          cardId={GAMES.CUSTOM}
+          onClick={() => {}}
+          image="/logos/custom_disabled.svg"
+          disabled
+          title={GAMES.CUSTOM}
+          subtitle="Coming soon"
+          description="Integrate Genie into your game - Contact us"
+        />
+      </Grid>
+      <Grid item xs={4}>
+        <GameCard
+          cardId={GAMES.LOTTERY}
+          onClick={() => {}}
+          image="/logos/lottery_disabled.svg"
+          disabled
+          title={GAMES.LOTTERY}
+          subtitle="Coming soon"
+          description="A random player wins!"
         />
       </Grid>
       <Grid item xs={4}>
@@ -50,7 +78,8 @@ const ChooseGame = (props) => {
           disabled
           image="/logos/godsbw.jpg"
           title={GAMES.GODS_UNCHAINED}
-          description="Coming soon"
+          subtitle="Coming soon"
+          description=" A turn-based digital card trading game that operates on the Ethereum blockchain"
         />
       </Grid>
     </Grid>
