@@ -15,7 +15,6 @@ import Portis from '@portis/web3';
 
 import { getWeb3, setWeb3Provider } from '../../services/web3';
 import * as actionTypes from '../../store/actions/actionTypes';
-import { shortenAddress } from '../../utils/utils';
 import { config } from '../../config/config';
 import WalletsModal from './WalletsModal';
 import Address from '../UI/Address';
@@ -261,7 +260,7 @@ const Header = (props) => {
       <AppBar className={classes.appBar} position="static" color="secondary">
         <Toolbar className={classes.toolbar}>
           {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-          <img src="/logos/genie.png" alt="genie" className={classes.logo2} />
+          <img src="/logos/genie.svg" alt="genie" className={classes.logo2} />
           <Typography
             variant="h5"
             className={classes.logoText}

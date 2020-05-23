@@ -63,7 +63,7 @@ const ChooseGame = (props) => {
         <GameCard
           cardId={GAMES.LOTTERY}
           onClick={() => {}}
-          image=""
+          image="/logos/lottery_disabled.svg"
           disabled
           title={GAMES.LOTTERY}
           subtitle="Coming soon"
