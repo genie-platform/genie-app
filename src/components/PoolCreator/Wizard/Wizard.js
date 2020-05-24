@@ -69,6 +69,9 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '5em',
     textAlign: 'center',
   },
+  instructions: {
+    paddingBottom: '2em',
+  },
 }));
 
 export const Wizard = (props) => {
@@ -267,14 +270,13 @@ export const Wizard = (props) => {
           <Typography className={classes.instructions}>
             Congatulations, your pool is created!
           </Typography>
-          <Button
-            variant="contained"
-            color="primary"
+          <MainButton
+            variant="outlined"
             onClick={openDashboard}
             className={clsx(classes.button, classes.buttonNext)}
           >
             Open Dashboard
-          </Button>
+          </MainButton>
         </React.Fragment>
       ) : (
         <Typography className={classes.instructions}>

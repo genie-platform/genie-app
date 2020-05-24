@@ -60,14 +60,14 @@ const HowItWorks = (props) => {
             Stake money
           </Typography>
           <Typography variant="subtitle1" className={classes.flowSubTitle}>
-            withdraw anytime
+            Withdraw anytime
           </Typography>
         </Grid>
         <Grid item xs={2}>
           <Avatar className={classes.numberIcon}>2</Avatar>
-          <img src="/assets/2.svg" alt="Win the challenge" />
+          <img src="/assets/2.svg" alt="Play the game" />
           <Typography variant="h6" className={classes.flowTitle}>
-            Win the challenge
+            Play the game
           </Typography>
           <Typography variant="subtitle1" className={classes.flowSubTitle}>
             While the pool money gains interest
@@ -75,15 +75,15 @@ const HowItWorks = (props) => {
         </Grid>
         <Grid item xs={2}>
           <Avatar className={classes.numberIcon}>3</Avatar>
-          <img src="/assets/3.svg" alt="Get rewarded" />
+          <img src="/assets/3.svg" alt="Win!" />
           <Typography variant="h6" className={classes.flowTitle}>
-            Get rewarded
+            Win!
           </Typography>
           <Typography variant="subtitle1" className={classes.flowSubTitle}>
             Everyone gets their money back
           </Typography>
           <Typography variant="subtitle1" className={classes.flowSubTitle}>
-            The winner wins the gained interest
+            The winner recieves the reward
           </Typography>
         </Grid>
       </Grid>
