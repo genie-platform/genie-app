@@ -26,7 +26,7 @@ const prod = {
   oracles: {
     pathOfExile: {
       address: '0xAA1DC356dc4B18f30C347798FD5379F3D77ABC5b',
-      jobId: 'e3f7bc7bf75a4d05a315976c429a0c42',
+      jobId: '15e0f2e27513449eb9e575f47a8ec6f6',
     },
   },
 };
@@ -59,7 +59,7 @@ const dev = {
   oracles: {
     pathOfExile: {
       address: '0xAA1DC356dc4B18f30C347798FD5379F3D77ABC5b',
-      jobId: 'e3f7bc7bf75a4d05a315976c429a0c42',
+      jobId: '15e0f2e27513449eb9e575f47a8ec6f6',
     },
   },
 };
