@@ -10,6 +10,7 @@ import { fromWei } from 'web3-utils';
 import get from 'lodash/get';
 
 import { winningConditionTypes, GAMES } from '../../utils/constants';
+import { generateGenieToken, shortenAddress } from '../../utils/utils';
 import {
   getCurrentPrize,
   fetchPoolMetadata,
@@ -23,7 +24,6 @@ import AllowDaiModal from './Modals/AllowDaiModal';
 import StakeDaiModal from './Modals/StakeDaiModal';
 import PathofexileModal from './Modals/PathofexileModal';
 import ConfirmTxModal from '../UI/ConfirmTxModal';
-import { generateGenieToken } from '../../utils/utils';
 
 const GET_POOL = gql`
   query Pool($poolAddress: String!) {
@@ -31,6 +31,19 @@ const GET_POOL = gql`
       address
       totalStaked
       numberOfPlayers
+    }
+  }
+`;
+
+const GET_REWARDS = gql`
+  query getRewards($poolAddress: String!) {
+    rewards(where: { pool: $poolAddress }) {
+      id
+      txHash
+      createdAt
+      pool
+      amount
+      receiver
     }
   }
 `;
@@ -86,8 +99,19 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
     },
   },
+  button: {},
   token: {
     paddingTop: '2em',
+  },
+  rewardsTitle: {
+    letterSpacing: '3px',
+    fontWeight: 'bold',
+    color: '#797979',
+  },
+  accountAddress: {
+    fontSize: '22px',
+    fontWeight: 500,
+    color: '#3F3F3F',
   },
 }));
 
@@ -125,6 +149,12 @@ const PoolDashboard = ({
     variables: { poolAddress },
   });
 
+  const rewardsState = useQuery(GET_REWARDS, {
+    variables: { poolAddress },
+  });
+
+  console.log(rewardsState.data);
+
   const didAllowDai = useAsync(async () => {
     const allowance = await getAllowance(address, poolAddress);
     return parseFloat(allowance) >= poolMetadataState.value.lockValue;
@@ -158,6 +188,8 @@ const PoolDashboard = ({
     setDidStake((didStake) => !didStake);
     poolGraphState.refetch();
   };
+
+  const isGameOver = () => get(rewardsState, 'data.rewards', []).length > 0;
 
   let winner;
   if (poolMetadataState.value) {
@@ -257,17 +289,26 @@ const PoolDashboard = ({
       {!balanceState.loading &&
         (balanceState.value === '0' || address === null ? (
           <>
-            <MainButton
-              onClick={joinPool}
-              disabled={address === null}
-              tooltip={address === null ? 'Connect wallet to join pool' : null}
-            >
-              Join the pool
-            </MainButton>
+            {!isGameOver() && (
+              <MainButton
+                className={classes.button}
+                onClick={joinPool}
+                disabled={address === null}
+                tooltip={
+                  address === null ? 'Connect wallet to join pool' : null
+                }
+              >
+                Join the pool
+              </MainButton>
+            )}
           </>
         ) : (
           <>
-            <MainButton onClick={leavePool} warning="true">
+            <MainButton
+              className={classes.button}
+              onClick={leavePool}
+              warning="true"
+            >
               Leave the pool
             </MainButton>
             {game && game.value === GAMES.PATH_OF_EXILE && (
@@ -278,6 +319,50 @@ const PoolDashboard = ({
             )}
           </>
         ))}
+      {get(rewardsState, 'data.rewards', []).length > 0 && (
+        <>
+          <Typography variant="h5" className={classes.rewardsTitle}>
+            Game is over!
+          </Typography>
+          <Grid
+            className={classes.bar}
+            container
+            direction="row"
+            justify="center"
+            alignItems="center"
+            spacing={1}
+          >
+            <Grid item xs={6}>
+              <Typography variant="h6" className={classes.accountAddress}>
+                Winner
+              </Typography>
+            </Grid>
+            <Grid item xs={6}>
+              <Typography variant="h6" className={classes.accountAddress}>
+                Reward
+              </Typography>
+            </Grid>
+
+            {get(rewardsState, 'data.rewards', []).map((reward, i) => (
+              <>
+                <Grid item xs={6}>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.accountAddress}
+                  >
+                    {shortenAddress(reward.receiver)}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography variant="subtitle1" className={classes.barTitle}>
+                    ${fromWei(reward.amount)}
+                  </Typography>
+                </Grid>
+              </>
+            ))}
+          </Grid>
+        </>
+      )}
       {poolMetadataState.value && userBalance.value && (
         <AllowDaiModal
           open={allowDaiModalOpen}

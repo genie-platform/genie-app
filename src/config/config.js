@@ -8,22 +8,26 @@ const prod = {
   },
   network: {
     addresses: {
-      fundingFactory: '0x28b541f3942e207fB25CEB8b74D8Cdef33Cb17f7',
+      fundingFactory: '0xb1567598A1B0f892Df8683092eCa1B97520bBb32',
       Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
     kovanProvider:
       'https://kovan.infura.io/v3/06b97e4e91db4a059c3060357b884a54',
+    operator: '0x955725948ed2a46d1dacdb5d1328ff5bacbb3e83',
   },
   graph: {
     uri:
-      'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph',
+      'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph-v2',
   },
   wallets: {
     portisId: 'ae18109e-f2e1-4ee7-ace7-f7f14cb58bce',
   },
   oracles: {
-    pathOfExile: { url: '', path: '' },
+    pathOfExile: {
+      address: '0xAA1DC356dc4B18f30C347798FD5379F3D77ABC5b',
+      jobId: '15e0f2e27513449eb9e575f47a8ec6f6',
+    },
   },
 };
 
@@ -37,22 +41,26 @@ const dev = {
   },
   network: {
     addresses: {
-      fundingFactory: '0x28b541f3942e207fB25CEB8b74D8Cdef33Cb17f7',
+      fundingFactory: '0xb1567598A1B0f892Df8683092eCa1B97520bBb32',
       Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
     kovanProvider:
       'https://kovan.infura.io/v3/06b97e4e91db4a059c3060357b884a54',
+    operator: '0xa79bd80f1a5c9faba2c03bbd1a36af61a32253a0',
   },
   graph: {
     uri:
-      'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph',
+      'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph-v2',
   },
   wallets: {
     portisId: 'ae18109e-f2e1-4ee7-ace7-f7f14cb58bce',
   },
   oracles: {
-    pathOfExile: { url: '', path: '' },
+    pathOfExile: {
+      address: '0xAA1DC356dc4B18f30C347798FD5379F3D77ABC5b',
+      jobId: '15e0f2e27513449eb9e575f47a8ec6f6',
+    },
   },
 };
 

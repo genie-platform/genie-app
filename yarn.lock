@@ -6725,10 +6725,10 @@ gapi-script@^1.0.2:
   resolved "https://registry.yarnpkg.com/gapi-script/-/gapi-script-1.0.2.tgz#8bc6ffa475ad6b4080caa59acaad70c29da4a875"
   integrity sha512-/WW6FrT2MUag641pM2vDJ3QbHlBKngsv5oLnd9UyplFUGtf4TxyiRGIJKawaH+cb8jXDXni+jNMH6SsL2PxbUQ==
 
-genie-contracts-abi@^0.3.0:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/genie-contracts-abi/-/genie-contracts-abi-0.3.1.tgz#27aff4ee8baba13771a8e64cac8b64b3b9043d5e"
-  integrity sha512-F99R/euab8FX5uL6v37EYHOZgJIqntts0PLKwQhQHMQIZqr/ucJ3NkAIBgrEKa2uTECwDcpIVs8d3jMEMkBC4w==
+genie-contracts-abi@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/genie-contracts-abi/-/genie-contracts-abi-0.4.0.tgz#80a5c22429be935c9a4af0e4a24a5a92b2b9769d"
+  integrity sha512-LnPoud5exHdP91qEaDrf6LTnd4Xvc5F8/LESc3XiqmambXgV9umoLVD1TlqheXZn2SwFZAtzAr6WeyW5YawVdA==
 
 gensync@^1.0.0-beta.1:
   version "1.0.0-beta.1"
