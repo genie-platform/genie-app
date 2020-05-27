@@ -9,10 +9,16 @@ import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Hidden from '@material-ui/core/Hidden';
+import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SwipeableDrawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import { connect } from 'react-redux';
 import { gapi } from 'gapi-script';
 import Portis from '@portis/web3';
@@ -75,6 +81,12 @@ const useStyles = makeStyles((theme) => ({
   authArea: {
     display: 'flex',
     alignItems: 'center',
+  },
+  hidden: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
   },
   googleLogin: {
     borderRadius: 50,
@@ -267,104 +279,155 @@ const Header = (props) => {
     </div>
   );
 
+  const authAreaDrawer = (
+    <div>
+      <List component="nav" aria-label="">
+        <ListItem>
+          <ListItemText primary="Genie" />
+        </ListItem>
+      </List>
+      <Divider />
+      <List component="nav" aria-label="">
+        <ListItem button onClick={onWalletClick}>
+          {props.address ? (
+            <Address address={props.address} />
+          ) : (
+            <>
+              <ListItemIcon>
+                <AccountBalanceWalletIcon color="primary" />
+              </ListItemIcon>
+              <ListItemText primary="Connect Wallet" />
+            </>
+          )}
+        </ListItem>
+        <ListItem button>
+          <ListItemIcon>
+            {props.isAuthenticated ? (
+              userAvatar
+            ) : (
+              <AccountCircle color="primary" />
+            )}
+          </ListItemIcon>
+          <ListItemText id="signinButton" primary="Google Sign In" />
+          {props.isAuthenticated ? null : googleSigninButton}
+        </ListItem>
+      </List>
+
+      <Divider />
+      <List component="nav" aria-label="">
+        <ListItem button>
+          <ListItemText primary="Explore" />
+        </ListItem>
+        <ListItem href="#simple-list">
+          <ListItemText primary="Create pool" />
+        </ListItem>
+      </List>
+    </div>
+  );
+
   const menuDesktop = (
-    <Hidden smDown>
-      <NavLink
-        className={classes.link}
-        to="/explore"
-        activeClassName={classes.linkActive}
-      >
-        Explore
-      </NavLink>
-      <NavLink
-        className={classes.link}
-        to="/create-pool"
-        activeClassName={classes.linkActive}
-      >
-        Create pool
-      </NavLink>
-      {/* <NavLink
+    <div className={classes.hidden}>
+      <Hidden implementation="css" xsDown>
+        <NavLink
+          className={classes.link}
+          to="/explore"
+          activeClassName={classes.linkActive}
+        >
+          Explore
+        </NavLink>
+        <NavLink
+          className={classes.link}
+          to="/create-pool"
+          activeClassName={classes.linkActive}
+        >
+          Create pool
+        </NavLink>
+        {/* <NavLink
   className={classes.link}
   to="/my-pools"
   activeClassName={classes.linkActive}
 >
   My Pools
 </NavLink> */}
+      </Hidden>
       <div className={classes.divider}></div>
-      {authArea}
-      <Menu
-        id="google-menu"
-        anchorEl={anchorElement}
-        keepMounted
-        open={Boolean(anchorElement)}
-        onClose={() => {
-          setAnchorElement(null);
-        }}
-        elevation={0}
-        getContentAnchorEl={null}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-      >
-        <MenuItem
-          onClick={() => {
+      <Hidden implementation="css" xsDown>
+        {authArea}
+
+        <Menu
+          id="google-menu"
+          anchorEl={anchorElement}
+          keepMounted
+          open={Boolean(anchorElement)}
+          onClose={() => {
             setAnchorElement(null);
-            signOut();
+          }}
+          elevation={0}
+          getContentAnchorEl={null}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
           }}
         >
-          Logout
-        </MenuItem>
-      </Menu>
-      <Menu
-        id="wallet-menu"
-        anchorEl={walletAnchorElement}
-        keepMounted
-        open={Boolean(walletAnchorElement)}
-        onClose={() => {
-          setWalletAnchorElement(null);
-        }}
-        elevation={0}
-        getContentAnchorEl={null}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-      >
-        {portis && (
           <MenuItem
             onClick={() => {
-              if (portis) {
-                portis.showPortis();
-              }
+              setAnchorElement(null);
+              signOut();
+            }}
+          >
+            Logout
+          </MenuItem>
+        </Menu>
+        <Menu
+          id="wallet-menu"
+          anchorEl={walletAnchorElement}
+          keepMounted
+          open={Boolean(walletAnchorElement)}
+          onClose={() => {
+            setWalletAnchorElement(null);
+          }}
+          elevation={0}
+          getContentAnchorEl={null}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+        >
+          {portis && (
+            <MenuItem
+              onClick={() => {
+                if (portis) {
+                  portis.showPortis();
+                }
+                setWalletAnchorElement(null);
+              }}
+            >
+              Show account
+            </MenuItem>
+          )}
+          <MenuItem
+            onClick={() => {
+              onWalletDisconnet(); // disconnect
               setWalletAnchorElement(null);
             }}
           >
-            Show account
+            Logout
           </MenuItem>
-        )}
-        <MenuItem
-          onClick={() => {
-            onWalletDisconnet(); // disconnect
-            setWalletAnchorElement(null);
-          }}
-        >
-          Logout
-        </MenuItem>
-      </Menu>
-    </Hidden>
+        </Menu>
+      </Hidden>
+    </div>
   );
 
   const menuMobile = (
-    <Hidden smUp>
+    <Hidden implementation="css" smUp>
       <div className={classes.divider}></div>
       <IconButton
         aria-label="open drawer"
@@ -398,8 +461,7 @@ const Header = (props) => {
         open={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
       >
-        <div>bla</div>
-        {authArea}
+        {authAreaDrawer}
       </SwipeableDrawer>
       <WalletsModal
         open={walletsModalOpen}
