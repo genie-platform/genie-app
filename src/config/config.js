@@ -30,7 +30,7 @@ const prod = {
     },
   },
   reactGA: {
-    trackingId: 'UA-164185286-2',
+    trackingId: 'UA-167809115-1',
     gaOptions: {
       testMode: false
     }
@@ -69,7 +69,7 @@ const dev = {
     },
   },
   reactGA: {
-    trackingId: 'UA-164185286-2',
+    trackingId: 'UA-167809115-1',
     gaOptions: {
       testMode: true
     }
