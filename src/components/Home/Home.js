@@ -12,7 +12,7 @@ import HowItWorks from './HowItWorks';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: theme.customValues.contentWidth,
+    width: '100%',
     margin: 'auto',
     textAlign: '-webkit-center',
   },

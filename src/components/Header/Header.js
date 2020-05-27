@@ -8,6 +8,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import SwipeableDrawer from '@material-ui/core/Drawer';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import { connect } from 'react-redux';
 import { gapi } from 'gapi-script';
@@ -36,15 +40,18 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: {
     width: '85%',
+    [theme.breakpoints.down('sm')]: {
+      width: '90%',
+    },
   },
   logo: {
-    paddingRight: '0.3em',
-    cursor: 'pointer',
-  },
-  logo2: {
     paddingRight: '1em',
     cursor: 'pointer',
     height: 70,
+    [theme.breakpoints.down('sm')]: {
+      paddingRight: '0.3em',
+      height: 50,
+    },
   },
   logoText: {
     color: theme.customColors.text,
@@ -96,7 +103,8 @@ const Header = (props) => {
   const classes = useStyles();
   const [anchorElement, setAnchorElement] = useState(null);
   const [walletAnchorElement, setWalletAnchorElement] = useState(null);
-  const [walletsModalOpen, setWalletsModalOpen] = useState(true);
+  const [walletsModalOpen, setWalletsModalOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [portis, setPortis] = useState(null);
 
   let web3;
@@ -150,6 +158,10 @@ const Header = (props) => {
 
   const handleClickAvatar = (event) => {
     setAnchorElement(event.currentTarget);
+  };
+
+  const handleDrawerOpen = () => {
+    setIsDrawerOpen(true);
   };
 
   // event handler for google signin
@@ -255,12 +267,121 @@ const Header = (props) => {
     </div>
   );
 
+  const menuDesktop = (
+    <Hidden smDown>
+      <NavLink
+        className={classes.link}
+        to="/explore"
+        activeClassName={classes.linkActive}
+      >
+        Explore
+      </NavLink>
+      <NavLink
+        className={classes.link}
+        to="/create-pool"
+        activeClassName={classes.linkActive}
+      >
+        Create pool
+      </NavLink>
+      {/* <NavLink
+  className={classes.link}
+  to="/my-pools"
+  activeClassName={classes.linkActive}
+>
+  My Pools
+</NavLink> */}
+      <div className={classes.divider}></div>
+      {authArea}
+      <Menu
+        id="google-menu"
+        anchorEl={anchorElement}
+        keepMounted
+        open={Boolean(anchorElement)}
+        onClose={() => {
+          setAnchorElement(null);
+        }}
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        <MenuItem
+          onClick={() => {
+            setAnchorElement(null);
+            signOut();
+          }}
+        >
+          Logout
+        </MenuItem>
+      </Menu>
+      <Menu
+        id="wallet-menu"
+        anchorEl={walletAnchorElement}
+        keepMounted
+        open={Boolean(walletAnchorElement)}
+        onClose={() => {
+          setWalletAnchorElement(null);
+        }}
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        {portis && (
+          <MenuItem
+            onClick={() => {
+              if (portis) {
+                portis.showPortis();
+              }
+              setWalletAnchorElement(null);
+            }}
+          >
+            Show account
+          </MenuItem>
+        )}
+        <MenuItem
+          onClick={() => {
+            onWalletDisconnet(); // disconnect
+            setWalletAnchorElement(null);
+          }}
+        >
+          Logout
+        </MenuItem>
+      </Menu>
+    </Hidden>
+  );
+
+  const menuMobile = (
+    <Hidden smUp>
+      <div className={classes.divider}></div>
+      <IconButton
+        aria-label="open drawer"
+        onClick={handleDrawerOpen}
+        edge="end"
+      >
+        <MenuIcon />
+      </IconButton>
+    </Hidden>
+  );
+
   return (
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static" color="secondary">
         <Toolbar className={classes.toolbar}>
           {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-          <img src="/logos/genie.svg" alt="genie" className={classes.logo2} />
+          <img src="/logos/genie.svg" alt="genie" className={classes.logo} />
           <Typography
             variant="h5"
             className={classes.logoText}
@@ -268,99 +389,18 @@ const Header = (props) => {
           >
             genie
           </Typography>
-          <NavLink
-            className={classes.link}
-            to="/explore"
-            activeClassName={classes.linkActive}
-          >
-            Explore
-          </NavLink>
-          <NavLink
-            className={classes.link}
-            to="/create-pool"
-            activeClassName={classes.linkActive}
-          >
-            Create pool
-          </NavLink>
-          {/* <NavLink
-            className={classes.link}
-            to="/my-pools"
-            activeClassName={classes.linkActive}
-          >
-            My Pools
-          </NavLink> */}
-          <div className={classes.divider}></div>
-          {authArea}
-          <Menu
-            id="google-menu"
-            anchorEl={anchorElement}
-            keepMounted
-            open={Boolean(anchorElement)}
-            onClose={() => {
-              setAnchorElement(null);
-            }}
-            elevation={0}
-            getContentAnchorEl={null}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-          >
-            <MenuItem
-              onClick={() => {
-                setAnchorElement(null);
-                signOut();
-              }}
-            >
-              Logout
-            </MenuItem>
-          </Menu>
-          <Menu
-            id="wallet-menu"
-            anchorEl={walletAnchorElement}
-            keepMounted
-            open={Boolean(walletAnchorElement)}
-            onClose={() => {
-              setWalletAnchorElement(null);
-            }}
-            elevation={0}
-            getContentAnchorEl={null}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-          >
-            {portis && (
-              <MenuItem
-                onClick={() => {
-                  if (portis) {
-                    portis.showPortis();
-                  }
-                  setWalletAnchorElement(null);
-                }}
-              >
-                Show account
-              </MenuItem>
-            )}
-            <MenuItem
-              onClick={() => {
-                onWalletDisconnet(); // disconnect
-                setWalletAnchorElement(null);
-              }}
-            >
-              Logout
-            </MenuItem>
-          </Menu>
+          {menuDesktop}
+          {menuMobile}
         </Toolbar>
       </AppBar>
+      <SwipeableDrawer
+        anchor="left"
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+      >
+        <div>bla</div>
+        {authArea}
+      </SwipeableDrawer>
       <WalletsModal
         open={walletsModalOpen}
         onClose={() => {

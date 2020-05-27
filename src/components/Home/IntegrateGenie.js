@@ -8,15 +8,18 @@ import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import MainButton from '../UI/MainButton';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    maxWidth: theme.customValues.contentWidth,
+    width: '100%',
+    margin: 'auto',
+  },
   subTitle: {
     color: '#797979',
     fontWeight: '600',
     letterSpacing: '0.2em',
-    width: theme.customValues.bigTitleWidth,
   },
   integrateGuide: {
     display: 'flex',
-    width: theme.customValues.bigTitleWidth,
   },
   iconCircle: {
     fill: theme.palette.primary.main,
@@ -43,7 +46,7 @@ const IntegrateGenie = (props) => {
   };
 
   return (
-    <>
+    <div className={classes.root}>
       <Grid item xs={12}>
         <Typography className={classes.subTitle} variant="subtitle2">
           INTEGRATE GENIE
@@ -133,7 +136,7 @@ const IntegrateGenie = (props) => {
           Create a pool
         </MainButton>
       </Grid>
-    </>
+    </div>
   );
 };
 
