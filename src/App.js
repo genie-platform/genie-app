@@ -30,12 +30,8 @@ function usePageViews() {
 }
 
 const Routes = (props) => {
-  //   const location = useLocation();
   usePageViews();
 
-  // useEffect(() => {
-  //   console.log({ location });
-  // }, [location]);
   return (
     <Switch>
       <Route path="/" exact component={Home} />
@@ -62,9 +58,6 @@ const App = (props) => {
           <div className={classes.content}>
             <Header />
             <Routes />
-            {/* <Switch>
-
-            </Switch> */}
           </div>
           <Footer />
         </div>
