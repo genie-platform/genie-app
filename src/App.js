@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Route, Switch, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { ApolloProvider } from '@apollo/react-hooks';
@@ -11,7 +11,8 @@ import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Home from './components/Home/Home';
 import { client } from './services/graphql';
-
+import ReactGA from './services/ga';
+ 
 const useStyles = makeStyles((theme) => ({
   app: {
     background: theme.customColors.background,
@@ -21,8 +22,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function usePageViews() {
+  const location = useLocation();
+  useEffect(() => {
+    ReactGA.pageview(location.pathname)
+  }, [location]);
+}
+
+const Routes = (props) => {
+  usePageViews();
+
+  return (
+    <Switch>
+      <Route path="/" exact component={Home} />
+      <Route path="/create-pool" exact component={PoolCreator} />
+      <Route path="/explore" exact component={PoolExplorer} />
+      <Route
+        path="/dashboard/:poolAddress"
+        exact
+        component={PoolDashboard}
+      />
+    </Switch>
+  )
+}
 const App = (props) => {
   const classes = useStyles();
+
+
+
 
   return (
     <BrowserRouter>
@@ -30,16 +57,7 @@ const App = (props) => {
         <div className={classes.app}>
           <div className={classes.content}>
             <Header />
-            <Switch>
-              <Route path="/" exact component={Home} />
-              <Route path="/create-pool" exact component={PoolCreator} />
-              <Route path="/explore" exact component={PoolExplorer} />
-              <Route
-                path="/dashboard/:poolAddress"
-                exact
-                component={PoolDashboard}
-              />
-            </Switch>
+            <Routes />
           </div>
           <Footer />
         </div>

@@ -29,6 +29,12 @@ const prod = {
       jobId: '15e0f2e27513449eb9e575f47a8ec6f6',
     },
   },
+  reactGA: {
+    trackingId: 'UA-164185286-2',
+    gaOptions: {
+      testMode: false
+    }
+  },
 };
 
 const dev = {
@@ -61,6 +67,12 @@ const dev = {
       address: '0xAA1DC356dc4B18f30C347798FD5379F3D77ABC5b',
       jobId: '15e0f2e27513449eb9e575f47a8ec6f6',
     },
+  },
+  reactGA: {
+    trackingId: 'UA-164185286-2',
+    gaOptions: {
+      testMode: true
+    }
   },
 };
 
