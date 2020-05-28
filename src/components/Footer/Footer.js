@@ -15,6 +15,9 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '0.7em',
     width: '60%',
     margin: 'auto',
+    [theme.breakpoints.down('xs')]: {
+      width: '90%',
+    },
   },
   text: {
     padding: '0.5em',

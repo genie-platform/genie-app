@@ -286,14 +286,20 @@ const Header = (props) => {
     <div>
       <List component="nav" aria-label="">
         <Link to="/" className={classes.link}>
-          <ListItem>
+          <ListItem button onClick={() => setIsDrawerOpen(false)}>
             <ListItemText primary="Genie" />
           </ListItem>
         </Link>
       </List>
       <Divider />
       <List component="nav" aria-label="">
-        <ListItem button onClick={onWalletClick}>
+        <ListItem
+          button
+          onClick={() => {
+            onWalletClick();
+            setIsDrawerOpen(false);
+          }}
+        >
           {props.address ? (
             <Address address={props.address} />
           ) : (
@@ -310,12 +316,12 @@ const Header = (props) => {
       <Divider />
       <List component="nav" aria-label="">
         <Link to="/explore" className={classes.link}>
-          <ListItem button>
+          <ListItem button onClick={() => setIsDrawerOpen(false)}>
             <ListItemText primary="Explore" />
           </ListItem>
         </Link>
         <Link to="/create-pool" className={classes.link}>
-          <ListItem button>
+          <ListItem button onClick={() => setIsDrawerOpen(false)}>
             <ListItemText primary="Create pool" />
           </ListItem>
         </Link>
