@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { withRouter, NavLink } from 'react-router-dom';
+import { withRouter, NavLink, Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Menu from '@material-ui/core/Menu';
@@ -18,7 +18,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import { connect } from 'react-redux';
 import { gapi } from 'gapi-script';
 import Portis from '@portis/web3';
@@ -68,9 +67,11 @@ const useStyles = makeStyles((theme) => ({
   },
   link: {
     color: theme.customColors.text,
-    padding: '0 0.8em',
     textDecoration: 'none',
     fontWeight: '500',
+    [theme.breakpoints.up('sm')]: {
+      padding: '0 0.8em',
+    },
   },
   linkActive: {
     color: theme.palette.primary.main,
@@ -284,9 +285,11 @@ const Header = (props) => {
   const authAreaDrawer = (
     <div>
       <List component="nav" aria-label="">
-        <ListItem>
-          <ListItemText primary="Genie" />
-        </ListItem>
+        <Link to="/" className={classes.link}>
+          <ListItem>
+            <ListItemText primary="Genie" />
+          </ListItem>
+        </Link>
       </List>
       <Divider />
       <List component="nav" aria-label="">
@@ -306,12 +309,16 @@ const Header = (props) => {
 
       <Divider />
       <List component="nav" aria-label="">
-        <ListItem button>
-          <ListItemText primary="Explore" />
-        </ListItem>
-        <ListItem href="#simple-list">
-          <ListItemText primary="Create pool" />
-        </ListItem>
+        <Link to="/explore" className={classes.link}>
+          <ListItem button>
+            <ListItemText primary="Explore" />
+          </ListItem>
+        </Link>
+        <Link to="/create-pool" className={classes.link}>
+          <ListItem button>
+            <ListItemText primary="Create pool" />
+          </ListItem>
+        </Link>
       </List>
     </div>
   );
