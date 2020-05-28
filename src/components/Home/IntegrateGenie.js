@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     margin: 'auto',
     overflowX: 'hidden',
+    overflowY: 'visible',
   },
   subTitle: {
     color: '#797979',
