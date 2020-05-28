@@ -20,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
   },
   integrateGuide: {
     display: 'flex',
+    justifyContent: 'center',
+    padding: '0 4em',
   },
   iconCircle: {
     fill: theme.palette.primary.main,
@@ -34,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
   },
   integrationSubTitle: {
     color: theme.customColors.lightText,
+    [theme.breakpoints.up('sm')]: {
+      width: theme.customValues.bigTitleWidth,
+    },
   },
 }));
 
@@ -47,94 +52,96 @@ const IntegrateGenie = (props) => {
 
   return (
     <div className={classes.root}>
-      <Grid item xs={12}>
-        <Typography className={classes.subTitle} variant="subtitle2">
-          INTEGRATE GENIE
-        </Typography>
-      </Grid>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Typography className={classes.subTitle} variant="subtitle2">
+            INTEGRATE GENIE
+          </Typography>
+        </Grid>
 
-      <Grid item xs={12}>
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <div className={classes.integrateGuide}>
-              <div>
-                <CheckCircleRoundedIcon
-                  fontSize="large"
-                  className={classes.iconCircle}
-                />
+        <Grid item xs={12}>
+          <Grid container spacing={1}>
+            <Grid item xs={12}>
+              <div className={classes.integrateGuide}>
+                <div>
+                  <CheckCircleRoundedIcon
+                    fontSize="large"
+                    className={classes.iconCircle}
+                  />
+                </div>
+                <div className={classes.integrationText}>
+                  <Typography variant="h6" className={classes.integrationTitle}>
+                    Issue
+                  </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.integrationSubTitle}
+                  >
+                    Create a pool contract that will safely store the funds,
+                  </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.integrationSubTitle}
+                  >
+                    connect your pool to a game or integrate one.
+                  </Typography>
+                </div>
               </div>
-              <div className={classes.integrationText}>
-                <Typography variant="h6" className={classes.integrationTitle}>
-                  Issue
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  className={classes.integrationSubTitle}
-                >
-                  Create a pool contract that will safely store the funds,
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  className={classes.integrationSubTitle}
-                >
-                  connect your pool to a game or integrate one.
-                </Typography>
-              </div>
-            </div>
-          </Grid>
+            </Grid>
 
-          <Grid item xs={12}>
-            <div className={classes.integrateGuide}>
-              <div>
-                <CheckCircleRoundedIcon
-                  fontSize="large"
-                  className={classes.iconCircle}
-                />
+            <Grid item xs={12}>
+              <div className={classes.integrateGuide}>
+                <div>
+                  <CheckCircleRoundedIcon
+                    fontSize="large"
+                    className={classes.iconCircle}
+                  />
+                </div>
+                <div className={classes.integrationText}>
+                  <Typography variant="h6" className={classes.integrationTitle}>
+                    Stake
+                  </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.integrationSubTitle}
+                  >
+                    Deposit to the pool with the players to generate the reward.
+                    The stake is retrieved when the game is over.
+                  </Typography>
+                </div>
               </div>
-              <div className={classes.integrationText}>
-                <Typography variant="h6" className={classes.integrationTitle}>
-                  Stake
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  className={classes.integrationSubTitle}
-                >
-                  Deposit to the pool with the players to generate the reward.
-                  The stake is retrieved when the game is over.
-                </Typography>
-              </div>
-            </div>
-          </Grid>
+            </Grid>
 
-          <Grid item xs={12}>
-            <div className={classes.integrateGuide}>
-              <div>
-                <CheckCircleRoundedIcon
-                  fontSize="large"
-                  className={classes.iconCircle}
-                />
+            <Grid item xs={12}>
+              <div className={classes.integrateGuide}>
+                <div>
+                  <CheckCircleRoundedIcon
+                    fontSize="large"
+                    className={classes.iconCircle}
+                  />
+                </div>
+                <div className={classes.integrationText}>
+                  <Typography variant="h6" className={classes.integrationTitle}>
+                    Reward players
+                  </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    className={classes.integrationSubTitle}
+                  >
+                    The winners will be rewarded with the prize, generated by
+                    the pool's locked value.
+                  </Typography>
+                </div>
               </div>
-              <div className={classes.integrationText}>
-                <Typography variant="h6" className={classes.integrationTitle}>
-                  Reward players
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  className={classes.integrationSubTitle}
-                >
-                  The winners will be rewarded with the prize, generated by the
-                  pool's locked value.
-                </Typography>
-              </div>
-            </div>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
 
-      <Grid item xs={12}>
-        <MainButton variant="contained" onClick={onCreatePoolClick}>
-          Create a pool
-        </MainButton>
+        <Grid item xs={12}>
+          <MainButton variant="contained" onClick={onCreatePoolClick}>
+            Create a pool
+          </MainButton>
+        </Grid>
       </Grid>
     </div>
   );

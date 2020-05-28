@@ -256,24 +256,26 @@ const Header = (props) => {
 
   const authArea = (
     <div className={classes.authArea}>
-      <Button
-        className={classes.walletButton}
-        onClick={onWalletClick}
-        variant="outlined"
-        size="small"
-      >
-        {props.address ? (
-          <Address address={props.address} />
-        ) : (
-          <>
-            Connect Wallet
-            <AccountBalanceWalletIcon
-              color="primary"
-              className={classes.walletIcon}
-            />
-          </>
-        )}
-      </Button>
+      <Hidden implementation="css" xsDown>
+        <Button
+          className={classes.walletButton}
+          onClick={onWalletClick}
+          variant="outlined"
+          size="small"
+        >
+          {props.address ? (
+            <Address address={props.address} />
+          ) : (
+            <>
+              Connect Wallet
+              <AccountBalanceWalletIcon
+                color="primary"
+                className={classes.walletIcon}
+              />
+            </>
+          )}
+        </Button>
+      </Hidden>
       {props.isAuthenticated ? null : googleSigninButton}
       {props.isAuthenticated ? userAvatar : null}
     </div>
@@ -299,17 +301,6 @@ const Header = (props) => {
               <ListItemText primary="Connect Wallet" />
             </>
           )}
-        </ListItem>
-        <ListItem button>
-          <ListItemIcon>
-            {props.isAuthenticated ? (
-              userAvatar
-            ) : (
-              <AccountCircle color="primary" />
-            )}
-          </ListItemIcon>
-          <ListItemText id="signinButton" primary="Google Sign In" />
-          {props.isAuthenticated ? null : googleSigninButton}
         </ListItem>
       </List>
 
@@ -351,88 +342,87 @@ const Header = (props) => {
 </NavLink> */}
       </Hidden>
       <div className={classes.divider}></div>
-      <Hidden implementation="css" xsDown>
-        {authArea}
 
-        <Menu
-          id="google-menu"
-          anchorEl={anchorElement}
-          keepMounted
-          open={Boolean(anchorElement)}
-          onClose={() => {
+      {authArea}
+
+      <Menu
+        id="google-menu"
+        anchorEl={anchorElement}
+        keepMounted
+        open={Boolean(anchorElement)}
+        onClose={() => {
+          setAnchorElement(null);
+        }}
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        <MenuItem
+          onClick={() => {
             setAnchorElement(null);
-          }}
-          elevation={0}
-          getContentAnchorEl={null}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
+            signOut();
           }}
         >
+          Logout
+        </MenuItem>
+      </Menu>
+      <Menu
+        id="wallet-menu"
+        anchorEl={walletAnchorElement}
+        keepMounted
+        open={Boolean(walletAnchorElement)}
+        onClose={() => {
+          setWalletAnchorElement(null);
+        }}
+        elevation={0}
+        getContentAnchorEl={null}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        {portis && (
           <MenuItem
             onClick={() => {
-              setAnchorElement(null);
-              signOut();
-            }}
-          >
-            Logout
-          </MenuItem>
-        </Menu>
-        <Menu
-          id="wallet-menu"
-          anchorEl={walletAnchorElement}
-          keepMounted
-          open={Boolean(walletAnchorElement)}
-          onClose={() => {
-            setWalletAnchorElement(null);
-          }}
-          elevation={0}
-          getContentAnchorEl={null}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
-        >
-          {portis && (
-            <MenuItem
-              onClick={() => {
-                if (portis) {
-                  portis.showPortis();
-                }
-                setWalletAnchorElement(null);
-              }}
-            >
-              Show account
-            </MenuItem>
-          )}
-          <MenuItem
-            onClick={() => {
-              onWalletDisconnet(); // disconnect
+              if (portis) {
+                portis.showPortis();
+              }
               setWalletAnchorElement(null);
             }}
           >
-            Logout
+            Show account
           </MenuItem>
-        </Menu>
-      </Hidden>
+        )}
+        <MenuItem
+          onClick={() => {
+            onWalletDisconnet(); // disconnect
+            setWalletAnchorElement(null);
+          }}
+        >
+          Logout
+        </MenuItem>
+      </Menu>
     </div>
   );
 
   const menuMobile = (
     <Hidden implementation="css" smUp>
-      <div className={classes.divider}></div>
+      {/* <div className={classes.divider}></div> */}
       <IconButton
         aria-label="open drawer"
         onClick={handleDrawerOpen}
-        edge="end"
+        edge="start"
       >
         <MenuIcon />
       </IconButton>
@@ -443,8 +433,11 @@ const Header = (props) => {
     <div className={classes.root}>
       <AppBar className={classes.appBar} position="static" color="secondary">
         <Toolbar className={classes.toolbar}>
+          {menuMobile}
           {/* eslint-disable-next-line jsx-a11y/accessible-emoji */}
-          <img src="/logos/genie.svg" alt="genie" className={classes.logo} />
+          <Hidden xsDown>
+            <img src="/logos/genie.svg" alt="genie" className={classes.logo} />
+          </Hidden>
           <Typography
             variant="h5"
             className={classes.logoText}
@@ -453,7 +446,6 @@ const Header = (props) => {
             genie
           </Typography>
           {menuDesktop}
-          {menuMobile}
         </Toolbar>
       </AppBar>
       <SwipeableDrawer

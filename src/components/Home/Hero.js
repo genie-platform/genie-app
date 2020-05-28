@@ -16,14 +16,18 @@ const useStyles = makeStyles((theme) => ({
     height: '27em',
   },
   heroTitle: {
-    width: theme.customValues.bigTitleWidth,
     color: 'white',
     fontWeight: '700',
+    [theme.breakpoints.up('sm')]: {
+      width: theme.customValues.bigTitleWidth,
+    },
   },
   heroSubTitle: {
     paddingTop: '1em',
-    width: theme.customValues.bigTitleWidth,
     color: 'white',
+    [theme.breakpoints.up('sm')]: {
+      width: theme.customValues.bigTitleWidth,
+    },
   },
 }));
 
