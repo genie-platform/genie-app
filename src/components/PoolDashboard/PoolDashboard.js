@@ -56,22 +56,28 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     flexDirection: 'column',
     position: 'relative',
+    overflow: 'hidden',
   },
   title: {
     fontWeight: 'bold',
     paddingBottom: '0.8em',
+    textAlign: 'center',
   },
   desc: {
-    width: '550px',
     color: theme.customColors.lightText,
     paddingBottom: '0.8em',
     textAlign: 'center',
+    [theme.breakpoints.up('sm')]: {
+      width: '550px',
+    },
   },
   bar: {
-    width: '40%',
     paddingTop: '2em',
     paddingBottom: '4em',
     textAlign: 'center',
+    [theme.breakpoints.up('sm')]: {
+      width: '40%',
+    },
   },
   barTitle: {
     color: theme.customColors.lightText,
@@ -97,9 +103,13 @@ const useStyles = makeStyles((theme) => ({
       position: 'absolute',
       top: '-100px',
       width: '100%',
+      minHeight: 300,
     },
   },
   button: {},
+  poeWinner: {
+    textAlign: 'center',
+  },
   token: {
     paddingTop: '2em',
   },
@@ -197,7 +207,7 @@ const PoolDashboard = ({
     if (game.value === GAMES.PATH_OF_EXILE) {
       if (winningCondition.type === winningConditionTypes.LEVEL) {
         winner = (
-          <Typography variant="h6">
+          <Typography variant="h6" className={classes.poeWinner}>
             The pool winner is the first character that will reach level {''}
             {winningCondition.value} on {winningCondition.league} league
           </Typography>
@@ -219,7 +229,11 @@ const PoolDashboard = ({
       {poolMetadataState.value && (
         <>
           <div className={classes.cover}>
-            <img src={poolMetadataState.value.coverImage} alt="cover" />
+            <img
+              src={poolMetadataState.value.coverImage}
+              alt="cover"
+              className={classes.coverImg}
+            />
           </div>
           <Typography variant="h1" id="pool-icon" className={classes.icon}>
             {poolMetadataState.value.icon}
@@ -241,7 +255,7 @@ const PoolDashboard = ({
         alignItems="center"
         spacing={1}
       >
-        <Grid item xs={3}>
+        <Grid item xs={6} sm={6} md={3} lg={3} xl={3}>
           <Typography variant="subtitle1" className={classes.barTitle}>
             Current reward
           </Typography>
@@ -250,7 +264,7 @@ const PoolDashboard = ({
           </Typography>
         </Grid>
         {get(poolMetadataState, 'value.rewardDuration') && (
-          <Grid item xs={3}>
+          <Grid item xs={6} sm={6} md={3} lg={3} xl={3}>
             <Typography variant="subtitle1" className={classes.barTitle}>
               Next distribution
             </Typography>
@@ -259,7 +273,7 @@ const PoolDashboard = ({
             </Typography>
           </Grid>
         )}
-        <Grid item xs={3}>
+        <Grid item xs={6} sm={6} md={3} lg={3} xl={3}>
           <Typography variant="subtitle1" className={classes.barTitle}>
             # of players
           </Typography>
@@ -267,7 +281,7 @@ const PoolDashboard = ({
             {get(poolGraphState, 'data.pool.numberOfPlayers')}
           </Typography>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={6} sm={6} md={3} lg={3} xl={3}>
           <Typography variant="subtitle1" className={classes.barTitle}>
             Total staked
           </Typography>
@@ -276,7 +290,7 @@ const PoolDashboard = ({
           </Typography>
         </Grid>
         {poolMetadataState.value && (
-          <Grid item xs={3}>
+          <Grid item xs={6} sm={6} md={3} lg={3} xl={3}>
             <Typography variant="subtitle1" className={classes.barTitle}>
               Ticket Price
             </Typography>

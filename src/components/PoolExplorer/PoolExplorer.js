@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     margin: 'auto',
     width: '50em',
+    [theme.breakpoints.down('sm')]: {
+      width: 'auto',
+      overflow: 'hidden',
+    },
   },
   title: {
     padding: '1.5em 0',

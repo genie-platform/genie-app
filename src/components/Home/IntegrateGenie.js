@@ -12,8 +12,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: theme.customValues.contentWidth,
     width: '100%',
     margin: 'auto',
-    overflowX: 'hidden',
-    overflowY: 'visible',
+    overflow: 'hidden',
   },
   subTitle: {
     color: '#797979',
