@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   integrateGuide: {
     display: 'flex',
     justifyContent: 'center',
-    padding: '0 4em',
+    padding: '0 2em',
   },
   iconCircle: {
     fill: theme.palette.primary.main,
@@ -54,7 +54,7 @@ const IntegrateGenie = (props) => {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
+      <Grid container spacing={6}>
         <Grid item xs={12}>
           <Typography className={classes.subTitle} variant="subtitle2">
             INTEGRATE GENIE
