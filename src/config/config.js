@@ -8,7 +8,7 @@ const prod = {
   },
   network: {
     addresses: {
-      fundingFactory: '0xD7cf78Bf8BDa369509f5B5c7C93364F04e7DcbC7',
+      fundingFactory: '0xAF70603fcE3a8C8aAC8297982CBc4E1187dF18b5',
       Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
@@ -30,7 +30,7 @@ const prod = {
     },
   },
   reactGA: {
-    trackingId: 'UA-164185286-2',
+    trackingId: 'UA-167809115-1',
     gaOptions: {
       testMode: false
     }
@@ -47,7 +47,7 @@ const dev = {
   },
   network: {
     addresses: {
-      fundingFactory: '0xD7cf78Bf8BDa369509f5B5c7C93364F04e7DcbC7',
+      fundingFactory: '0xAF70603fcE3a8C8aAC8297982CBc4E1187dF18b5',
       Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
@@ -69,7 +69,7 @@ const dev = {
     },
   },
   reactGA: {
-    trackingId: 'UA-164185286-2',
+    trackingId: 'UA-167809115-1',
     gaOptions: {
       testMode: true
     }
