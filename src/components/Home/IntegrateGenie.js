@@ -8,6 +8,12 @@ import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
 import MainButton from '../UI/MainButton';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    maxWidth: theme.customValues.contentWidth,
+    width: '100%',
+    margin: 'auto',
+    overflow: 'hidden',
+  },
   subTitle: {
     color: '#797979',
     fontWeight: '600',
