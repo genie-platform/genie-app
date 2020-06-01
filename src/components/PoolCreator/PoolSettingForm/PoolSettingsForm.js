@@ -17,7 +17,11 @@ const LEVELS = [...Array(100 + 1).keys()].splice(1);
 const CHALLENGES = [...Array(40 + 1).keys()];
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    [theme.breakpoints.down('sm')]: {
+      padding: '0 2em',
+    },
+  },
   label: {
     color: theme.customColors.text,
     paddingBottom: '0.2em',

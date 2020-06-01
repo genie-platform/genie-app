@@ -18,7 +18,11 @@ import ImagePicker from '../../UI/ImagePicker';
 import { GAMES } from '../../../utils/constants';
 
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  root: {
+    [theme.breakpoints.down('sm')]: {
+      padding: '0 2em',
+    },
+  },
   label: {
     color: theme.customColors.text,
     paddingBottom: '0.2em',
@@ -130,9 +134,9 @@ const PoolDetailsForm = (props) => {
   const emojiPickerPopoverId = isEmojyPickerOpen ? 'simple-popover' : undefined;
 
   return (
-    <div>
-      <Grid container spacing={3} className={classes.root}>
-        <Grid item xs={10}>
+    <div className={classes.root}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
           <Typography className={classes.label}>Name</Typography>
           <TextField
             required
@@ -149,7 +153,7 @@ const PoolDetailsForm = (props) => {
           />
         </Grid>
 
-        <Grid item xs={10}>
+        <Grid item xs={12}>
           <Typography className={classes.label}>Description</Typography>
           <TextField
             required
@@ -170,7 +174,7 @@ const PoolDetailsForm = (props) => {
         </Grid>
 
         {props.game !== GAMES.PATH_OF_EXILE && (
-          <Grid item xs={10}>
+          <Grid item xs={12}>
             <Typography className={classes.label}>Challenge</Typography>
             <TextField
               required
@@ -185,7 +189,7 @@ const PoolDetailsForm = (props) => {
           </Grid>
         )}
 
-        <Grid item xs={3}>
+        <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
           <Typography className={classes.label}>Icon</Typography>
           <div
             onClick={onChangeIconClick}
@@ -196,7 +200,7 @@ const PoolDetailsForm = (props) => {
             </Typography>
           </div>
         </Grid>
-        <Grid item xs={7}>
+        <Grid item xs={12} sm={12} md={9} lg={9} xl={9}>
           <Typography className={classes.label}>Cover Image</Typography>
           <Card className={classes.imageCards} onClick={clickCoverImage}>
             <CardMedia

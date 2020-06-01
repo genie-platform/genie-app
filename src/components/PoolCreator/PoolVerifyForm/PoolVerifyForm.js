@@ -11,7 +11,9 @@ import { GAMES } from '../../../utils/constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    paddingTop: '2em',
+    [theme.breakpoints.down('sm')]: {
+      padding: '0 2em',
+    },
   },
   label: {
     color: theme.customColors.text,
@@ -45,14 +47,14 @@ const PoolVerifyForm = (props) => {
   return (
     <div className={classes.root}>
       <Grid container spacing={3} className={classes.root}>
-        <Grid item xs={10}>
+        <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
           <Typography className={classes.label}>Name</Typography>
           <Typography variant="h5" className={classes.text}>
             {props.name}
           </Typography>
         </Grid>
 
-        <Grid item xs={10}>
+        <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
           <Typography className={classes.label}>Description</Typography>
           <Typography variant="h5" className={classes.text}>
             {props.description}
@@ -60,7 +62,7 @@ const PoolVerifyForm = (props) => {
         </Grid>
 
         {props.game !== GAMES.PATH_OF_EXILE && (
-          <Grid item xs={10}>
+          <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
             <Typography className={classes.label}>Challenge</Typography>
             <Typography variant="h5" className={classes.text}>
               {props.winnerDescription}
@@ -68,7 +70,7 @@ const PoolVerifyForm = (props) => {
           </Grid>
         )}
 
-        <Grid item xs={10}>
+        <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
           <Typography className={classes.label}>Ticket Price</Typography>
           <Typography variant="h5" className={classes.text}>
             {props.lockValue}
@@ -76,7 +78,7 @@ const PoolVerifyForm = (props) => {
         </Grid>
 
         {props.rewardDuration ? (
-          <Grid item xs={10}>
+          <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
             <Typography className={classes.label}>Reward Duration</Typography>
             <Typography variant="h5" className={classes.text}>
               {props.rewardDuration}
@@ -84,7 +86,7 @@ const PoolVerifyForm = (props) => {
           </Grid>
         ) : null}
 
-        <Grid item xs={3}>
+        <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
           <Typography className={classes.label}>Icon</Typography>
           <div className={clsx(classes.imageCards, classes.poolIcon)}>
             <Typography variant="h2" id="pool-icon">
@@ -92,7 +94,7 @@ const PoolVerifyForm = (props) => {
             </Typography>
           </div>
         </Grid>
-        <Grid item xs={7}>
+        <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
           <Typography className={classes.label}>Cover Image</Typography>
           <Card className={classes.imageCards}>
             <CardMedia
