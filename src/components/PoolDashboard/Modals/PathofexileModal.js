@@ -68,8 +68,8 @@ const PathofexileModal = (props) => {
         of exile info and give you the reward when you win!
       </Typography>
       <Typography variant="body2" className={classes.text}>
-        Make sure your account is set to public, otherwise we can't get your
-        character data!
+        Make sure your characters page is set to public, otherwise we can't get
+        your character data!
       </Typography>
       <TextField
         className={classes.text}
@@ -81,8 +81,8 @@ const PathofexileModal = (props) => {
         }}
       />
       <Typography variant="h6" className={classes.text}>
-        Important! Please add this token to your new character, so we could know
-        which character of yours is in the pool!
+        Important! Please add this token to the end of your new character name,
+        so we could know which character of yours is in the pool!
       </Typography>
       <Typography variant="h4" className={classes.text}>
         {props.address
