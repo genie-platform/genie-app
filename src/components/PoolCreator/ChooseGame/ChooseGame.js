@@ -8,7 +8,18 @@ import GameCard from '../../UI/GameCard';
 
 import { GAMES } from '../../../utils/constants';
 
+const useStyles = makeStyles((theme) => ({
+  root: {},
+  gridItem: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
+  },
+}));
+
 const ChooseGame = (props) => {
+  const classes = useStyles();
   const [chosenGame, setChosenGame] = useState(GAMES.PATH_OF_EXILE);
 
   useEffect(() => {
@@ -22,7 +33,15 @@ const ChooseGame = (props) => {
 
   return (
     <Grid container spacing={6}>
-      <Grid item xs={4}>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={4}
+        lg={4}
+        xl={4}
+        className={classes.gridItem}
+      >
         <GameCard
           cardId={GAMES.PATH_OF_EXILE}
           checked={chosenGame === GAMES.PATH_OF_EXILE}
@@ -35,7 +54,15 @@ const ChooseGame = (props) => {
           description="Path of Exile is a free online Action RPG set in a dark fantasy world"
         />
       </Grid>
-      <Grid item xs={4}>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={4}
+        lg={4}
+        xl={4}
+        className={classes.gridItem}
+      >
         <GameCard
           cardId={GAMES.MANUAL}
           checked={chosenGame === GAMES.MANUAL}
@@ -48,7 +75,15 @@ const ChooseGame = (props) => {
           description="Choose any game and reward the winner manually"
         />
       </Grid>
-      <Grid item xs={4}>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={4}
+        lg={4}
+        xl={4}
+        className={classes.gridItem}
+      >
         <GameCard
           cardId={GAMES.CUSTOM}
           onClick={() => {}}
@@ -59,7 +94,15 @@ const ChooseGame = (props) => {
           description="Integrate Genie into your game - Contact us"
         />
       </Grid>
-      <Grid item xs={4}>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={4}
+        lg={4}
+        xl={4}
+        className={classes.gridItem}
+      >
         <GameCard
           cardId={GAMES.LOTTERY}
           onClick={() => {}}
@@ -70,7 +113,15 @@ const ChooseGame = (props) => {
           description="A random player wins!"
         />
       </Grid>
-      <Grid item xs={4}>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={4}
+        lg={4}
+        xl={4}
+        className={classes.gridItem}
+      >
         <GameCard
           cardId={GAMES.GODS_UNCHAINED}
           checked={chosenGame === GAMES.GODS_UNCHAINED}

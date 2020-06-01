@@ -26,7 +26,7 @@ export const theme = createMuiTheme({
     lightText: 'rgba(160,160,160,0.8)',
   },
   customValues: {
-    contentWidth: '100%',
+    contentWidth: 900,
     bigTitleWidth: 500,
   },
   typography: {

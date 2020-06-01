@@ -7,6 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    maxWidth: theme.customValues.contentWidth,
+    width: '100%',
+    margin: 'auto',
+  },
   flow: {
     justifyContent: 'center',
     marginBottom: '1em',
@@ -26,12 +31,9 @@ const useStyles = makeStyles((theme) => ({
     color: '#797979',
     fontWeight: '600',
     letterSpacing: '0.2em',
-    width: theme.customValues.bigTitleWidth,
     marginBottom: '2em',
   },
-  subTitleText: {
-    width: 600,
-  },
+  subTitleText: {},
   linkButton: {
     color: theme.palette.primary.main,
     fontWeight: '600',
@@ -42,7 +44,7 @@ const HowItWorks = (props) => {
   const classes = useStyles();
 
   return (
-    <>
+    <div className={classes.root}>
       <Grid id="how-it-works" item xs={12}>
         <Typography className={classes.subTitle} variant="subtitle2">
           HOW IT WORKS?
@@ -50,7 +52,7 @@ const HowItWorks = (props) => {
       </Grid>
 
       <Grid container item spacing={3} className={classes.flow}>
-        <Grid item xs={2}>
+        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
           <Avatar className={classes.numberIcon}>1</Avatar>
           <img src="/assets/1.svg" alt="join a pool" />
           <Typography variant="h6" className={classes.flowTitle}>
@@ -63,7 +65,7 @@ const HowItWorks = (props) => {
             Withdraw anytime
           </Typography>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
           <Avatar className={classes.numberIcon}>2</Avatar>
           <img src="/assets/2.svg" alt="Play the game" />
           <Typography variant="h6" className={classes.flowTitle}>
@@ -73,7 +75,7 @@ const HowItWorks = (props) => {
             While the pool money gains interest
           </Typography>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={12} sm={4} md={4} lg={4} xl={4}>
           <Avatar className={classes.numberIcon}>3</Avatar>
           <img src="/assets/3.svg" alt="Win!" />
           <Typography variant="h6" className={classes.flowTitle}>
@@ -105,7 +107,7 @@ const HowItWorks = (props) => {
           Learn More
         </Button>
       </Grid>
-    </>
+    </div>
   );
 };
 

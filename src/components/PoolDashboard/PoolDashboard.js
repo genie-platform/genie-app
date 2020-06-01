@@ -22,8 +22,9 @@ import { getAllowance, approve, getUserBalance } from '../../ethereum/erc20';
 import MainButton from '../UI/MainButton';
 import AllowDaiModal from './Modals/AllowDaiModal';
 import StakeDaiModal from './Modals/StakeDaiModal';
-import PathofexileModal from './Modals/PathofexileModal';
+import PathofexileAccountModal from './Modals/PathofexileAccountModal';
 import ConfirmTxModal from '../UI/ConfirmTxModal';
+import PathofexileTokenModal from './Modals/PathofexileTokenModal';
 
 const GET_POOL = gql`
   query Pool($poolAddress: String!) {
@@ -56,22 +57,28 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     flexDirection: 'column',
     position: 'relative',
+    overflow: 'hidden',
   },
   title: {
     fontWeight: 'bold',
     paddingBottom: '0.8em',
+    textAlign: 'center',
   },
   desc: {
-    width: '550px',
     color: theme.customColors.lightText,
     paddingBottom: '0.8em',
     textAlign: 'center',
+    [theme.breakpoints.up('sm')]: {
+      width: '550px',
+    },
   },
   bar: {
-    width: '40%',
     paddingTop: '2em',
     paddingBottom: '4em',
     textAlign: 'center',
+    [theme.breakpoints.up('sm')]: {
+      width: '40%',
+    },
   },
   barTitle: {
     color: theme.customColors.lightText,
@@ -97,9 +104,16 @@ const useStyles = makeStyles((theme) => ({
       position: 'absolute',
       top: '-100px',
       width: '100%',
+      minHeight: 300,
+      [theme.breakpoints.down('sm')]: {
+        width: '100vh',
+      },
     },
   },
   button: {},
+  poeWinner: {
+    textAlign: 'center',
+  },
   token: {
     paddingTop: '2em',
   },
@@ -124,7 +138,8 @@ const PoolDashboard = ({
   const classes = useStyles();
   const [allowDaiModalOpen, setAllowDaiModalOpen] = useState(false);
   const [stakeDaiModalOpen, setStakeDaiModalOpen] = useState(false);
-  const [pathofExileModalOpen, setPathofExileModalOpen] = useState(false);
+  const [poeAccountModalOpen, setPoeAccountModalOpen] = useState(false);
+  const [poeTokenModalOpen, setPoeTokenModalOpen] = useState(false);
   const [confirmTxModalOpen, setConfirmTxModalOpen] = useState(false);
   const [didStake, setDidStake] = useState(false);
   const [poeAccountName, setPoeAccountName] = useState('');
@@ -153,8 +168,6 @@ const PoolDashboard = ({
     variables: { poolAddress },
   });
 
-  console.log(rewardsState.data);
-
   const didAllowDai = useAsync(async () => {
     const allowance = await getAllowance(address, poolAddress);
     return parseFloat(allowance) >= poolMetadataState.value.lockValue;
@@ -167,7 +180,7 @@ const PoolDashboard = ({
   const joinPool = async () => {
     if (game.value === GAMES.PATH_OF_EXILE) {
       // open the pathofexile modal to get path of exile data
-      setPathofExileModalOpen(true);
+      setPoeAccountModalOpen(true);
     } else {
       joinPoolModals();
     }
@@ -197,7 +210,7 @@ const PoolDashboard = ({
     if (game.value === GAMES.PATH_OF_EXILE) {
       if (winningCondition.type === winningConditionTypes.LEVEL) {
         winner = (
-          <Typography variant="h6">
+          <Typography variant="h6" className={classes.poeWinner}>
             The pool winner is the first character that will reach level {''}
             {winningCondition.value} on {winningCondition.league} league
           </Typography>
@@ -219,7 +232,11 @@ const PoolDashboard = ({
       {poolMetadataState.value && (
         <>
           <div className={classes.cover}>
-            <img src={poolMetadataState.value.coverImage} alt="cover" />
+            <img
+              src={poolMetadataState.value.coverImage}
+              alt="cover"
+              className={classes.coverImg}
+            />
           </div>
           <Typography variant="h1" id="pool-icon" className={classes.icon}>
             {poolMetadataState.value.icon}
@@ -241,7 +258,7 @@ const PoolDashboard = ({
         alignItems="center"
         spacing={1}
       >
-        <Grid item xs={3}>
+        <Grid item xs={6} sm={6} md={3} lg={3} xl={3}>
           <Typography variant="subtitle1" className={classes.barTitle}>
             Current reward
           </Typography>
@@ -250,7 +267,7 @@ const PoolDashboard = ({
           </Typography>
         </Grid>
         {get(poolMetadataState, 'value.rewardDuration') && (
-          <Grid item xs={3}>
+          <Grid item xs={6} sm={6} md={3} lg={3} xl={3}>
             <Typography variant="subtitle1" className={classes.barTitle}>
               Next distribution
             </Typography>
@@ -259,7 +276,7 @@ const PoolDashboard = ({
             </Typography>
           </Grid>
         )}
-        <Grid item xs={3}>
+        <Grid item xs={6} sm={6} md={3} lg={3} xl={3}>
           <Typography variant="subtitle1" className={classes.barTitle}>
             # of players
           </Typography>
@@ -267,7 +284,7 @@ const PoolDashboard = ({
             {get(poolGraphState, 'data.pool.numberOfPlayers')}
           </Typography>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={6} sm={6} md={3} lg={3} xl={3}>
           <Typography variant="subtitle1" className={classes.barTitle}>
             Total staked
           </Typography>
@@ -276,7 +293,7 @@ const PoolDashboard = ({
           </Typography>
         </Grid>
         {poolMetadataState.value && (
-          <Grid item xs={3}>
+          <Grid item xs={6} sm={6} md={3} lg={3} xl={3}>
             <Typography variant="subtitle1" className={classes.barTitle}>
               Ticket Price
             </Typography>
@@ -313,7 +330,7 @@ const PoolDashboard = ({
             </MainButton>
             {game && game.value === GAMES.PATH_OF_EXILE && (
               <Typography variant="h6" className={classes.token}>
-                You character token is{' '}
+                Your character token is{' '}
                 {generateGenieToken(address, poolAddress)}
               </Typography>
             )}
@@ -403,15 +420,20 @@ const PoolDashboard = ({
         open={confirmTxModalOpen}
         onClose={() => setConfirmTxModalOpen(false)}
       />
-      <PathofexileModal
-        address={address}
-        poolAddress={poolAddress}
-        open={pathofExileModalOpen}
-        onClose={() => setPathofExileModalOpen(false)}
+      <PathofexileAccountModal
+        open={poeAccountModalOpen}
+        onClick={() => setPoeTokenModalOpen(true)}
+        onClose={() => setPoeAccountModalOpen(false)}
         onEnterAccount={(accountName) => {
           setPoeAccountName(accountName);
-          joinPoolModals();
         }}
+      />
+      <PathofexileTokenModal
+        address={address}
+        poolAddress={poolAddress}
+        open={poeTokenModalOpen}
+        onClose={() => setPoeTokenModalOpen(false)}
+        openJoinPoolModals={joinPoolModals}
       />
     </div>
   );
