@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     padding: '0 2em',
+    [theme.breakpoints.down('xs')]: {
+      justifyContent: 'flex-start',
+    },
   },
   iconCircle: {
     fill: theme.palette.primary.main,
