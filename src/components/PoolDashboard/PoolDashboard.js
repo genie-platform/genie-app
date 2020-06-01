@@ -163,8 +163,6 @@ const PoolDashboard = ({
     variables: { poolAddress },
   });
 
-  console.log(rewardsState.data);
-
   const didAllowDai = useAsync(async () => {
     const allowance = await getAllowance(address, poolAddress);
     return parseFloat(allowance) >= poolMetadataState.value.lockValue;

@@ -11,10 +11,10 @@ import ChooseGame from './ChooseGame/ChooseGame';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 920,
-    // minWidth: 400,
-    // minHeight: 500,
     margin: 'auto',
+    [theme.breakpoints.up('md')]: {
+      width: theme.customValues.contentWidth,
+    },
   },
   loginMessage: {
     textAlign: 'center',

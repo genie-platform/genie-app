@@ -51,6 +51,9 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     padding: '2em 0',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center',
+    },
   },
   backButtonArea: {
     display: 'flex',
