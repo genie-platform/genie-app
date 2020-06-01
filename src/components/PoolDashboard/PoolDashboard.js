@@ -22,8 +22,9 @@ import { getAllowance, approve, getUserBalance } from '../../ethereum/erc20';
 import MainButton from '../UI/MainButton';
 import AllowDaiModal from './Modals/AllowDaiModal';
 import StakeDaiModal from './Modals/StakeDaiModal';
-import PathofexileModal from './Modals/PathofexileModal';
+import PathofexileAccountModal from './Modals/PathofexileAccountModal';
 import ConfirmTxModal from '../UI/ConfirmTxModal';
+import PathofexileTokenModal from './Modals/PathofexileTokenModal';
 
 const GET_POOL = gql`
   query Pool($poolAddress: String!) {
@@ -137,7 +138,8 @@ const PoolDashboard = ({
   const classes = useStyles();
   const [allowDaiModalOpen, setAllowDaiModalOpen] = useState(false);
   const [stakeDaiModalOpen, setStakeDaiModalOpen] = useState(false);
-  const [pathofExileModalOpen, setPathofExileModalOpen] = useState(false);
+  const [poeAccountModalOpen, setPoeAccountModalOpen] = useState(false);
+  const [poeTokenModalOpen, setPoeTokenModalOpen] = useState(false);
   const [confirmTxModalOpen, setConfirmTxModalOpen] = useState(false);
   const [didStake, setDidStake] = useState(false);
   const [poeAccountName, setPoeAccountName] = useState('');
@@ -178,7 +180,7 @@ const PoolDashboard = ({
   const joinPool = async () => {
     if (game.value === GAMES.PATH_OF_EXILE) {
       // open the pathofexile modal to get path of exile data
-      setPathofExileModalOpen(true);
+      setPoeAccountModalOpen(true);
     } else {
       joinPoolModals();
     }
@@ -328,7 +330,7 @@ const PoolDashboard = ({
             </MainButton>
             {game && game.value === GAMES.PATH_OF_EXILE && (
               <Typography variant="h6" className={classes.token}>
-                You character token is{' '}
+                Your character token is{' '}
                 {generateGenieToken(address, poolAddress)}
               </Typography>
             )}
@@ -418,15 +420,20 @@ const PoolDashboard = ({
         open={confirmTxModalOpen}
         onClose={() => setConfirmTxModalOpen(false)}
       />
-      <PathofexileModal
-        address={address}
-        poolAddress={poolAddress}
-        open={pathofExileModalOpen}
-        onClose={() => setPathofExileModalOpen(false)}
+      <PathofexileAccountModal
+        open={poeAccountModalOpen}
+        onClick={() => setPoeTokenModalOpen(true)}
+        onClose={() => setPoeAccountModalOpen(false)}
         onEnterAccount={(accountName) => {
           setPoeAccountName(accountName);
-          joinPoolModals();
         }}
+      />
+      <PathofexileTokenModal
+        address={address}
+        poolAddress={poolAddress}
+        open={poeTokenModalOpen}
+        onClose={() => setPoeTokenModalOpen(false)}
+        openJoinPoolModals={joinPoolModals}
       />
     </div>
   );

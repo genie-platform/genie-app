@@ -6,13 +6,12 @@ import TextField from '@material-ui/core/TextField';
 import MainButton from '../../UI/MainButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { generateGenieToken } from '../../../utils/utils';
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    margin: '1.5em',
   },
   body: {
     display: 'flex',
@@ -21,11 +20,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     textAlign: 'center',
     width: 700,
-    height: 500,
     backgroundColor: 'white',
     borderRadius: 20,
     boxShadow: theme.shadows[5],
-    padding: '4em 7em',
+    padding: '2em 3em',
     outline: 0,
   },
   confirm: {
@@ -61,15 +59,11 @@ const PathofexileModal = (props) => {
         Hey there!
       </Typography>
       <Typography variant="h5" className={classes.text}>
-        Before we can start, a small thing:
+        Please enter your Path of Exile account name
       </Typography>
       <Typography variant="body1" className={classes.text}>
-        We need your Path of Exile account name - So we could connect your path
-        of exile info and give you the reward when you win!
-      </Typography>
-      <Typography variant="body2" className={classes.text}>
-        Make sure your characters page is set to public, otherwise we can't get
-        your character data!
+        So we could connect your path of exile info and give you the reward when
+        you win!
       </Typography>
       <TextField
         className={classes.text}
@@ -80,26 +74,26 @@ const PathofexileModal = (props) => {
           setAccountName(event.target.value);
         }}
       />
-      <Typography variant="h6" className={classes.text}>
-        Important! Please add this token to the end of your new character name,
-        so we could know which character of yours is in the pool!
+      <Typography variant="h5" className={classes.text}>
+        Important:
       </Typography>
-      <Typography variant="h4" className={classes.text}>
-        {props.address
-          ? generateGenieToken(props.address, props.poolAddress)
-          : 'CONNECT WALLET!'}
+      <Typography variant="h6" className={classes.text}>
+        Make sure your characters page is set to public, otherwise we can't get
+        your character data!
       </Typography>
       <MainButton
         onClick={() => {
           setTimeout(() => {
             props.onEnterAccount(accountName);
             props.onClose();
-          }, 2500);
+            props.onClick();
+            setDidFinish(false);
+          }, 800);
           setDidFinish(true);
         }}
         className={classes.button}
       >
-        Let's Go!
+        Continue
       </MainButton>
     </div>
   ) : (
@@ -115,8 +109,8 @@ const PathofexileModal = (props) => {
     <Modal
       open={props.open}
       onClose={props.onClose}
-      aria-labelledby="allow-dai-modal"
-      aria-describedby="allow-dai-modal"
+      aria-labelledby="poe-modal"
+      aria-describedby="poe-modal"
       className={classes.root}
     >
       {modalBody}
