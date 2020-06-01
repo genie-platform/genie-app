@@ -8,7 +8,7 @@ const prod = {
   },
   network: {
     addresses: {
-      fundingFactory: '0xAF70603fcE3a8C8aAC8297982CBc4E1187dF18b5',
+      fundingFactory: '0x03B3FE35399B9e4E89555c0479a47aAc7f8FD111',
       Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
@@ -47,7 +47,7 @@ const dev = {
   },
   network: {
     addresses: {
-      fundingFactory: '0xAF70603fcE3a8C8aAC8297982CBc4E1187dF18b5',
+      fundingFactory: '0x03B3FE35399B9e4E89555c0479a47aAc7f8FD111',
       Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
       cDai: '0xe7bc397dbd069fc7d0109c0636d06888bb50668c',
     },
