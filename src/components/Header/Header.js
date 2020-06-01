@@ -296,7 +296,9 @@ const Header = (props) => {
         <ListItem
           button
           onClick={() => {
-            onWalletClick();
+            if (!props.address) {
+              onWalletClick();
+            }
             setIsDrawerOpen(false);
           }}
         >
@@ -304,10 +306,11 @@ const Header = (props) => {
             <Address address={props.address} />
           ) : (
             <>
-              <ListItemIcon>
-                <AccountBalanceWalletIcon color="primary" />
-              </ListItemIcon>
               <ListItemText primary="Connect Wallet" />
+              <AccountBalanceWalletIcon
+                color="primary"
+                style={{ paddingLeft: '0.8em' }}
+              />
             </>
           )}
         </ListItem>

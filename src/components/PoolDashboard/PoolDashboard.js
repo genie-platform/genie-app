@@ -104,6 +104,9 @@ const useStyles = makeStyles((theme) => ({
       top: '-100px',
       width: '100%',
       minHeight: 300,
+      [theme.breakpoints.down('sm')]: {
+        width: '100vh',
+      },
     },
   },
   button: {},
