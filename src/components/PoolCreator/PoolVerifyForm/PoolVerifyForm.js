@@ -47,14 +47,14 @@ const PoolVerifyForm = (props) => {
   return (
     <div className={classes.root}>
       <Grid container spacing={3} className={classes.root}>
-        <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+        <Grid item xs={12}>
           <Typography className={classes.label}>Name</Typography>
           <Typography variant="h5" className={classes.text}>
             {props.name}
           </Typography>
         </Grid>
 
-        <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+        <Grid item xs={12}>
           <Typography className={classes.label}>Description</Typography>
           <Typography variant="h5" className={classes.text}>
             {props.description}
@@ -62,7 +62,7 @@ const PoolVerifyForm = (props) => {
         </Grid>
 
         {props.game !== GAMES.PATH_OF_EXILE && (
-          <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+          <Grid item xs={12}>
             <Typography className={classes.label}>Challenge</Typography>
             <Typography variant="h5" className={classes.text}>
               {props.winnerDescription}
@@ -70,21 +70,21 @@ const PoolVerifyForm = (props) => {
           </Grid>
         )}
 
-        <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+        <Grid item xs={12}>
           <Typography className={classes.label}>Ticket Price</Typography>
           <Typography variant="h5" className={classes.text}>
             {props.lockValue}
           </Typography>
         </Grid>
 
-        {props.rewardDuration ? (
-          <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+        {props.rewardDuration && (
+          <Grid item xs={12}>
             <Typography className={classes.label}>Reward Duration</Typography>
             <Typography variant="h5" className={classes.text}>
               {props.rewardDuration}
             </Typography>
           </Grid>
-        ) : null}
+        )}
 
         <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
           <Typography className={classes.label}>Icon</Typography>
@@ -94,7 +94,7 @@ const PoolVerifyForm = (props) => {
             </Typography>
           </div>
         </Grid>
-        <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+        <Grid item xs={12} sm={12} md={9} lg={9} xl={9}>
           <Typography className={classes.label}>Cover Image</Typography>
           <Card className={classes.imageCards}>
             <CardMedia
