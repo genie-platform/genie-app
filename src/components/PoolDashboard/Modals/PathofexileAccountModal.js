@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import { Typography } from '@material-ui/core';
+import { Typography, Grid } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import MainButton from '../../UI/MainButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'white',
     borderRadius: 20,
     boxShadow: theme.shadows[5],
-    padding: '2em 3em',
+    padding: '1.5em 2.5em',
     outline: 0,
   },
   confirm: {
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     outline: 0,
   },
   text: {
-    padding: '0.5em 0',
+    padding: '0.3em 0',
   },
   button: {
     paddingTop: '1em',
@@ -55,9 +55,6 @@ const PathofexileModal = (props) => {
 
   const modalBody = !didFinish ? (
     <div className={classes.body}>
-      <Typography variant="h4" className={classes.text}>
-        Hey there!
-      </Typography>
       <Typography variant="h5" className={classes.text}>
         Please enter your Path of Exile account name
       </Typography>
@@ -77,10 +74,23 @@ const PathofexileModal = (props) => {
       <Typography variant="h5" className={classes.text}>
         Important:
       </Typography>
-      <Typography variant="h6" className={classes.text}>
-        Make sure your characters page is set to public, otherwise we can't get
-        your character data!
-      </Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
+          <img src="/assets/account1.png" alt="account1" />
+        </Grid>
+        <Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
+          <Grid item>
+            <Typography variant="h6" className={classes.text}>
+              Make sure your characters page is set to public, otherwise we
+              can't get your character data!
+            </Typography>
+          </Grid>
+          <Grid item>
+            <img src="/assets/account2.png" alt="account2" />
+          </Grid>
+        </Grid>
+      </Grid>
+
       <MainButton
         onClick={() => {
           setTimeout(() => {
