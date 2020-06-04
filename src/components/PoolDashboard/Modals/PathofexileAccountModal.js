@@ -92,6 +92,7 @@ const PathofexileModal = (props) => {
       </Grid>
 
       <MainButton
+        disabled={accountName.length === 0}
         onClick={() => {
           setTimeout(() => {
             props.onEnterAccount(accountName);

@@ -26,11 +26,7 @@ const useWeb3Modal = (connectCallback) => {
     await connectCallback(response);
   });
 
-  const toggleModal = () => {
-    web3Modal.toggleModal();
-  };
-
-  return { provider, toggleModal, core: web3Modal };
+  return { provider, core: web3Modal };
 };
 
 export default useWeb3Modal;

@@ -1,3 +1,6 @@
+import { config } from '../config/config';
+import { NETWORKS } from './constants';
+
 const NUMBER_OF_IMAGES = 18;
 
 export const getRandomCoverImage = () => {
@@ -76,4 +79,15 @@ export const generateGenieToken = (address, poolAddress) => {
  */
 export const lowercaseAddress = (address) => {
   return address.toLowerCase();
+};
+
+/**
+ * generate a url to etherscan of given address
+ * @param {string} address - etheruem address
+ */
+export const generateEtherscanUrl = (address) => {
+  const networkPrefix =
+    config.network.ethereumNetwork === NETWORKS.KOVAN ? 'kovan.' : '';
+
+  return `https://${networkPrefix}etherscan.io/address/${address}`;
 };

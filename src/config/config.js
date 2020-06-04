@@ -7,6 +7,7 @@ const prod = {
       '1045886499834-t0vrjhlq8ep534njprdp8k80jl4iqdra.apps.googleusercontent.com',
   },
   network: {
+    ethereumNetwork: 'kovan',
     addresses: {
       fundingFactory: '0x03B3FE35399B9e4E89555c0479a47aAc7f8FD111',
       Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
@@ -32,8 +33,8 @@ const prod = {
   reactGA: {
     trackingId: 'UA-167809115-1',
     gaOptions: {
-      testMode: false
-    }
+      testMode: false,
+    },
   },
 };
 
@@ -46,6 +47,7 @@ const dev = {
       '1045886499834-t0vrjhlq8ep534njprdp8k80jl4iqdra.apps.googleusercontent.com',
   },
   network: {
+    ethereumNetwork: 'kovan',
     addresses: {
       fundingFactory: '0x03B3FE35399B9e4E89555c0479a47aAc7f8FD111',
       Dai: '0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa',
@@ -71,8 +73,8 @@ const dev = {
   reactGA: {
     trackingId: 'UA-167809115-1',
     gaOptions: {
-      testMode: true
-    }
+      testMode: true,
+    },
   },
 };
 
