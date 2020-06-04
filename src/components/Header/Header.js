@@ -26,6 +26,7 @@ import * as actionTypes from '../../store/actions/actionTypes';
 import { config } from '../../config/config';
 import { NETWORKS } from '../../utils/constants';
 import useWeb3Modal from '../../hooks/useWeb3Modal';
+import { generateEtherscanUrl } from '../../utils/utils';
 import Address from '../UI/Address';
 
 const useStyles = makeStyles((theme) => ({
@@ -422,9 +423,7 @@ const Header = (props) => {
         )}
         <MenuItem>
           <LinkMui
-            href={`https://${
-              config.network.ethereumNetwork === NETWORKS.KOVAN ? 'kovan.' : ''
-            }etherscan.io/address/${props.address}`}
+            href={generateEtherscanUrl(props.address)}
             underline="none"
             target="_blank"
             rel="noopener noreferrer"
