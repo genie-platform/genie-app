@@ -119,7 +119,6 @@ const Header = (props) => {
   const [portis, setPortis] = useState(null);
 
   const connect = async (provider) => {
-    console.log(provider);
     let web3 = getWeb3(provider);
     if (!web3.currentProvider) {
       setWeb3Provider(provider);
@@ -134,7 +133,6 @@ const Header = (props) => {
       setPortis(portisInstance); // set portis instance state
       // show portis popup
       portisInstance.onLogin((walletAddress, email, reputation) => {
-        console.log(walletAddress, email, reputation);
         portis.showPortis();
       });
     }
@@ -157,6 +155,7 @@ const Header = (props) => {
       portis.logout();
       setPortis(null);
     }
+    web3Modal.core.clearCachedProvider();
     props.onWalletConnect(null); // set address in redux global state
     setWeb3Provider(); // reset web3 provider to default provider
   };
