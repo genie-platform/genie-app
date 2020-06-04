@@ -33,7 +33,7 @@
     "standard": "^14.3.3",
     "web3": "^1.2.7",
     "web3-utils": "^1.2.7",
-    "web3modal": "^1.5.0"
+    "web3modal": "^1.7.0"
   },
   "scripts": {
     "start": "set PORT=3001 && react-scripts start",

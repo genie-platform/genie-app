@@ -20,12 +20,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import { connect } from 'react-redux';
 import { gapi } from 'gapi-script';
-import Portis from '@portis/web3';
 
 import { getWeb3, setWeb3Provider } from '../../services/web3';
 import * as actionTypes from '../../store/actions/actionTypes';
 import { config } from '../../config/config';
-import WalletsModal from './WalletsModal';
+import useWeb3Modal from '../../hooks/useWeb3Modal';
 import Address from '../UI/Address';
 
 const useStyles = makeStyles((theme) => ({
@@ -116,44 +115,37 @@ const Header = (props) => {
   const classes = useStyles();
   const [anchorElement, setAnchorElement] = useState(null);
   const [walletAnchorElement, setWalletAnchorElement] = useState(null);
-  const [walletsModalOpen, setWalletsModalOpen] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [portis, setPortis] = useState(null);
 
-  let web3;
-
-  const onPortisClick = async () => {
-    const portisInstance = new Portis(config.wallets.portisId, 'kovan');
-
-    portisInstance.onLogin((walletAddress, email, reputation) => {
-      console.log(walletAddress, email, reputation);
-      portis.showPortis();
-    });
-
-    web3 = getWeb3(portisInstance.provider);
+  const connect = async (provider) => {
+    console.log(provider);
+    let web3 = getWeb3(provider);
+    if (!web3.currentProvider) {
+      setWeb3Provider(provider);
+    }
     const accounts = await web3.eth.getAccounts();
     props.onWalletConnect(accounts[0]); // set address in redux global state
 
-    setPortis(portisInstance);
-    setWalletsModalOpen(false); // close wallets modal
+    // if user chose portis, display it
+    const portisInstance = provider._portis;
+
+    if (portisInstance) {
+      setPortis(portisInstance); // set portis instance state
+      // show portis popup
+      portisInstance.onLogin((walletAddress, email, reputation) => {
+        console.log(walletAddress, email, reputation);
+        portis.showPortis();
+      });
+    }
   };
 
-  const onMetaMaskClick = async () => {
-    const ethereum = window.ethereum;
-
-    const metamaskProvider = window['ethereum'];
-    web3 = getWeb3(metamaskProvider);
-
-    const accounts = await ethereum.enable();
-    props.onWalletConnect(accounts[0]); // set address in redux global state
-
-    setWalletsModalOpen(false); // close wallets modal
-  };
+  const web3Modal = useWeb3Modal(connect);
 
   const onWalletClick = async (event) => {
     if (!props.address) {
       // open wallets modal
-      setWalletsModalOpen(true);
+      await web3Modal.core.connect();
     } else {
       // open menu
       setWalletAnchorElement(event.currentTarget);
@@ -166,7 +158,7 @@ const Header = (props) => {
       setPortis(null);
     }
     props.onWalletConnect(null); // set address in redux global state
-    setWeb3Provider(null); // reset web3 provider
+    setWeb3Provider(); // reset web3 provider to default provider
   };
 
   const handleClickAvatar = (event) => {
@@ -242,6 +234,9 @@ const Header = (props) => {
   useEffect(() => {
     if (!props.isAuthenticated) {
       renderGoogleSignInButton();
+    }
+    if (web3Modal.cachedProvider) {
+      connect();
     }
   }, [props.isAuthenticated]);
 
@@ -471,14 +466,6 @@ const Header = (props) => {
       >
         {authAreaDrawer}
       </SwipeableDrawer>
-      <WalletsModal
-        open={walletsModalOpen}
-        onClose={() => {
-          setWalletsModalOpen(null);
-        }}
-        onPortisClick={onPortisClick}
-        onMetaMaskClick={onMetaMaskClick}
-      />
     </div>
   );
 };
