@@ -5,13 +5,23 @@ export const GAMES = {
   GODS_UNCHAINED: 'Gods Unchained',
   CUSTOM: 'Your Game',
 };
+
 export const winningConditionTypes = {
   LEVEL: 'level',
   CHALLENGES: 'challenges',
 };
+
 export const LEAGUES = {
   STANDARD: 'Standard',
   HARDCORE: 'Hardcore',
   DELIRIUM: 'Delirium',
   DELIRIUM_HC: 'Delirium Hardcore',
+};
+
+export const NETWORKS = {
+  MAINNET: 'mainnet',
+  KOVAN: 'kovan',
+  ROPSTEN: 'ropsten',
+  RINKEBY: 'rinkeby',
+  GOERLI: 'goerli',
 };

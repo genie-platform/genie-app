@@ -13,9 +13,9 @@ import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SwipeableDrawer from '@material-ui/core/Drawer';
+import LinkMui from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import { connect } from 'react-redux';
@@ -24,6 +24,7 @@ import { gapi } from 'gapi-script';
 import { getWeb3, setWeb3Provider } from '../../services/web3';
 import * as actionTypes from '../../store/actions/actionTypes';
 import { config } from '../../config/config';
+import { NETWORKS } from '../../utils/constants';
 import useWeb3Modal from '../../hooks/useWeb3Modal';
 import Address from '../UI/Address';
 
@@ -120,9 +121,7 @@ const Header = (props) => {
 
   const connect = async (provider) => {
     let web3 = getWeb3(provider);
-    if (!web3.currentProvider) {
-      setWeb3Provider(provider);
-    }
+
     const accounts = await web3.eth.getAccounts();
     props.onWalletConnect(accounts[0]); // set address in redux global state
 
@@ -234,10 +233,17 @@ const Header = (props) => {
     if (!props.isAuthenticated) {
       renderGoogleSignInButton();
     }
-    if (web3Modal.cachedProvider) {
-      connect();
+    if (web3Modal.core.cachedProvider) {
+      web3Modal.core.connect().then();
     }
   }, [props.isAuthenticated]);
+
+  // connect to wallet on component mount
+  useEffect(() => {
+    if (web3Modal.core.cachedProvider) {
+      web3Modal.core.connect().then();
+    }
+  }, []);
 
   const googleSigninButton = (
     <div id="signinButton" className={classes.googleLogin} />
@@ -414,6 +420,19 @@ const Header = (props) => {
             Show account
           </MenuItem>
         )}
+        <MenuItem>
+          <LinkMui
+            href={`https://${
+              config.network.ethereumNetwork === NETWORKS.KOVAN ? 'kovan.' : ''
+            }etherscan.io/address/${props.address}`}
+            underline="none"
+            target="_blank"
+            rel="noopener noreferrer"
+            color="inherit"
+          >
+            View on etherscan
+          </LinkMui>
+        </MenuItem>
         <MenuItem
           onClick={() => {
             onWalletDisconnet(); // disconnect
