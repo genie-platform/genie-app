@@ -19,6 +19,7 @@ import {
   withdraw,
 } from '../../ethereum/pool';
 import { getAllowance, approve, getUserBalance } from '../../ethereum/erc20';
+import { sendDai } from '../../services/genieBackend';
 import MainButton from '../UI/MainButton';
 import AllowDaiModal from './Modals/AllowDaiModal';
 import StakeDaiModal from './Modals/StakeDaiModal';
@@ -134,6 +135,7 @@ const PoolDashboard = ({
     params: { poolAddress },
   },
   address,
+  token,
 }) => {
   const classes = useStyles();
   const [allowDaiModalOpen, setAllowDaiModalOpen] = useState(false);
@@ -414,6 +416,9 @@ const PoolDashboard = ({
             setDidStake((didStake) => !didStake);
             poolGraphState.refetch();
           }}
+          onSendDai={async () => {
+            await sendDai(poolAddress, address, token);
+          }}
         />
       )}
       <ConfirmTxModal
@@ -442,6 +447,7 @@ const PoolDashboard = ({
 const mapStateToProps = (state) => {
   return {
     address: state.auth.address,
+    token: state.auth.token,
   };
 };
 
