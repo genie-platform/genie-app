@@ -395,6 +395,13 @@ const PoolDashboard = ({
             setConfirmTxModalOpen(false);
             setStakeDaiModalOpen(true);
           }}
+          onSendDai={async () => {
+            setAllowDaiModalOpen(false);
+            setConfirmTxModalOpen(true);
+            await sendDai(poolAddress, address, token);
+            setConfirmTxModalOpen(false);
+            setAllowDaiModalOpen(true);
+          }}
         />
       )}
       {poolMetadataState.value && userBalance.value && (
@@ -417,7 +424,11 @@ const PoolDashboard = ({
             poolGraphState.refetch();
           }}
           onSendDai={async () => {
+            setStakeDaiModalOpen(false);
+            setConfirmTxModalOpen(true);
             await sendDai(poolAddress, address, token);
+            setConfirmTxModalOpen(false);
+            setStakeDaiModalOpen(true);
           }}
         />
       )}
