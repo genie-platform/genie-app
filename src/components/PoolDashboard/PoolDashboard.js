@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAsync } from 'react-use';
+import { useAsync, useAsyncRetry } from 'react-use';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -158,7 +158,7 @@ const PoolDashboard = ({
     return balanceOf(poolAddress);
   }, [poolAddress, address, didStake]);
 
-  const userBalance = useAsync(async () => {
+  const userBalance = useAsyncRetry(async () => {
     return getUserBalance(address);
   }, [address]);
 
@@ -180,6 +180,7 @@ const PoolDashboard = ({
   }, [poolMetadataState]);
 
   const joinPool = async () => {
+    userBalance.retry(); // refresh user balance
     if (game.value === GAMES.PATH_OF_EXILE) {
       // open the pathofexile modal to get path of exile data
       setPoeAccountModalOpen(true);
@@ -202,6 +203,15 @@ const PoolDashboard = ({
     setConfirmTxModalOpen(false);
     setDidStake((didStake) => !didStake);
     poolGraphState.refetch();
+  };
+
+  const handleOnSendDai = async () => {
+    setAllowDaiModalOpen(false);
+    setConfirmTxModalOpen(true);
+    const txReceipt = await sendDai(poolAddress, address, token);
+    console.log(txReceipt);
+    userBalance.retry(); // refresh user balance
+    setConfirmTxModalOpen(false);
   };
 
   const isGameOver = () => get(rewardsState, 'data.rewards', []).length > 0;
@@ -395,13 +405,7 @@ const PoolDashboard = ({
             setConfirmTxModalOpen(false);
             setStakeDaiModalOpen(true);
           }}
-          onSendDai={async () => {
-            setAllowDaiModalOpen(false);
-            setConfirmTxModalOpen(true);
-            await sendDai(poolAddress, address, token);
-            setConfirmTxModalOpen(false);
-            setAllowDaiModalOpen(true);
-          }}
+          onSendDai={handleOnSendDai}
         />
       )}
       {poolMetadataState.value && userBalance.value && (
@@ -423,13 +427,7 @@ const PoolDashboard = ({
             setDidStake((didStake) => !didStake);
             poolGraphState.refetch();
           }}
-          onSendDai={async () => {
-            setStakeDaiModalOpen(false);
-            setConfirmTxModalOpen(true);
-            await sendDai(poolAddress, address, token);
-            setConfirmTxModalOpen(false);
-            setStakeDaiModalOpen(true);
-          }}
+          onSendDai={handleOnSendDai}
         />
       )}
       <ConfirmTxModal
