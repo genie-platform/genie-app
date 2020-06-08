@@ -1,9 +1,9 @@
 import { config } from '../config/config';
 
-export const sendDai = async (poolAddress, userAddress, userToken) => {
-  const body = { poolAddress: poolAddress, userAddress: userAddress };
+export const activateFaucet = async (poolAddress, userAddress, userToken) => {
+  const body = { userAddress: userAddress, poolAddress: poolAddress };
 
-  const response = await window.fetch(`${config.backend.url}/faucets/dai`, {
+  const response = await window.fetch(`${config.backend.url}/faucets/`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

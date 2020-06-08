@@ -19,7 +19,7 @@ import {
   withdraw,
 } from '../../ethereum/pool';
 import { getAllowance, approve, getUserBalance } from '../../ethereum/erc20';
-import { sendDai } from '../../services/genieBackend';
+import { activateFaucet } from '../../services/genieBackend';
 import MainButton from '../UI/MainButton';
 import AllowDaiModal from './Modals/AllowDaiModal';
 import StakeDaiModal from './Modals/StakeDaiModal';
@@ -208,7 +208,7 @@ const PoolDashboard = ({
   const handleOnSendDai = async () => {
     setAllowDaiModalOpen(false);
     setConfirmTxModalOpen(true);
-    const txReceipt = await sendDai(poolAddress, address, token);
+    const txReceipt = await activateFaucet(poolAddress, address, token);
     console.log(txReceipt);
     userBalance.retry(); // refresh user balance
     setConfirmTxModalOpen(false);
