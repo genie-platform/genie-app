@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-
 import Modal from '@material-ui/core/Modal';
 import Typography from '@material-ui/core/Typography';
+
+import { getWeb3 } from '../../services/web3';
+import { NETWORKS_ID } from '../../utils/constants';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,18 +32,31 @@ const useStyles = makeStyles((theme) => ({
 
 const WrongNetorkModal = (props) => {
   const classes = useStyles();
+  const [networkWarningModalOpen, setNetworkWarningModalOpen] = useState(false);
+
+  useEffect(() => {
+    const web3 = getWeb3();
+
+    // display warning modal if network isn't kovan
+    web3.eth.getChainId().then((chainId) => {
+      if (chainId !== NETWORKS_ID.KOVAN) {
+        setNetworkWarningModalOpen(true);
+      }
+    });
+  }, [props.address]);
 
   const modalBody = (
     <div className={classes.body}>
+      <Typography variant="h5">Wrong network!</Typography>
       <Typography variant="h5">
-        Wrong network! Please change your ethereum network to Kovan
+        Please change your ethereum network to Kovan
       </Typography>
     </div>
   );
   return (
     <Modal
-      open={props.open}
-      onClose={props.onClose}
+      open={networkWarningModalOpen}
+      onClose={() => setNetworkWarningModalOpen(false)}
       aria-labelledby="tx-confirm-modal"
       aria-describedby="tx-confirm-modal"
       className={classes.root}
@@ -50,4 +66,10 @@ const WrongNetorkModal = (props) => {
   );
 };
 
-export default WrongNetorkModal;
+const mapStateToProps = (state) => {
+  return {
+    address: state.auth.address,
+  };
+};
+
+export default connect(mapStateToProps, null)(WrongNetorkModal);

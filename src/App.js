@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch, useLocation } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
@@ -13,8 +13,6 @@ import Home from './components/Home/Home';
 import WrongNetworkModal from './components/UI/WrongNetworkModal';
 import { client } from './services/graphql';
 import ReactGA from './services/ga';
-import { getWeb3 } from './services/web3';
-import { NETWORKS_ID } from './utils/constants';
 
 const useStyles = makeStyles((theme) => ({
   app: {
@@ -46,28 +44,13 @@ const Routes = (props) => {
 };
 const App = (props) => {
   const classes = useStyles();
-  const [networkWarningModalOpen, setNetworkWarningModalOpen] = useState(false);
-
-  useEffect(() => {
-    const web3 = getWeb3();
-
-    // display warning modal if network isn't kovan
-    web3.eth.getChainId().then((chainId) => {
-      if (chainId !== NETWORKS_ID.KOVAN) {
-        setNetworkWarningModalOpen(true);
-      }
-    });
-  }, [props.address]);
 
   return (
     <BrowserRouter>
       <ApolloProvider client={client}>
         <div className={classes.app}>
           <div className={classes.content}>
-            <WrongNetworkModal
-              open={networkWarningModalOpen}
-              onClose={() => setNetworkWarningModalOpen(false)}
-            />
+            <WrongNetworkModal />
             <Header />
             <Routes />
           </div>
