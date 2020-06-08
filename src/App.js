@@ -10,9 +10,10 @@ import PoolExplorer from './components/PoolExplorer/PoolExplorer';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Home from './components/Home/Home';
+import WrongNetworkModal from './components/UI/WrongNetworkModal';
 import { client } from './services/graphql';
 import ReactGA from './services/ga';
- 
+
 const useStyles = makeStyles((theme) => ({
   app: {
     background: theme.customColors.background,
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 function usePageViews() {
   const location = useLocation();
   useEffect(() => {
-    ReactGA.pageview(location.pathname)
+    ReactGA.pageview(location.pathname);
   }, [location]);
 }
 
@@ -37,25 +38,19 @@ const Routes = (props) => {
       <Route path="/" exact component={Home} />
       <Route path="/create-pool" exact component={PoolCreator} />
       <Route path="/explore" exact component={PoolExplorer} />
-      <Route
-        path="/dashboard/:poolAddress"
-        exact
-        component={PoolDashboard}
-      />
+      <Route path="/dashboard/:poolAddress" exact component={PoolDashboard} />
     </Switch>
-  )
-}
+  );
+};
 const App = (props) => {
   const classes = useStyles();
-
-
-
 
   return (
     <BrowserRouter>
       <ApolloProvider client={client}>
         <div className={classes.app}>
           <div className={classes.content}>
+            <WrongNetworkModal />
             <Header />
             <Routes />
           </div>
@@ -75,6 +70,7 @@ const mapStateToProps = (state) => {
     loading: state.auth.loading,
     error: state.auth.error,
     isAuthenticated: state.auth.token !== null,
+    address: state.auth.address,
   };
 };
 

@@ -25,3 +25,11 @@ export const NETWORKS = {
   RINKEBY: 'rinkeby',
   GOERLI: 'goerli',
 };
+
+export const NETWORKS_ID = {
+  MAINNET: 1,
+  KOVAN: 42,
+  ROPSTEN: 3,
+  RINKEBY: 4,
+  GOERLI: 5,
+};
