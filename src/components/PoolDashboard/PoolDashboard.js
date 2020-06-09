@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAsync, useAsyncRetry } from 'react-use';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -19,13 +19,13 @@ import {
   withdraw,
 } from '../../ethereum/pool';
 import { getAllowance, approve, getUserBalance } from '../../ethereum/erc20';
-import { activateFaucet } from '../../services/genieBackend';
 import MainButton from '../UI/MainButton';
 import AllowDaiModal from './Modals/AllowDaiModal';
 import StakeDaiModal from './Modals/StakeDaiModal';
 import PathofexileAccountModal from './Modals/PathofexileAccountModal';
 import ConfirmTxModal from '../UI/ConfirmTxModal';
 import PathofexileTokenModal from './Modals/PathofexileTokenModal';
+import FaucetModal from '../UI/FaucetModal';
 
 const GET_POOL = gql`
   query Pool($poolAddress: String!) {
@@ -143,6 +143,7 @@ const PoolDashboard = ({
   const [poeAccountModalOpen, setPoeAccountModalOpen] = useState(false);
   const [poeTokenModalOpen, setPoeTokenModalOpen] = useState(false);
   const [confirmTxModalOpen, setConfirmTxModalOpen] = useState(false);
+  const [faucetModalOpen, setFaucetModalOpen] = useState(false);
   const [didStake, setDidStake] = useState(false);
   const [poeAccountName, setPoeAccountName] = useState('');
 
@@ -158,7 +159,7 @@ const PoolDashboard = ({
     return balanceOf(poolAddress);
   }, [poolAddress, address, didStake]);
 
-  const userBalance = useAsyncRetry(async () => {
+  const userDaiBalance = useAsyncRetry(async () => {
     return getUserBalance(address);
   }, [address]);
 
@@ -180,7 +181,8 @@ const PoolDashboard = ({
   }, [poolMetadataState]);
 
   const joinPool = async () => {
-    userBalance.retry(); // refresh user balance
+    userDaiBalance.retry(); // refresh user balance
+    setFaucetModalOpen(true);
     if (game.value === GAMES.PATH_OF_EXILE) {
       // open the pathofexile modal to get path of exile data
       setPoeAccountModalOpen(true);
@@ -198,20 +200,12 @@ const PoolDashboard = ({
   };
 
   const leavePool = async () => {
+    setFaucetModalOpen(true);
     setConfirmTxModalOpen(true);
     await withdraw(address, poolAddress);
     setConfirmTxModalOpen(false);
     setDidStake((didStake) => !didStake);
     poolGraphState.refetch();
-  };
-
-  const handleOnSendDai = async () => {
-    setAllowDaiModalOpen(false);
-    setConfirmTxModalOpen(true);
-    const txReceipt = await activateFaucet(poolAddress, address, token);
-    console.log(txReceipt);
-    userBalance.retry(); // refresh user balance
-    setConfirmTxModalOpen(false);
   };
 
   const isGameOver = () => get(rewardsState, 'data.rewards', []).length > 0;
@@ -392,12 +386,12 @@ const PoolDashboard = ({
           </Grid>
         </>
       )}
-      {poolMetadataState.value && userBalance.value && (
+      {poolMetadataState.value && userDaiBalance.value && (
         <AllowDaiModal
           open={allowDaiModalOpen}
           onClose={() => setAllowDaiModalOpen(false)}
           lockValue={poolMetadataState.value.lockValue}
-          userBalance={userBalance.value}
+          userBalance={userDaiBalance.value}
           onAllowDaiClick={async () => {
             setAllowDaiModalOpen(false);
             setConfirmTxModalOpen(true);
@@ -405,15 +399,14 @@ const PoolDashboard = ({
             setConfirmTxModalOpen(false);
             setStakeDaiModalOpen(true);
           }}
-          onSendDai={handleOnSendDai}
         />
       )}
-      {poolMetadataState.value && userBalance.value && (
+      {poolMetadataState.value && userDaiBalance.value && (
         <StakeDaiModal
           open={stakeDaiModalOpen}
           onClose={() => setStakeDaiModalOpen(false)}
           lockValue={poolMetadataState.value.lockValue}
-          userBalance={userBalance.value}
+          userBalance={userDaiBalance.value}
           onStake={async () => {
             setStakeDaiModalOpen(false);
             setConfirmTxModalOpen(true);
@@ -427,7 +420,6 @@ const PoolDashboard = ({
             setDidStake((didStake) => !didStake);
             poolGraphState.refetch();
           }}
-          onSendDai={handleOnSendDai}
         />
       )}
       <ConfirmTxModal
@@ -448,6 +440,13 @@ const PoolDashboard = ({
         open={poeTokenModalOpen}
         onClose={() => setPoeTokenModalOpen(false)}
         openJoinPoolModals={joinPoolModals}
+      />
+      <FaucetModal
+        isOpen={faucetModalOpen}
+        address={address}
+        poolAddress={poolAddress}
+        token={token}
+        reloadUserBalance={userDaiBalance.retry}
       />
     </div>
   );
