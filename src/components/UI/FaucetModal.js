@@ -11,9 +11,9 @@ import {
   activateBothFaucets,
   activateDaiFaucet,
   activateEthFaucet,
-} from '../../services/genieBackend';
+} from '../../services/genie';
 import { fetchPoolMetadata } from '../../ethereum/pool';
-import { getWeb3, getUserEthBalance } from '../../services/web3';
+import { getUserEthBalance } from '../../services/web3';
 import { config } from '../../config/config';
 import ConfirmTxModal from '../UI/ConfirmTxModal';
 
