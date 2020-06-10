@@ -30,17 +30,13 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-evenly',
     flexDirection: 'column',
     textAlign: 'center',
-    width: 400,
-    height: 300,
+    width: 550,
+    height: 400,
     backgroundColor: 'white',
     borderRadius: 20,
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     outline: 0,
-  },
-  logo: {
-    width: 90,
-    height: 90,
   },
 }));
 
@@ -178,6 +174,7 @@ const FaucetModal = (props) => {
     <>
       <ConfirmTxModal
         open={confirmTxModalOpen}
+        customText="Funds are on their way!"
         onClose={() => {
           setConfirmTxModalOpen(false);
         }}
