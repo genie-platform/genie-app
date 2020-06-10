@@ -155,7 +155,7 @@ const PoolDashboard = ({
     return fetchPoolMetadata(poolAddress);
   }, [poolAddress, didStake]);
 
-  const balanceState = useAsync(async () => {
+  const balanceState = useAsyncRetry(async () => {
     return balanceOf(poolAddress);
   }, [poolAddress, address, didStake]);
 
@@ -200,11 +200,11 @@ const PoolDashboard = ({
   };
 
   const leavePool = async () => {
-    setFaucetModalOpen(true);
     setConfirmTxModalOpen(true);
     await withdraw(address, poolAddress);
     setConfirmTxModalOpen(false);
     setDidStake((didStake) => !didStake);
+    balanceState.retry();
     poolGraphState.refetch();
   };
 
@@ -418,6 +418,7 @@ const PoolDashboard = ({
             );
             setConfirmTxModalOpen(false);
             setDidStake((didStake) => !didStake);
+            balanceState.retry();
             poolGraphState.refetch();
           }}
         />

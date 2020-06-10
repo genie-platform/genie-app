@@ -13,7 +13,7 @@ import {
   activateEthFaucet,
 } from '../../services/genieBackend';
 import { fetchPoolMetadata } from '../../ethereum/pool';
-import { getWeb3 } from '../../services/web3';
+import { getWeb3, getUserEthBalance } from '../../services/web3';
 import { config } from '../../config/config';
 import ConfirmTxModal from '../UI/ConfirmTxModal';
 
@@ -56,9 +56,7 @@ const FaucetModal = (props) => {
 
   // get address eth balance
   const userEthBalance = useAsyncRetry(async () => {
-    const web3 = getWeb3();
-    const balance = await web3.eth.getBalance(props.address);
-    return web3.utils.fromWei(balance);
+    return getUserEthBalance(props.address);
   }, [props.address]);
 
   // get pool metadata
@@ -71,7 +69,7 @@ const FaucetModal = (props) => {
     setConfirmTxModalOpen(true);
     await activateFaucetFunc();
 
-    // temporary adding extra waiting time so the user balance reload will get the updated values
+    // temporary adding extra waiting time so the user balance reload will get the updated values. Yikes
     setTimeout(() => {
       props.reloadUserBalance();
       setConfirmTxModalOpen(false);

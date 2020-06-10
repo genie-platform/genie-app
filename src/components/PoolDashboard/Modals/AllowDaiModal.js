@@ -48,9 +48,6 @@ const AllowDaiModal = (props) => {
           <Typography variant="h5">
             Please get more DAI to join pool.
           </Typography>
-          <MainButton variant="outlined" onClick={props.onSendDai}>
-            SEND ME DAI
-          </MainButton>
         </>
       ) : (
         <>

@@ -16,3 +16,8 @@ export const getWeb3 = (provider) => {
 };
 export const setWeb3Provider = (provider = defaultProvider) =>
   web3.setProvider(provider);
+
+export const getUserEthBalance = async (userAddress) => {
+  const balance = await web3.eth.getBalance(userAddress);
+  return web3.utils.fromWei(balance);
+};
