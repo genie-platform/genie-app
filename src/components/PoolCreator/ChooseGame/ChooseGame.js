@@ -71,7 +71,9 @@ const ChooseGame = (props) => {
             props.onGameClick();
           }}
           image="/logos/manual.svg"
+          disabled
           title={GAMES.MANUAL}
+          subtitle="Coming soon"
           description="Choose any game and reward the winner manually"
         />
       </Grid>

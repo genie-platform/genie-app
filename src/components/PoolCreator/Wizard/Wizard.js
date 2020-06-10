@@ -93,6 +93,7 @@ export const Wizard = (props) => {
   const verifyForm = useCallback(() => {
     const MIN_POOL_NAME_LEN = 4;
     const MIN_POOL_DESCRIPTION_LEN = 0;
+    const MAX_LOCK_VALUE = 100;
     const MIN_LOCK_VALUE = 0;
     const MAX_LEVEL = 100;
     const MIN_LEVEL = 0;
@@ -103,13 +104,14 @@ export const Wizard = (props) => {
     const settingsVerify =
       activeStep === SETTINGS &&
       props.winningCondition.value <= MAX_LEVEL &&
-      props.winningCondition.value > MIN_LEVEL;
+      props.winningCondition.value > MIN_LEVEL &&
+      props.lockValue > MIN_LOCK_VALUE &&
+      props.lockValue < MAX_LOCK_VALUE;
 
     const detailsVerify =
       activeStep === POOL_DETAILS &&
       props.name.length > MIN_POOL_NAME_LEN &&
-      props.description.length > MIN_POOL_DESCRIPTION_LEN &&
-      props.lockValue > MIN_LOCK_VALUE;
+      props.description.length > MIN_POOL_DESCRIPTION_LEN;
 
     return currentStepVerify || settingsVerify || detailsVerify;
   }, [

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useAsync } from 'react-use';
+import React, { useState, useEffect } from 'react';
+import { useAsync, useAsyncRetry } from 'react-use';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -25,6 +25,7 @@ import StakeDaiModal from './Modals/StakeDaiModal';
 import PathofexileAccountModal from './Modals/PathofexileAccountModal';
 import ConfirmTxModal from '../UI/ConfirmTxModal';
 import PathofexileTokenModal from './Modals/PathofexileTokenModal';
+import FaucetModal from '../UI/FaucetModal';
 
 const GET_POOL = gql`
   query Pool($poolAddress: String!) {
@@ -134,6 +135,7 @@ const PoolDashboard = ({
     params: { poolAddress },
   },
   address,
+  token,
 }) => {
   const classes = useStyles();
   const [allowDaiModalOpen, setAllowDaiModalOpen] = useState(false);
@@ -141,6 +143,7 @@ const PoolDashboard = ({
   const [poeAccountModalOpen, setPoeAccountModalOpen] = useState(false);
   const [poeTokenModalOpen, setPoeTokenModalOpen] = useState(false);
   const [confirmTxModalOpen, setConfirmTxModalOpen] = useState(false);
+  const [faucetModalOpen, setFaucetModalOpen] = useState(false);
   const [didStake, setDidStake] = useState(false);
   const [poeAccountName, setPoeAccountName] = useState('');
 
@@ -152,11 +155,11 @@ const PoolDashboard = ({
     return fetchPoolMetadata(poolAddress);
   }, [poolAddress, didStake]);
 
-  const balanceState = useAsync(async () => {
+  const balanceState = useAsyncRetry(async () => {
     return balanceOf(poolAddress);
   }, [poolAddress, address, didStake]);
 
-  const userBalance = useAsync(async () => {
+  const userDaiBalance = useAsyncRetry(async () => {
     return getUserBalance(address);
   }, [address]);
 
@@ -178,6 +181,8 @@ const PoolDashboard = ({
   }, [poolMetadataState]);
 
   const joinPool = async () => {
+    userDaiBalance.retry(); // refresh user balance
+    setFaucetModalOpen(true);
     if (game.value === GAMES.PATH_OF_EXILE) {
       // open the pathofexile modal to get path of exile data
       setPoeAccountModalOpen(true);
@@ -199,6 +204,7 @@ const PoolDashboard = ({
     await withdraw(address, poolAddress);
     setConfirmTxModalOpen(false);
     setDidStake((didStake) => !didStake);
+    balanceState.retry();
     poolGraphState.refetch();
   };
 
@@ -380,12 +386,12 @@ const PoolDashboard = ({
           </Grid>
         </>
       )}
-      {poolMetadataState.value && userBalance.value && (
+      {poolMetadataState.value && userDaiBalance.value && (
         <AllowDaiModal
           open={allowDaiModalOpen}
           onClose={() => setAllowDaiModalOpen(false)}
           lockValue={poolMetadataState.value.lockValue}
-          userBalance={userBalance.value}
+          userBalance={userDaiBalance.value}
           onAllowDaiClick={async () => {
             setAllowDaiModalOpen(false);
             setConfirmTxModalOpen(true);
@@ -395,12 +401,12 @@ const PoolDashboard = ({
           }}
         />
       )}
-      {poolMetadataState.value && userBalance.value && (
+      {poolMetadataState.value && userDaiBalance.value && (
         <StakeDaiModal
           open={stakeDaiModalOpen}
           onClose={() => setStakeDaiModalOpen(false)}
           lockValue={poolMetadataState.value.lockValue}
-          userBalance={userBalance.value}
+          userBalance={userDaiBalance.value}
           onStake={async () => {
             setStakeDaiModalOpen(false);
             setConfirmTxModalOpen(true);
@@ -412,6 +418,7 @@ const PoolDashboard = ({
             );
             setConfirmTxModalOpen(false);
             setDidStake((didStake) => !didStake);
+            balanceState.retry();
             poolGraphState.refetch();
           }}
         />
@@ -435,6 +442,13 @@ const PoolDashboard = ({
         onClose={() => setPoeTokenModalOpen(false)}
         openJoinPoolModals={joinPoolModals}
       />
+      <FaucetModal
+        isOpen={faucetModalOpen}
+        address={address}
+        poolAddress={poolAddress}
+        token={token}
+        reloadUserBalance={userDaiBalance.retry}
+      />
     </div>
   );
 };
@@ -442,6 +456,7 @@ const PoolDashboard = ({
 const mapStateToProps = (state) => {
   return {
     address: state.auth.address,
+    token: state.auth.token,
   };
 };
 

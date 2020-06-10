@@ -36,6 +36,7 @@ const PoolSettingsForm = (props) => {
   const [winningCondition, setWinningCondition] = useState(
     props.winningCondition
   );
+  const [ticketPrice, setTicketPrice] = useState(props.lockValue);
 
   useEffect(() => {
     const defaultWinningCondition = {
@@ -174,12 +175,18 @@ const PoolSettingsForm = (props) => {
           <TextField
             required
             id="lock-value"
+            error={ticketPrice > 100}
             defaultValue={props.lockValue}
-            helperText="The amount of DAI each user will lock to join pool"
+            helperText={
+              ticketPrice > 100
+                ? 'Ticket price must be lower than 100'
+                : 'The amount of DAI each user will lock to join pool'
+            }
             fullWidth
             type="number"
             variant="outlined"
             onChange={(event) => {
+              setTicketPrice(event.target.value);
               props.setPool({ lockValue: event.target.value });
             }}
           />

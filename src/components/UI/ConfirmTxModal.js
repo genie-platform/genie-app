@@ -38,7 +38,9 @@ const ConfirmTxModal = (props) => {
     <div className={classes.body}>
       <CircularProgress />
       <Typography variant="h5">
-        Waiting for transaction confirmation on the network
+        {props.customText
+          ? props.customText
+          : 'Waiting for transaction confirmation on the network'}
       </Typography>
     </div>
   );

@@ -17,6 +17,11 @@ const prod = {
       'https://kovan.infura.io/v3/06b97e4e91db4a059c3060357b884a54',
     operator: '0x955725948ed2a46d1dacdb5d1328ff5bacbb3e83',
   },
+  faucets: {
+    eth: {
+      amount: '0.015',
+    },
+  },
   graph: {
     uri:
       'https://api.thegraph.com/subgraphs/name/genie-platform/genie-graph-v2',
@@ -56,6 +61,11 @@ const dev = {
     kovanProvider:
       'https://kovan.infura.io/v3/06b97e4e91db4a059c3060357b884a54',
     operator: '0xa79bd80f1a5c9faba2c03bbd1a36af61a32253a0',
+  },
+  faucets: {
+    eth: {
+      amount: '0.015',
+    },
   },
   graph: {
     uri:
