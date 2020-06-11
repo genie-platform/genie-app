@@ -181,15 +181,26 @@ const PoolDashboard = ({
   }, [poolMetadataState]);
 
   const joinPool = async () => {
+    debugger
     userDaiBalance.retry(); // refresh user balance
     setFaucetModalOpen(true);
+    // handleFaucetsDone()
+    // if (game.value === GAMES.PATH_OF_EXILE) {
+    //   // open the pathofexile modal to get path of exile data
+    //   setPoeAccountModalOpen(true);
+    // } else {
+    //   joinPoolModals();
+    // }
+  };
+
+  const handleFaucetsDone = async () => {
     if (game.value === GAMES.PATH_OF_EXILE) {
       // open the pathofexile modal to get path of exile data
       setPoeAccountModalOpen(true);
     } else {
       joinPoolModals();
     }
-  };
+  }
 
   const joinPoolModals = async () => {
     if (!didAllowDai.value) {
@@ -444,10 +455,13 @@ const PoolDashboard = ({
       />
       <FaucetModal
         isOpen={faucetModalOpen}
+        closeModal={() => setFaucetModalOpen(false)}
         address={address}
         poolAddress={poolAddress}
         token={token}
         reloadUserBalance={userDaiBalance.retry}
+        userDaiBalance={userDaiBalance}
+        onDone={handleFaucetsDone}
       />
     </div>
   );

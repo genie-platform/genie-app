@@ -36,7 +36,7 @@ export const activateDaiFaucet = async (
     },
     body: JSON.stringify(body),
   });
-
+  debugger
   return await response.json();
 };
 

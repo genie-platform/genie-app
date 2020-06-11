@@ -43,7 +43,7 @@ const StakeDaiModal = (props) => {
           <ErrorIcon color="error" fontSize="large" />
           <Typography variant="h5">Not enough funds!</Typography>
           <Typography variant="h5">
-            You have ${props.userBalance} but minimum staking amount is $
+            You have ${props.userBalance} but llal minimum staking amount is $
             {props.lockValue}.
           </Typography>
           <Typography variant="h5">

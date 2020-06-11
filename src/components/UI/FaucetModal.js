@@ -43,16 +43,18 @@ const useStyles = makeStyles((theme) => ({
 const FaucetModal = (props) => {
   const classes = useStyles();
   const [confirmTxModalOpen, setConfirmTxModalOpen] = useState(false);
-  const [faucetModalOpen, setFaucetModalOpen] = useState(false);
+  // const [faucetModalOpen, setFaucetModalOpen] = useState(false);
 
-  useEffect(() => {
-    setFaucetModalOpen(props.isOpen);
-  }, [props.isOpen]);
+  // useEffect(() => {
+  //   setFaucetModalOpen(props.isOpen);
+  // }, [props.isOpen]);
 
   // get address dai balance
-  const userDaiBalance = useAsyncRetry(async () => {
-    return getUserDaiBalance(props.address);
-  }, [props.address]);
+  // const userDaiBalance = useAsyncRetry(async () => {
+  //   return getUserDaiBalance(props.address);
+  // }, [props.address]);
+
+  const { userDaiBalance } = props
 
   // get address eth balance
   const userEthBalance = useAsyncRetry(async () => {
@@ -65,15 +67,20 @@ const FaucetModal = (props) => {
   }, [props.poolAddress]);
 
   const handleOnFaucet = async (activateFaucetFunc) => {
-    setFaucetModalOpen(false);
+    debugger
+    // props.closeModal();
     setConfirmTxModalOpen(true);
     await activateFaucetFunc();
-
+    debugger
     // temporary adding extra waiting time so the user balance reload will get the updated values. Yikes
-    setTimeout(() => {
+    setInterval(() => {
+      debugger
       props.reloadUserBalance();
-      setConfirmTxModalOpen(false);
-    }, 8000);
+      if (isEnoughDai() && isEnoughEth()) {
+        setConfirmTxModalOpen(false);
+        props.onDone()
+      }
+    }, 1000);
   };
 
   const isLoading =
@@ -82,11 +89,16 @@ const FaucetModal = (props) => {
     userEthBalance.loading ||
     props.address === null;
 
-  const isEnoughEth =
+  const isEnoughEth = () =>
     isLoading || config.faucets.eth.amount <= userEthBalance.value;
-  const isEnoughDai =
+  const isEnoughDai = () =>
     isLoading || poolMetadataState.value.lockValue <= userDaiBalance.value;
 
+  // useEffect(() => {
+  //   if (isEnoughDai() && isEnoughEth()) {
+      
+  //   }
+  // }, [isEnoughDai(), isEnoughEth()])
   const sendDai = !isLoading ? (
     <>
       <Typography variant="h5">
@@ -162,9 +174,9 @@ const FaucetModal = (props) => {
     <div className={classes.body}>
       <ErrorIcon color="error" fontSize="large" />
       <Typography variant="h5">Not enough funds!</Typography>
-      {!isEnoughDai && isEnoughEth && sendDai}
-      {isEnoughDai && !isEnoughEth && sendEth}
-      {!isEnoughDai && !isEnoughEth && sendBoth}
+      {!isEnoughDai() && isEnoughEth() && sendDai}
+      {isEnoughDai() && !isEnoughEth() && sendEth}
+      {!isEnoughDai() && !isEnoughEth() && sendBoth}
     </div>
   );
 
@@ -178,9 +190,9 @@ const FaucetModal = (props) => {
         }}
       />
       <Modal
-        open={!isLoading && !(isEnoughDai && isEnoughEth) && faucetModalOpen}
+        open={!isLoading && !(isEnoughDai() && isEnoughEth()) && props.isOpen}
         onClose={() => {
-          setFaucetModalOpen(false);
+          props.closeModal();
         }}
         aria-labelledby="faucets-modal"
         aria-describedby="faucets-modal"
