@@ -55,7 +55,7 @@ const FaucetModal = (props) => {
   // }, [props.address]);
 
   const { userDaiBalance } = props
-
+  console.log({ userDaiBalance })
   // get address eth balance
   const userEthBalance = useAsyncRetry(async () => {
     return getUserEthBalance(props.address);
@@ -68,17 +68,20 @@ const FaucetModal = (props) => {
 
   const handleOnFaucet = async (activateFaucetFunc) => {
     debugger
-    // props.closeModal();
+    props.closeModal();
     setConfirmTxModalOpen(true);
-    await activateFaucetFunc();
+    activateFaucetFunc();
     debugger
     // temporary adding extra waiting time so the user balance reload will get the updated values. Yikes
     setInterval(() => {
       debugger
-      props.reloadUserBalance();
       if (isEnoughDai() && isEnoughEth()) {
         setConfirmTxModalOpen(false);
         props.onDone()
+      } else if (!userDaiBalance.loading) {
+        debugger
+        // props.reloadUserBalance();
+        userDaiBalance.retry();
       }
     }, 1000);
   };
@@ -91,8 +94,11 @@ const FaucetModal = (props) => {
 
   const isEnoughEth = () =>
     isLoading || config.faucets.eth.amount <= userEthBalance.value;
-  const isEnoughDai = () =>
-    isLoading || poolMetadataState.value.lockValue <= userDaiBalance.value;
+  const isEnoughDai = () => {
+    console.log('isDai')
+    console.log({ userDaiBalance })
+    return isLoading || poolMetadataState.value.lockValue <= userDaiBalance.value;
+  }
 
   // useEffect(() => {
   //   if (isEnoughDai() && isEnoughEth()) {

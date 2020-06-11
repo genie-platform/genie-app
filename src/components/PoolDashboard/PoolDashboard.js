@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAsync, useAsyncRetry } from 'react-use';
+import { useAsync, useAsyncRetry, useInterval } from 'react-use';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -160,8 +160,9 @@ const PoolDashboard = ({
   }, [poolAddress, address, didStake]);
 
   const userDaiBalance = useAsyncRetry(async () => {
+    debugger
     return getUserBalance(address);
-  }, [address]);
+  });
 
   const poolGraphState = useQuery(GET_POOL, {
     variables: { poolAddress },

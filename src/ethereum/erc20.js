@@ -29,6 +29,7 @@ export const getUserBalance = async (accountAddress) => {
   const userBalance = await tokenContract.methods
     .balanceOf(accountAddress)
     .call();
+  debugger
   return fromWei(userBalance);
 };
 
