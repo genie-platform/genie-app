@@ -7,6 +7,7 @@ import { ApolloProvider } from '@apollo/react-hooks';
 import PoolCreator from './components/PoolCreator/PoolCreator';
 import PoolDashboard from './components/PoolDashboard/PoolDashboard';
 import PoolExplorer from './components/PoolExplorer/PoolExplorer';
+import MyPools from './components/MyPools/MyPools';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import Home from './components/Home/Home';
@@ -38,6 +39,7 @@ const Routes = (props) => {
       <Route path="/" exact component={Home} />
       <Route path="/create-pool" exact component={PoolCreator} />
       <Route path="/explore" exact component={PoolExplorer} />
+      <Route path="/my-pools" exact component={MyPools} />
       <Route path="/dashboard/:poolAddress" exact component={PoolDashboard} />
     </Switch>
   );

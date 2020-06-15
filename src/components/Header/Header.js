@@ -350,13 +350,13 @@ const Header = (props) => {
         >
           Create pool
         </NavLink>
-        {/* <NavLink
-  className={classes.link}
-  to="/my-pools"
-  activeClassName={classes.linkActive}
->
-  My Pools
-</NavLink> */}
+        <NavLink
+          className={classes.link}
+          to="/my-pools"
+          activeClassName={classes.linkActive}
+        >
+          My Pools
+        </NavLink>
       </Hidden>
       <div className={classes.divider}></div>
 
