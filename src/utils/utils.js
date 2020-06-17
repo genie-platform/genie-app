@@ -78,7 +78,10 @@ export const generateGenieToken = (address, poolAddress) => {
  * @param {String} address - etheruem address
  */
 export const lowercaseAddress = (address) => {
-  return address.toLowerCase();
+  if (address) {
+    address = address.toLowerCase();
+  }
+  return address;
 };
 
 /**

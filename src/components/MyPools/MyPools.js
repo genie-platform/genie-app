@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import PoolDisplayCardWide from '../PoolDisplayCard/PoolDisplayCardWide';
 import { useAccountPoolsState } from '../../services/thegraph';
 import { fetchAllPools } from '../../ethereum/pool';
+import { lowercaseAddress } from '../../utils/utils';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,30 +35,32 @@ const useStyles = makeStyles((theme) => ({
 
 const MyPools = (props) => {
   const classes = useStyles();
+  const joinedPoolsAddresses = [];
+  let joinedPools = [];
+  let createdPools = [];
+
   const poolsMetadata = useAsync(async () => {
     return fetchAllPools();
   }, []);
 
   const accountPools = useAccountPoolsState(props.address);
   const { loading, error } = accountPools;
-  const joinedPoolsAddresses = [];
-  let joinedPools = [];
 
   if (!loading && !error && !poolsMetadata.loading) {
-    console.log('account pools', accountPools.data.accountPools);
-
     // get user pools
     accountPools.data.accountPools.forEach((pool) =>
       joinedPoolsAddresses.push(pool.poolAddress)
     );
-    console.log(joinedPoolsAddresses);
 
-    // filter only user pools metadata
-    joinedPools = poolsMetadata.value.filter(
-      (pool) => !(pool.contractAddress in joinedPoolsAddresses)
+    // filter only user joined pools metadata
+    joinedPools = poolsMetadata.value.filter((pool) =>
+      joinedPoolsAddresses.includes(pool.contractAddress)
     );
 
-    console.log(joinedPools);
+    // filter only user created pools metadata
+    createdPools = poolsMetadata.value.filter((pool) => {
+      return pool.poolOwnerAddress === lowercaseAddress(props.address);
+    });
   }
 
   return (
@@ -67,6 +70,25 @@ const MyPools = (props) => {
       </Typography>
       <Grid container spacing={3}>
         {joinedPools.map((pool) => (
+          <Grid item xs={12} key={pool._id}>
+            <Link
+              to={`/dashboard/${pool.contractAddress}`}
+              className={classes.link}
+            >
+              <PoolDisplayCardWide
+                name={pool.name}
+                description={pool.description}
+                icon={pool.icon}
+              />
+            </Link>
+          </Grid>
+        ))}
+      </Grid>
+      <Typography variant="h3" className={classes.title}>
+        My Created Pools
+      </Typography>
+      <Grid container spacing={3}>
+        {createdPools.map((pool) => (
           <Grid item xs={12} key={pool._id}>
             <Link
               to={`/dashboard/${pool.contractAddress}`}

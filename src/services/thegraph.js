@@ -1,6 +1,8 @@
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
+import { lowercaseAddress } from '../utils/utils';
+
 /**
  * This service fetches the current state of part of our dapp that are on the blockchain, using thegraph
  *
@@ -94,7 +96,11 @@ export const useDepositState = (userAddress) =>
  * returns the pools the user is in
  * @param {string} userAddress the user address
  */
-export const useAccountPoolsState = (userAddress) =>
-  useQuery(GET_ACCOUNT_POOLS, {
+export const useAccountPoolsState = (userAddress) => {
+  if (userAddress) {
+    userAddress = lowercaseAddress(userAddress);
+  }
+  return useQuery(GET_ACCOUNT_POOLS, {
     variables: { userAddress },
   });
+};
