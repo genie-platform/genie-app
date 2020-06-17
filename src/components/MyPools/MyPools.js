@@ -65,44 +65,53 @@ const MyPools = (props) => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h3" className={classes.title}>
-        My Joined Pools
-      </Typography>
-      <Grid container spacing={3}>
-        {joinedPools.map((pool) => (
-          <Grid item xs={12} key={pool._id}>
-            <Link
-              to={`/dashboard/${pool.contractAddress}`}
-              className={classes.link}
-            >
-              <PoolDisplayCardWide
-                name={pool.name}
-                description={pool.description}
-                icon={pool.icon}
-              />
-            </Link>
+      {createdPools.length > 0 && (
+        <>
+          <Typography variant="h3" className={classes.title}>
+            My Pools
+          </Typography>
+          <Grid container spacing={3}>
+            {createdPools.map((pool) => (
+              <Grid item xs={12} key={pool._id}>
+                <Link
+                  to={`/dashboard/${pool.contractAddress}`}
+                  className={classes.link}
+                >
+                  <PoolDisplayCardWide
+                    name={pool.name}
+                    description={pool.description}
+                    icon={pool.icon}
+                  />
+                </Link>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-      <Typography variant="h3" className={classes.title}>
-        My Created Pools
-      </Typography>
-      <Grid container spacing={3}>
-        {createdPools.map((pool) => (
-          <Grid item xs={12} key={pool._id}>
-            <Link
-              to={`/dashboard/${pool.contractAddress}`}
-              className={classes.link}
-            >
-              <PoolDisplayCardWide
-                name={pool.name}
-                description={pool.description}
-                icon={pool.icon}
-              />
-            </Link>
+        </>
+      )}
+
+      {joinedPools.length > 0 && (
+        <>
+          <Typography variant="h3" className={classes.title}>
+            Joined Pools
+          </Typography>
+          <Grid container spacing={3}>
+            {joinedPools.map((pool) => (
+              <Grid item xs={12} key={pool._id}>
+                <Link
+                  to={`/dashboard/${pool.contractAddress}`}
+                  className={classes.link}
+                >
+                  <PoolDisplayCardWide
+                    name={pool.name}
+                    description={pool.description}
+                    icon={pool.icon}
+                  />
+                </Link>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        </>
+      )}
     </div>
   );
 };
