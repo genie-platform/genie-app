@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAsync, useAsyncRetry } from 'react-use';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { connect } from 'react-redux';
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
 import { fromWei } from 'web3-utils';
 import get from 'lodash/get';
 
@@ -18,6 +16,7 @@ import {
   deposit,
   withdraw,
 } from '../../ethereum/pool';
+import { usePoolState, useRewardsState } from '../../services/thegraph';
 import { getAllowance, approve, getUserBalance } from '../../ethereum/erc20';
 import MainButton from '../UI/MainButton';
 import AllowDaiModal from './Modals/AllowDaiModal';
@@ -26,29 +25,6 @@ import PathofexileAccountModal from './Modals/PathofexileAccountModal';
 import ConfirmTxModal from '../UI/ConfirmTxModal';
 import PathofexileTokenModal from './Modals/PathofexileTokenModal';
 import FaucetModal from '../UI/FaucetModal';
-
-const GET_POOL = gql`
-  query Pool($poolAddress: String!) {
-    pool(id: $poolAddress) {
-      address
-      totalStaked
-      numberOfPlayers
-    }
-  }
-`;
-
-const GET_REWARDS = gql`
-  query getRewards($poolAddress: String!) {
-    rewards(where: { pool: $poolAddress }) {
-      id
-      txHash
-      createdAt
-      pool
-      amount
-      receiver
-    }
-  }
-`;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -163,13 +139,8 @@ const PoolDashboard = ({
     return getUserBalance(address);
   }, [address]);
 
-  const poolGraphState = useQuery(GET_POOL, {
-    variables: { poolAddress },
-  });
-
-  const rewardsState = useQuery(GET_REWARDS, {
-    variables: { poolAddress },
-  });
+  const poolGraphState = usePoolState(poolAddress);
+  const rewardsState = useRewardsState(poolAddress);
 
   const didAllowDai = useAsync(async () => {
     const allowance = await getAllowance(address, poolAddress);
