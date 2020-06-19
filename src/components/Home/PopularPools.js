@@ -40,26 +40,18 @@ const PopularPools = (props) => {
     <Grid container className={classes.poolsGrid}>
       <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
         <Link
-          to="/dashboard/0x1aa4d35ab874b4dff6e52a1953e5bc81fef0363f"
+          to="/dashboard/0x518e26f9b2ae82f02d53d2100c3c4cfe3b061913"
           className={classes.link}
         >
-          <PoolDisplayCard clickable name="Path of Exile Race" icon="🧙‍♂️" />
+          <PoolDisplayCard clickable name="Path of Exile Race - Level 10" icon="🧙" />
         </Link>
       </Grid>
       <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
         <Link
-          to="/dashboard/0x63a86b3782de1df7e547fd78ab872b25ec3d60e6"
+          to="/dashboard/0x2051e3222677a79026b0f22f86af6631595b4939"
           className={classes.link}
         >
-          <PoolDisplayCard clickable name="Space Survival" icon="☄️" />
-        </Link>
-      </Grid>
-      <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-        <Link
-          to="/dashboard/0x94e8adb309b629a4a3dfe5534681c034693bf481"
-          className={classes.link}
-        >
-          <PoolDisplayCard clickable name="Volcano Mania" icon="🌋" />
+          <PoolDisplayCard clickable name="Path of Exile Race - Level 50" icon="🧙‍♂️‍" />
         </Link>
       </Grid>
     </Grid>
