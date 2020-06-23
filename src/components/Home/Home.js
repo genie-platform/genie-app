@@ -41,10 +41,6 @@ const Home = (props) => {
     <Grid container className={classes.root} spacing={6}>
       <Hero />
 
-      <Typography className={classes.kovanText} variant="h6">
-        *Alpha version - Available only on Kovan network!
-      </Typography>
-
       <HowItWorks />
 
       <Grid item xs={12}>

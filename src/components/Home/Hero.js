@@ -29,6 +29,13 @@ const useStyles = makeStyles((theme) => ({
       width: theme.customValues.bigTitleWidth,
     },
   },
+  supportLink: {
+    textDecoration: 'none',
+    color: 'white',
+    fontWeight: 'bold',
+    position: 'relative',
+    top: '0.25em',
+  }
 }));
 
 const Hero = (props) => {
@@ -38,13 +45,15 @@ const Hero = (props) => {
     <Grid id="hero" item xs={12} style={{ padding: 0 }}>
       <div className={classes.hero}>
         <Typography className={classes.heroTitle} variant="h3">
-          No-loss reward platform
+          Reward platform for
+          <br />
+          no-loss challenges
         </Typography>
         <Typography className={classes.heroTitle} variant="h3"></Typography>
         <Typography className={classes.heroSubTitle} variant="h6">
           Genie is integrated with popular online games and enables
-          community-driven tournaments and challenges. The rewards are generated
-          by the accrued interest of users' stake.
+          community-driven tournaments and challenges. 
+          We want to bridge the universes of crypto and gaming <a className={classes.supportLink} href='https://gitcoin.co/grants/898/genie-challenges-reward-platform' target="_blank" rel="noreferrer noopener">⚔️ you are invited to support our mission ⚔️</a> 
         </Typography>
       </div>
     </Grid>

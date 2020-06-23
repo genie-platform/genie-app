@@ -68,7 +68,7 @@ const PopularPools = (props) => {
     <div className={classes.root}>
       <Grid id="popular-pool" item xs={12}>
         <Typography className={classes.subTitle} variant="subtitle2">
-          POPULAR POOLS
+          POPULAR CHALLENGES
         </Typography>
       </Grid>
       <Grid item xs={12}>
@@ -76,7 +76,7 @@ const PopularPools = (props) => {
       </Grid>
       <Grid item xs={12}>
         <Link to="/explore" className={classes.link}>
-          <Button className={classes.linkButton}>Explore more pools</Button>
+          <Button className={classes.linkButton}>Explore more challenges</Button>
         </Link>
       </Grid>
     </div>

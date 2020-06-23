@@ -85,8 +85,8 @@ export const Wizard = (props) => {
   const [confirmTxModalOpen, setConfirmTxModalOpen] = useState(false);
   const stepNames = [
     'Select a Game',
-    'Pool Settings',
-    'Pool Details',
+    'Challenge Settings',
+    'Challenge Details',
     'Preview',
   ];
 
@@ -251,7 +251,7 @@ export const Wizard = (props) => {
             disabled={!canContinue}
             className={clsx(classes.button, canContinue && classes.buttonNext)}
           >
-            {activeStep === VERIFY ? 'Create Pool' : 'Continue'}
+            {activeStep === VERIFY ? 'Create Challenge' : 'Continue'}
           </MainButton>
         </div>
         {activeStep === CHOOSE_GAME ? null : (

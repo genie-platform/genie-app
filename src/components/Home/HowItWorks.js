@@ -32,11 +32,13 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: '600',
     letterSpacing: '0.2em',
     marginBottom: '2em',
+    marginTop: '2em',
   },
   subTitleText: {},
   linkButton: {
     color: theme.palette.primary.main,
     fontWeight: '600',
+    marginTop: '2em'
   },
 }));
 
@@ -56,10 +58,10 @@ const HowItWorks = (props) => {
           <Avatar className={classes.numberIcon}>1</Avatar>
           <img src="/assets/1.svg" alt="join a pool" />
           <Typography variant="h6" className={classes.flowTitle}>
-            Join a pool
+            Join a challenge
           </Typography>
           <Typography variant="subtitle1" className={classes.flowSubTitle}>
-            Stake money
+            Stake money to the pool
           </Typography>
           <Typography variant="subtitle1" className={classes.flowSubTitle}>
             Withdraw anytime
@@ -95,6 +97,8 @@ const HowItWorks = (props) => {
           Genie leverages the Ethereum Network, it uses DAI, a dollar-pegged
           stablecoin, as a token of value, and it generates interest by lending
           the DAI using the Compound Protocol.
+          <br />
+          Chainlink oracles are responsible to determine the winner in a trustless way.
         </Typography>
       </Grid>
       <Grid item xs={12}>

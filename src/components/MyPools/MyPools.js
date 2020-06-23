@@ -68,7 +68,7 @@ const MyPools = (props) => {
       {createdPools.length > 0 && (
         <>
           <Typography variant="h3" className={classes.title}>
-            My Pools
+            My Challenges
           </Typography>
           <Grid container spacing={3}>
             {createdPools.map((pool) => (
@@ -92,7 +92,7 @@ const MyPools = (props) => {
       {joinedPools.length > 0 && (
         <>
           <Typography variant="h3" className={classes.title}>
-            Joined Pools
+            Joined Challenges
           </Typography>
           <Grid container spacing={3}>
             {joinedPools.map((pool) => (

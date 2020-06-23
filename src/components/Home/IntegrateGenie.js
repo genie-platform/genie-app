@@ -139,7 +139,7 @@ const IntegrateGenie = (props) => {
 
         <Grid item xs={12}>
           <MainButton variant="contained" onClick={onCreatePoolClick}>
-            Create a pool
+            Start a challenge
           </MainButton>
         </Grid>
       </Grid>
