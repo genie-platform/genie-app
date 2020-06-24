@@ -326,7 +326,7 @@ const Header = (props) => {
         </Link>
         <Link to="/create-pool" className={classes.link}>
           <ListItem button onClick={() => setIsDrawerOpen(false)}>
-            <ListItemText primary="Create pool" />
+            <ListItemText primary="Create Challenge" />
           </ListItem>
         </Link>
       </List>
@@ -341,21 +341,21 @@ const Header = (props) => {
           to="/explore"
           activeClassName={classes.linkActive}
         >
-          Explore
+          Join Challenge
         </NavLink>
         <NavLink
           className={classes.link}
           to="/create-pool"
           activeClassName={classes.linkActive}
         >
-          Create pool
+          Start Challenge
         </NavLink>
         <NavLink
           className={classes.link}
           to="/my-pools"
           activeClassName={classes.linkActive}
         >
-          My Pools
+          Profile
         </NavLink>
       </Hidden>
       <div className={classes.divider}></div>

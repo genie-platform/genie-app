@@ -188,14 +188,14 @@ const PoolDashboard = ({
       if (winningCondition.type === winningConditionTypes.LEVEL) {
         winner = (
           <Typography variant="h6" className={classes.poeWinner}>
-            The pool winner is the first character that will reach level {''}
+            The challenge winner is the first character that will reach level {''}
             {winningCondition.value} on {winningCondition.league} league
           </Typography>
         );
       } else if (winningCondition.type === winningConditionTypes.CHALLENGES) {
         winner = (
           <Typography>
-            The pool winner is the first character that will complete
+            The challenge winner is the first character that will complete
             {winningCondition.value} challenges on {winningCondition.league}{' '}
             league
           </Typography>
@@ -292,7 +292,7 @@ const PoolDashboard = ({
                   address === null ? 'Connect wallet to join pool' : null
                 }
               >
-                Join the pool
+                Join the challenge
               </MainButton>
             )}
           </>
@@ -303,7 +303,7 @@ const PoolDashboard = ({
               onClick={leavePool}
               warning="true"
             >
-              Leave the pool
+              Leave the challenge
             </MainButton>
             {game && game.value === GAMES.PATH_OF_EXILE && (
               <Typography variant="h6" className={classes.token}>

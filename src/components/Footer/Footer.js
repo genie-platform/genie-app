@@ -73,6 +73,17 @@ const Footer = (props) => {
               className={classes.logo}
             ></img>
           </a>
+          <a
+            href="http://medium.com/genie-platform"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            <img
+              src="/logos/medium.svg"
+              alt="medium logo"
+              className={classes.logo}
+            ></img>
+          </a>
         </div>
       </div>
     </div>
