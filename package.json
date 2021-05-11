@@ -19,7 +19,7 @@
     "gapi-script": "^1.0.2",
     "genie-contracts-abi": "^0.4.0",
     "graphql": "^15.0.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "react": "^16.13.1",
     "react-blockies": "^1.4.1",
     "react-dom": "^16.13.1",
